@@ -1,0 +1,13 @@
+﻿@model ASPNETCourse.Models.AnswerToAnswer
+
+<div class="form-group">
+    <div class="col-md-5">
+        <div class="checkbox">
+            @Html.EditorFor(m => m.Selected)
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Name))
+            @Html.HiddenFor(m => m.AnswerId)
+            @Html.HiddenFor(m => m.Name)
+        </div>
+    </div>
+</div>
+

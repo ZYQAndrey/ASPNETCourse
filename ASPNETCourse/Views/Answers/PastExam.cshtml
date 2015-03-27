@@ -1,0 +1,76 @@
+﻿@using ASPNETCourse.Models
+@{
+    ViewBag.Title = "Past Exam";
+}
+
+<h2>Your results of '@ViewBag.QuizName'</h2>
+<hr />
+<h3>Your final score is @ViewBag.Result</h3>
+<h3>Started: @ViewBag.StartTime</h3>
+<h3>Finished: @ViewBag.FinishTime</h3>
+<h3>It took: @ViewBag.TimeSpan</h3>
+
+<div onmousedown=" return false; " onselectstart="return false;" onselect=" return false; " oncut="return false;" id="bodyDiv">
+    <dl class="dl-horizontal">
+
+        @foreach (Answer item in ViewBag.Answers)
+        {
+            <dt>
+                Question description:
+            </dt>
+            <dd>
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Question.Description))
+            </dd>
+
+            <dt>
+                Your answer(s):
+            </dt>
+            <dd>
+                @item.Question.Answers
+            </dd>
+
+            <dt>Correctness:</dt>
+            <dd>
+                @Html.CheckBox("", item.Correctness)
+            </dd>
+            <hr/>
+        }
+
+        @foreach (AnswerToCheck item in ViewBag.AnswersToCheck)
+        {
+            <dt>
+                Question description:
+            </dt>
+            <dd>
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Question.Description))
+            </dd>
+
+            <dt>
+                Your answer:
+            </dt>
+            <dd>
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Answer))
+            </dd>
+
+            <dt>Correctness:</dt>
+            <dd>
+                @Html.CheckBox("", item.Correctness)
+            </dd>
+            <hr/>
+        }
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "ExamIndex")
+</p>
+<style>
+    .bodyDiv {
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+</style>

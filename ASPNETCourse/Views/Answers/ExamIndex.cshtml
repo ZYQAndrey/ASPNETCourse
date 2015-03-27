@@ -1,0 +1,42 @@
+﻿@using ASPNETCourse.Models
+
+@{
+    ViewBag.Title = "My Exams";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            Past exams results
+        </dt>
+        @foreach (Quiz quiz in ViewBag.pastExams)
+        {
+            <dd>
+                @Html.ActionLink(quiz.Name, "PastExam", new { id = quiz.Id })
+            </dd>
+        }
+
+        <dt>
+            Active exams
+        </dt>
+        @foreach (Quiz quiz in ViewBag.actingExams)
+        {
+            <dd>
+                @Html.ActionLink(quiz.Name, "ActiveExam", new { id = quiz.Id })
+            </dd>
+        }
+
+        <dt>
+            Future exams
+        </dt>
+        @foreach (Quiz quiz in ViewBag.futureExams)
+        {
+            <dd>
+                @Html.ActionLink(quiz.Name, "Index")
+            </dd>
+        }
+    </dl>
+</div>
+<p>.</p>

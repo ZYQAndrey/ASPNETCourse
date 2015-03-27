@@ -1,0 +1,12 @@
+﻿@model ASPNETCourse.Models.QuestionToAdd
+
+<div class="form-group">
+    <div class="col-md-10">
+        <div class="checkbox">
+            @Html.EditorFor(m => m.Selected)
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Description))
+            @Html.HiddenFor(m => m.QuestionId)
+            @*@Html.HiddenFor(m => m.Description)*@
+        </div>
+    </div>
+</div>

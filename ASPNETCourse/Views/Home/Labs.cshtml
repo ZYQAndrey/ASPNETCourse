@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = "Hand On Labs";
+    var routeValues1 = new RouteValueDictionary {{"filename", "lab1source.zip"}};
+}
+<h2>@ViewBag.Title</h2>
+
+<section class="content">
+    <p>
+        The Training Kit includes 13 step-by-step hands-on labs designed to help you improve web development. You can browse through the complete list of hands-on lab below. To get started with a hands-on lab, simply install the necessary prerequisites and follow the setup procedures described for each lab.
+    </p>
+    <p>
+        These hands-on labs will guide you in creating Web applications which you can run on your own development machine. Instructions are also included for deploying your sites to Windows Azure Web Sites, which allows you to <a href="http://aka.ms/aspnet-hol-azure">host ten ASP.NET Web Sites for free</a>.
+    </p>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a name="ASPNETMVC4Fundamentals"></a>
+            <h3>Lab 1. ASP.NET MVC 4 Fundamentals</h3>
+            <p>This Hands-On Lab is based on MVC (Model View Controller) Music Store, a tutorial application that introduces and explains step-by-step how to use ASP.NET MVC and Visual Studio. Throughout the lab you will learn the simplicity, yet power of using these technologies together. You will start with a simple application and will build it until you have a fully functional MVC Web Application.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab1", "Labs")</li>
+                <li><a href="\Labs\MVC4Fundamentals\Source.zip">Lab Files</a></li>
+                <li>@Html.ActionLink("Lab Files", "LabSource", routeValues1)</li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="MVC4DependencyInjection"></a>
+            <h3>Lab 2. ASP.NET MVC 4 Dependency Injection</h3>
+            <p>The Dependency Injection design pattern separates the component behavior from the resolution of dependencies without object intervention. In this Hands-On lab you will learn ASP.NET MVC 4 Dependency Injection features, Unity integration, and Dependency Injection in Controllers, Views and Action Filters.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab2", "Labs")</li>
+                <li><a href="\Labs\MVC4DependencyInjection\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="ASPNETMVC4CustomActionFilters"></a>
+            <h3>Lab 3. ASP.NET MVC 4 Custom Action Filters</h3>
+            <p>In this Hands-on Lab you will create a custom action filter attribute into MVC Music Store solution to catch controller's requests and log the activity of a site into a database table. You will be able to add your logging filter by injection to any controller or action.  Finally, you will see the log view that shows the list of visitors.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab3", "Labs")</li>
+                <li><a href="\Labs\MVC4CustomActionFilters\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="ASPNETMVC4ModelsAndDataAccess"></a>
+            <h3>Lab 4. ASP.NET MVC 4 Models and Data Access</h3>
+            <p>This Hands-on Lab will show you how to use a database engine in order to store and retrieve the data needed for the Music Store application. To accomplish that, you will start with an existing database and create the Entity Data Model from it. Throughout this lab, you will meet the Database-First approach as well as the Code-First approach.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab4", "Labs")</li>
+                <li><a href="\Labs\MVC4ModelsAndDataAccess\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="ASPNETMVC4HelpersFormsandValidation"></a>
+            <h3>Lab 5. ASP.NET MVC 4 Helpers, Forms and Validation</h3>
+            <p>In ASP.NET MVC 4 Models and Data Access Hands-on Lab, you have been loading and displaying data from the database. In this Hands-on Lab, you will add to the Music Store application the ability to edit that data.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab5", "Labs")</li>
+                <li><a href="\Labs\MVC4HelpersFormsAndValidation\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="ASPNETMVC4EntityFrameworkScaffoldingAndMigrations"></a>
+            <h3>Lab 6. ASP.NET MVC 4 Entity Framework Scaffolding and Migrations</h3>
+            <p>In this lab you will learn how to use the ASP.NET MVC 4 scaffolding to automatically generate the baseline of your application's CRUD (Create, Read, Update and Delete). In addition, you will learn how easy it is to use Entity Framework Migrations to perform model updates throughout your entire application.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab6", "Labs")</li>
+                <li><a href="\Labs\EntityFrameworkScaffoldingAndMigrations\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="ASPNETWebApi"></a>
+            <h3>Lab 7. Build RESTful APIs with ASP.NET Web API</h3>
+            <p>In this hands-on lab, you will use Web API to build a simple REST API for a contact manager application. You will also build a client to consume the API.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab7", "Labs")</li>
+                <li><a href="\Labs\ASPNETWebAPI\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="OfficeApps"></a>
+            <h3>Lab 8. Developing apps for Office 2013</h3>
+            <p>As well as the SharePoint app model, you can also use the Office 2013 app model. Apps for Office enable support for most Office applications such as Excel, Word, Project, and Outlook.
+The app model provides the apps you create with access to contextual information, such as a document being edited or an email being viewed.
+This enables your app to manipulate the document or read its contents, and use it to fetch related data from the Internet, for example, and display it alongside the document in your app.
+It is also possible for an Office app to access data from a SharePoint app (such as lists, libraries, or BCS connections) using the OAuth protocol implemented across the app model.
+This Hands On Lab shows you how to build an app for Office 2013.
+You will build a mail app that is hosted in Outlook Web.
+</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab8", "Labs")</li>
+                @*<li><a href="\Labs\ASPNETWebAPI\Source.zip">Lab Files</a></li>*@
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="BringingTogether"></a>
+            <h3>Lab 9. Bringing Together One ASP.NET</h3>
+            <p>ASP.NET is a framework for building Web sites, apps and services using specialized technologies such as MVC, Web API and others. Visual Studio 2013 introduces a new unified project system which lets you build an application and use all the ASP.NET technologies in one project. This feature eliminates the need to pick one technology at the start of a project and stick with it, and instead encourages the use of multiple ASP.NET frameworks within one project. This Hands On Lab shows how to add ASP.NET MVC and Web API controllers to an ASP.NET Web Forms application and share common model objects between them.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab9", "Labs")</li>
+                <li><a href="\Labs\BringingTogetherOneAspNet\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>        
+        <li class="list-group-item">
+            <a name="AspNetWebApiSpa"></a>
+            <h3>Lab 10/11. ASP.NET Web API and Single-Page Applications (SPAs)</h3>
+            <p>In Single-Page Applications (SPAs) the entire page is loaded in the browser after the initial request, but subsequent interactions take place through Ajax requests. This means that the browser has to update only the portion of the page that has changed; there is no need to reload the entire page. The SPA approach reduces the time taken by the application to respond to user actions, resulting in a more fluid experience. The architecture of a SPA involves certain challenges that are not present in traditional web applications. However, emerging technologies like ASP.NET Web API, JavaScript frameworks like AngularJS and new styling features provided by CSS3 make it really easy to design and build SPAs. In this hand-on lab, you will take advantage of those technologies to implement Geek Quiz, a trivia website based on the SPA concept. You will first implement the service layer with ASP.NET Web API to expose the required endpoints to retrieve the quiz questions and store the answers. Then, you will a build rich and responsive UI using AngularJS and CSS3 transformation effects.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab10_11", "Labs")</li>
+                <li><a href="\Labs\AspNetWebApiSpa\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="RealTimeSignalR"></a>
+            <h3>Lab 12. Real-Time Web Applications with ASP.NET SignalR</h3>
+            <p>Real-time Web applications feature the ability to push server-side content to the connected clients as it happens, in real-time. For ASP.NET developers, ASP.NET SignalR is a library to add real-time web functionality to their applications. It takes advantage of several transports, automatically selecting the best available transport given the client and server's best available transport. It takes advantage of WebSocket, an HTML5 API that enables bi-directional communication between the browser and server. SignalR also provides a simple, high-level API for doing server to client RPC (call JavaScript functions in your clients' browsers from server-side .NET code) in your ASP.NET application, as well as adding useful hooks for connection management, such as connect/disconnect events, grouping connections, and authorization. In this hands-on lab, you will learn how to: send notifications from server to client using SignalR, then scale Out your SignalR application using SQL Server.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab12", "Labs")</li>
+                <li><a href="\Labs\RealTimeSignalR\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="VS2013WebTools"></a>
+            <h3>Lab 13. Visual Studio 2013 Web Tools</h3>
+            <p>Visual Studio is an excellent development environment for .NET-based Windows and web projects. It includes powerful editors for HTML, CSS and JavaScript that can easily be used to edit standalone files without a project. All of this power is also available for extensions, making it simple to extend the editors with powerful new features to suit your needs. Web Essentials is a collection of web-related enhancements to Visual Studio. It includes lots of new IntelliSense completions, new Browser Link features, automatic JSHint for JavaScript files, new warnings for HTML and CSS, and many other features that are essential to modern web development. In this hands-on lab, you will learn how to use some of these advanced editor features to take advantage of HTML5 code snippets, Zen coding, the CSS color picker and Browser matrix tooltip, JavaScript features like Extract to File and IntelliSense for all HTML elements. You'll also learn how to exchange data between your browser and Visual Studio using Browser Link.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab13", "Labs")</li>
+                <li><a href="\Labs\VSWebTooling\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="WebSitesInProduction"></a>
+            <h3>Lab 14/15. ASP.NET Web Sites in Production</h3>
+            <p>This hands-on-lab takes a look at some of the tough, real-world scenarios you'll face after your site is deployed to production. How do you handle challenges such as scaling (both up and down), managing changes to your database over time, and problems with code you've just deployed? This lab shows how to take advantages of some of the best hidden features of Windows Azure, ASP.NET and Visual Studio to keep rolling once your site is live.</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab14_15", "Labs")</li>
+                <li><a href="\Labs\WebSitesInProduction\Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="topOfPage"><a href="#top">Top of page</a></div>
+</section>
+

@@ -1,0 +1,1602 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link rel="Stylesheet" type="text/css" media="all" href="styles/master.css" />
+</head>
+<body>
+	<div id="outerWrapper">
+		<div id="wrapper" class="landingPage getStartedPage">
+			<h1 id="ASPNET_MVC_4_Fundamentals">ASP.NET MVC 4 Fundamentals</h1>
+
+			<hr />
+
+			<p><a name="Overview"></a></p>
+
+			<h2 id="Overview">Overview</h2>
+
+			<p>This Hands-On Lab is based on MVC (Model View Controller) Music Store, a tutorial application that introduces and explains step-by-step how to use ASP.NET MVC and Visual Studio. Throughout the lab you will learn the simplicity, yet power of using these technologies together. You will start with a simple application and will build it until you have a fully functional ASP.NET MVC 4 Web Application.</p>
+
+			<p>This Lab works with ASP.NET MVC 4.</p>
+
+			<p>If you wish to explore the ASP.NET MVC 3 version of the tutorial application, you can find it in <a href="http://mvcmusicstore.codeplex.com/"><a href="http://mvcmusicstore.codeplex.com/">http://mvcmusicstore.codeplex.com/</a></a>.</p>
+			<blockquote>
+				<p><strong>Note:</strong> This Hands-On Lab assumes that the developer has experience in Web development technologies, such as HTML and JavaScript.</p>
+			</blockquote>
+			<h3 id="The_Music_Store_application">The Music Store application</h3>
+
+			<p>The Music Store web application that will be built throughout this Lab comprises three main parts: shopping, checkout, and administration. Visitors will be able to browse albums by genre, add albums to their cart, review their selection and finally proceed to checkout to login and complete the order. Additionally, store administrators will be able to manage the available albums as well as their main properties.</p>
+
+			<p>
+				<img src="./images/Music-Store-screens.png?raw=true" alt="Music Store screens" title="Music Store screens" />
+			</p>
+
+			<p><em>Music Store screens</em></p>
+
+			<h3 id="ASPNET_MVC_4_Essentials">ASP.NET MVC 4 Essentials</h3>
+
+			<p>Music Store application will be built using <strong>Model View Controller (MVC)</strong>, an architectural pattern that separates an application into three main components:</p>
+
+			<ul>
+				<li><p><strong>Models</strong>: Model objects are the parts of the application that implement the domain logic. Often, model objects also retrieve and store model state in a database.</p></li>
+				<li><p><strong>Views:</strong> Views are the components that display the application's user interface (UI). Typically, this UI is created from the model data. An example would be the edit view of Albums that displays text boxes and a drop-down list based on the current state of an Album object.</p></li>
+				<li><p><strong>Controllers:</strong> Controllers are the components that handle user interaction, manipulate the model, and ultimately select a view to render the UI. In an MVC application, the view only displays information; the controller handles and responds to user input and interaction.</p></li>
+			</ul>
+
+			<p>The MVC pattern helps you to create applications that separate the different aspects of the application (input logic, business logic, and UI logic), while providing a loose coupling between these elements. This separation helps you manage complexity when you build an application, as it allows you to focus on one aspect of the implementation at a time. In addition, the MVC pattern makes it easy to test applications, also encouraging the use of test-driven development (TDD) for creating applications.</p>
+
+			<p>The <strong>ASP.NET MVC</strong> framework provides an alternative to the ASP.NET Web Forms pattern for creating ASP.NET MVC-based Web applications. The <strong>ASP.NET MVC</strong> framework is a lightweight, highly testable presentation framework that (as with Web-forms-based applications) is integrated with existing ASP.NET features, such as master pages and membership-based authentication so you get all the power of the core .NET framework.  This is useful if you are already familiar with ASP.NET Web Forms because all the libraries that you already use are available in ASP.NET MVC 4 as well.</p>
+
+			<p>In addition, the loose coupling between the three main components of an MVC application also promotes parallel development. For instance, one developer can work on the view, a second developer can work on the controller logic, and a third developer can focus on the business logic in the model.</p>
+
+			<p><a name="Objectives"></a></p>
+
+			<h3 id="Objectives">Objectives</h3>
+
+			<p>In this Hands-On Lab, you will learn how to:</p>
+
+			<ul>
+				<li><p>Create an ASP.NET MVC application from scratch based on the Music Store Application tutorial</p></li>
+				<li><p>Add Controllers to handle URLs to the Home page of the site and for browsing its main functionality</p></li>
+				<li><p>Add a View to customize the content displayed along with its style</p></li>
+				<li><p>Add Model classes to contain and manage data and domain logic</p></li>
+				<li><p>Use View Model pattern to pass information from controller actions to the view templates</p></li>
+				<li><p>Explore the ASP.NET MVC 4 new template for internet applications</p></li>
+			</ul>
+
+			<p><a name="Exercises"></a></p>
+
+			<h2 id="Exercises">Exercises</h2>
+
+			<p>This Hands-On Lab is comprised by the following exercises:</p>
+
+			<ol>
+				<li><p><a href="#Exercise1">Exercise 1: Creating MusicStore ASP.NET MVC Web Application Project</a></p></li>
+				<li><p><a href="#Exercise2">Exercise 2: Creating a Controller</a></p></li>
+				<li><p><a href="#Exercise3">Exercise 3: Passing parameters to a Controller</a></p></li>
+				<li><p><a href="#Exercise4">Exercise 4: Adding Ajax for Searching Activities</a></p></li>
+				<li><p><a href="#Exercise5">Exercise 5: Creating a View Model</a></p></li>
+				<li><p><a href="#Exercise6">Exercise 6: Using parameters in View</a></p></li>
+				<li><p><a href="#Exercise7">Exercise 7: A lap around ASP.NET MVC 4 New Template</a></p></li>
+			</ol>
+			<blockquote>
+				<p><strong>Note:</strong> Each exercise is accompanied by an <strong>End</strong> folder containing the resulting solution you should obtain after completing the exercises. You can use this solution as a guide if you need additional help working through the exercises.</p>
+			</blockquote>
+			<p>Estimated time to complete this lab: <strong>60 minutes</strong>.</p>
+
+			<p><a name="Exercise1"></a></p>
+
+			<h3 id="Exercise_1_Creating_MusicStore_ASPNET_MVC_Web_Application_Project">Exercise 1: Creating MusicStore ASP.NET MVC Web Application Project</h3>
+
+			<p>In this exercise, you will learn how to create an ASP.NET MVC application in Visual Studio 2012 Express for Web as well as its main folder organization. Additionally, you will learn how to add a new Controller and make it display a simple string in the application's home page.</p>
+
+			<p><a name="Ex1Task1"></a></p>
+
+			<h4 id="Task_1_-_Creating_the_ASPNET_MVC_Web_Application_Project">Task 1 - Creating the ASP.NET MVC Web Application Project</h4>
+
+			<ol>
+				<li><p>In this task, you will create an empty ASP.NET MVC application project using the MVC Visual Studio template. Start <strong>VS Express for Web</strong>.</p></li>
+				<li><p>On the <strong>File</strong> menu, click <strong>New Project</strong>.</p></li>
+				<li><p>In the <strong>New Project</strong> dialog box select the <strong>ASP.NET MVC 4 Web Application</strong> project type, located under <strong>Visual C#,</strong> <strong>Web</strong> template list.</p></li>
+				<li><p>Change the <strong>Name</strong> to <em>MvcMusicStore</em>.</p></li>
+				<li>
+					<p>Set the location of the solution inside a new <strong>Begin</strong> folder in this Exercise's Source folder, for example <strong>[YOUR-HOL-PATH]\Source\Ex01-CreatingMusicStoreProject\Begin</strong>. Click <strong>OK</strong>.</p>
+
+					<p>
+						<img src="./images/Create-New-Project-Dialog-Box.png?raw=true" alt="Create New Project Dialog Box" title="Create New Project Dialog Box" />
+					</p>
+
+					<p><em>Create New Project Dialog Box</em></p>
+				</li>
+				<li>
+					<p>In the <strong>New ASP.NET MVC 4 Project</strong> dialog box select the <strong>Basic</strong> template and make sure that the <strong>View engine</strong> selected is <strong>Razor</strong>. Click <strong>OK</strong>.</p>
+
+					<p>
+						<img src="./images/New-ASP.NET-MVC-3-Project-Dialog-Box.png?raw=true" alt="New ASP.NET MVC 4 Project Dialog Box" title="New ASP.NET MVC 4 Project Dialog Box" />
+					</p>
+
+					<p><em>New ASP.NET MVC 4 Project Dialog Box</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Ex1Task2"></a></p>
+
+			<h4 id="Task_2_-_Exploring_the_Solution_Structure">Task 2 - Exploring the Solution Structure</h4>
+
+			<p>The ASP.NET MVC framework includes a Visual Studio project template that helps you create Web applications supporting the MVC pattern. This template creates a new ASP.NET MVC Web application with the required folders, item templates, and configuration-file entries.</p>
+
+			<p>In this task, you will examine the solution structure to understand the elements that are involved and their relationships. The following folders are included in all the ASP.NET MVC application because the ASP.NET MVC framework by default uses a &quot;convention over configuration&quot; approach, and makes some default assumptions based on folder naming conventions.</p>
+
+			<ol>
+				<li>
+					<p>Once the project is created, review the folder structure that has been created in the Solution Explorer on the right side:</p>
+
+					<p>
+						<img src="./images/ASP.NET-MVC-Folder-structure-in-Solution-Explorer.png?raw=true" alt="ASP.NET MVC Folder structure in Solution Explorer" title="ASP.NET MVC Folder structure in Solution Explorer" />
+					</p>
+
+					<p><em>ASP.NET MVC Folder structure in Solution Explorer</em></p>
+
+					<ol>
+						<li>
+							<p><strong>Controllers</strong>. This folder will contain the controller classes. In an MVC based application, controllers are responsible for handling end user interaction, manipulating the model, and ultimately choosing a view to render the UI.</p>
+							<blockquote>
+								<p><strong>Note:</strong> The MVC framework requires the names of all controllers to end with &quot;Controller&quot;-for example, HomeController, LoginController, or ProductController.</p>
+							</blockquote>
+						</li>
+						<li><p><strong>Models</strong>. This folder is provided for classes that represent the application model for the MVC Web application. This usually includes code that defines objects and the logic for interacting with the data store. Typically, the actual model objects will be in separate class libraries. However, when you create a new application, you might include classes and then move them into separate class libraries at a later point in the development cycle.</p></li>
+						<li><p><strong>Views</strong>. This folder is the recommended location for views, the components responsible for displaying the application's user interface. Views use .aspx, .ascx, .cshtml and .master files, in addition to any other files that are related to rendering views. Views folder contains a folder for each controller; the folder is named with the controller-name prefix. For example, if you have a controller named <strong>HomeController</strong>, the Views folder will contain a folder named Home. By default, when the ASP.NET MVC framework loads a view, it looks for an .aspx file with the requested view name in the Views\controllerName folder (<strong>Views[ControllerName][Action].aspx</strong>) or (<strong>Views[ControllerName][Action].cshtml</strong>) for Razor Views. </p></li>
+					</ol>
+					<blockquote>
+						<p><strong>Note:</strong> In addition to the folders listed previously, an MVC Web application uses the <strong>Global.asax</strong> file to set global URL routing defaults, and it uses the <strong>Web.config</strong> file to configure the application.</p>
+					</blockquote>
+				</li>
+			</ol>
+
+			<p><a name="Ex1Task3"></a></p>
+
+			<h4 id="Task_3_-_Adding_a_HomeController">Task 3 - Adding a HomeController</h4>
+
+			<p>In ASP.NET applications that do not use the MVC framework, user interaction is organized around pages, and around raising and handling events from those pages. In contrast, user interaction with ASP.NET MVC applications is organized around controllers and their action methods.</p>
+
+			<p>On the other hand, ASP.NET MVC framework maps URLs to classes that are referred to as controllers. Controllers process incoming requests, handle user input and interactions, execute appropriate application logic and determine the response to send back to the client (display HTML, download a file, redirect to a different URL, etc.). In the case of displaying HTML, a controller class typically calls a separate view component to generate the HTML markup for the request. In an MVC application, the view only displays information; the controller handles and responds to user input and interaction.</p>
+
+			<p>In this task, you will add a Controller class that will handle URLs to the Home page of the Music Store site.</p>
+
+			<ol>
+				<li>
+					<p>Right-click <strong>Controllers</strong> folder within the Solution Explorer, select <strong>Add</strong> and then <strong>Controller</strong> command:</p>
+
+					<p>
+						<img src="./images/Add-a-Controller-Command.png?raw=true" alt="Add a Controller Command" title="Add a Controller Command" />
+					</p>
+
+					<p><em>Add Controller Command</em></p>
+				</li>
+				<li>
+					<p>The <strong>Add Controller</strong> dialog appears. Name the controller <em>HomeController</em> and press <strong>Add</strong>.</p>
+
+					<p>
+						<img src="./images/Add-Controller-Dialog.png?raw=true" alt="Add Controller Dialog" title="Add Controller Dialog" />
+					</p>
+
+					<p><em>Add Controller Dialog</em></p>
+				</li>
+				<li>
+					<p>The file <strong>HomeController.cs</strong> is created in the <strong>Controllers</strong> folder. In order to have the <strong>HomeController</strong> return a string on its Index action, replace the <strong>Index</strong> method with the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex1 HomeController Index</em>)</p>
+
+					<!-- mark:1-5    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Index()</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">  <span style="color:#0000FF">return</span> <span style="color:#8B0000">&quot;Hello from Home&quot;</span>;</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+				</li>
+			</ol>
+
+			<p><a name="Ex1Task4"></a></p>
+
+			<h4 id="Task_4_-_Running_the_Application">Task 4 - Running the Application</h4>
+
+			<p>In this task, you will try out the Application in a web browser.</p>
+
+			<ol>
+				<li>
+					<p>Press <strong>F5</strong> to run the Application. The project is compiled and the local IIS Web Server starts. The local IIS Web Server will automatically open a web browser pointing to the URL of the Web server.</p>
+
+					<p>
+						<img src="./images/Application-running-in-a-web-browser.png?raw=true" alt="Application running in a web browser" title="Application running in a web browser" />
+					</p>
+
+					<p><em>Application running in a web browser</em></p>
+					<blockquote>
+						<p><strong>Note</strong>: The local IIS Web Server will run the website on a random free port number. In the figure above, the site is running at http://localhost:50103/, so it's using port 50103. Your port number may vary.</p>
+					</blockquote>
+				</li>
+				<li><p>Close the browser.</p></li>
+			</ol>
+
+			<p><a name="Exercise2"></a></p>
+
+			<h3 id="Exercise_2_Creating_a_Controller">Exercise 2: Creating a Controller</h3>
+
+			<p>In this exercise, you will learn how to update the controller to implement simple functionality of the Music Store application. That controller will define action methods to handle each of the following specific requests:</p>
+
+			<ul>
+				<li><p>A listing page of the music genres in the Music Store</p></li>
+				<li><p>A browse page that lists all of the music albums for a particular genre</p></li>
+				<li><p>A details page that shows information about a specific music album</p></li>
+			</ul>
+
+			<p>For the scope of this exercise, those actions will simply return a string by now.</p>
+
+			<p><a name="Ex2Task1"></a></p>
+
+			<h4 id="Task_1_-_Adding_a_New_StoreController_Class">Task 1 - Adding a New StoreController Class</h4>
+
+			<p>In this task, you will add a new Controller.</p>
+
+			<ol>
+				<li><p>If not already open, start <strong>VS Express for Web 2012</strong>.</p></li>
+				<li>
+					<p>In the <strong>File</strong> menu, choose <strong>Open Project</strong>. In the Open Project dialog, browse to <strong>Source\Ex02-CreatingAController\Begin</strong>, select <strong>Begin.sln</strong> and click <strong>Open</strong>. Alternatively, you may continue with the solution that you obtained after completing the previous exercise.</p>
+
+					<ol>
+						<li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+						<li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+						<li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+					</ol>
+					<blockquote>
+						<p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+					</blockquote>
+				</li>
+				<li>
+					<p>Add the new controller. To do this, right-click the <strong>Controllers</strong> folder within the Solution Explorer, select <strong>Add</strong> and then the <strong>Controller</strong> command. Change the <strong>Controller Name</strong> to <em>StoreController</em>, and click <strong>Add</strong>.</p>
+
+					<p>
+						<img src="./images/Add-controller-dialog-2.png?raw=true" alt="Add Controller Dialog" title="Add Controller Dialog" />
+					</p>
+
+					<p><em>Add Controller Dialog</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Ex2Task2"></a></p>
+
+			<h4 id="Task_2_-_Modifying_the_StoreControllers_Actions">Task 2 - Modifying the StoreController's Actions</h4>
+
+			<p>In this task, you will modify the Controller methods that are called <strong>actions</strong>. Actions are responsible for handling URL requests and determining the content that should be sent back to the browser or user that invoked the URL.</p>
+
+			<ol>
+				<li>
+					<p>The <strong>StoreController</strong> class already has an <strong>Index</strong> method. You will use it later in this Lab to implement the page that lists all genres of the music store. For now, just replace the <strong>Index</strong> method with the following code that returns a string &quot;Hello from Store.Index()&quot;:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex2 StoreController Index</em>)</p>
+
+					<!-- mark:1-4    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Index()</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">  <span style="color:#0000FF">return</span> <span style="color:#8B0000">&quot;Hello from Store.Index()&quot;</span>;</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+				</li>
+				<li>
+					<p>Add <strong>Browse</strong> and <strong>Details</strong> methods. To do this, add the following code to the <strong>StoreController</strong>:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex2 StoreController BrowseAndDetails</em>)</p>
+
+					<!-- mark:1-15    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#008000">// GET: /Store/Browse</span></strong>
+<strong class="markLine"><span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Browse()</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">  <span style="color:#0000FF">return</span> <span style="color:#8B0000">&quot;Hello from Store.Browse()&quot;</span>;</strong>
+<strong class="markLine">}</strong>
+<strong class="markLine"></strong>
+<strong class="markLine"><span style="color:#008000">// GET: /Store/Details  </span></strong>
+<strong class="markLine"><span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Details()</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">  <span style="color:#0000FF">return</span> <span style="color:#8B0000">&quot;Hello from Store.Details()&quot;</span>;</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+				</li>
+			</ol>
+
+			<p><a name="Ex2Task3"></a></p>
+
+			<h4 id="Task_3_-_Running_the_Application">Task 3 - Running the Application</h4>
+
+			<p>In this task, you will try out the Application in a web browser.</p>
+
+			<ol>
+				<li><p>Press <strong>F5</strong> to run the Application.</p></li>
+				<li>
+					<p>The project starts in the <strong>Home</strong> page. Change the URL to verify each action's implementation.</p>
+
+					<ol>
+						<li><strong>/Store</strong>. You will see <strong>&quot;Hello from Store.Index()&quot;</strong>.</li>
+						<li><strong>/Store/Browse</strong>. You will see <strong>&quot;Hello from Store.Browse()&quot;</strong>.</li>
+						<li>
+							<p><strong>/Store/Details</strong>. You will see <strong>&quot;Hello from Store.Details()&quot;</strong>.</p>
+
+							<p>
+								<img src="./images/Browsing-StoreBrowse.png?raw=true" alt="Browsing StoreBrowse" title="Browsing StoreBrowse" />
+							</p>
+
+							<p><em>Browsing /Store/Browse</em></p>
+						</li>
+					</ol>
+				</li>
+				<li><p>Close the browser.</p></li>
+			</ol>
+
+			<p><a name="Exercise3"></a></p>
+
+			<h3 id="Exercise_3_Passing_parameters_to_a_Controller">Exercise 3: Passing parameters to a Controller</h3>
+
+			<p>Until now, you have been returning constant strings from the Controllers. In this exercise you will learn how to pass parameters to a Controller using the URL and querystring, and then making the method actions respond with text to the browser.</p>
+
+			<p><a name="Ex3Task1"></a></p>
+
+			<h4 id="Task_1_-_Adding_Genre_Parameter_to_StoreController">Task 1 - Adding Genre Parameter to StoreController</h4>
+
+			<p>In this task, you will use the <strong>querystring</strong> to send parameters to the <strong>Browse</strong> action method in the <strong>StoreController</strong>.</p>
+
+			<ol>
+				<li><p>If not already open, start <strong>VS Express for Web</strong>.</p></li>
+				<li>
+					<p>In the <strong>File</strong> menu, choose <strong>Open Project</strong>. In the Open Project dialog, browse to <strong>Source\Ex03-PassingParametersToAController\Begin</strong>, select <strong>Begin.sln</strong> and click <strong>Open</strong>. Alternatively, you may continue with the solution that you obtained after completing the previous exercise.</p>
+
+					<ol>
+						<li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+						<li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+						<li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+					</ol>
+					<blockquote>
+						<p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+					</blockquote>
+				</li>
+				<li><p>Open <strong>StoreController</strong> class. To do this, in the <strong>Solution Explorer</strong>, expand the <strong>Controllers</strong> folder and double-click <strong>StoreController.cs</strong>.</p></li>
+				<li>
+					<p>Change the <strong>Browse</strong> method, adding a string parameter to request for a specific genre. ASP.NET MVC will automatically pass any querystring or form post parameters named <strong>genre</strong> to this action method when invoked. To do this, replace the <strong>Browse</strong> method with the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex3 StoreController BrowseMethod</em>)</p>
+
+					<!-- mark:1-7    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#008000">// GET: /Store/Browse?genre=Disco   </span></strong>
+<strong class="markLine"><span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Browse(<span style="color:#0000FF">string</span> genre)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">  <span style="color:#0000FF">string</span> message = HttpUtility.HtmlEncode(<span style="color:#8B0000">&quot;Store.Browse, Genre = &quot;</span> + genre);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">  <span style="color:#0000FF">return</span> message;</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+					<blockquote>
+						<p><strong>Note:</strong> You are using the <strong>HttpUtility.HtmlEncode</strong> utility method to prevents users from injecting Javascript into the View with a link like <strong>/Store/Browse?Genre=&lt;script&gt;window.location='<a href="http://hackersite.com">http://hackersite.com</a>'&lt;/script&gt;</strong>.</p>
+
+						<p>For further explanation, please visit <a href="http://msdn.microsoft.com/en-us/library/a2a4yykt(v=VS.80).aspx">this msdn article</a>.</p>
+					</blockquote>
+				</li>
+			</ol>
+
+			<p><a name="Ex3Task2"></a></p>
+
+			<h4 id="Task_2_-_Running_the_Application">Task 2 - Running the Application</h4>
+
+			<p>In this task, you will try out the Application in a web browser and use the <strong>genre</strong> parameter.</p>
+
+			<ol>
+				<li><p>Press <strong>F5</strong> to run the Application.</p></li>
+				<li>
+					<p>The project starts in the <strong>Home</strong> page. Change the URL to <em>/Store/Browse?Genre=Disco</em> to verify that the action receives the genre parameter.</p>
+
+					<p>
+						<img src="./images/Browsing-StoreBrowseGenre=Disco.png?raw=true" alt="Browsing StoreBrowseGenre=Disco" title="Browsing StoreBrowseGenre=Disco" />
+					</p>
+
+					<p><em>Browsing /Store/Browse?Genre=Disco</em></p>
+				</li>
+				<li><p>Close the browser.</p></li>
+			</ol>
+
+			<p><a name="Ex3Task3"></a></p>
+
+			<h4 id="Task_3_-_Adding_an_Id_Parameter_Embedded_in_the_URL">Task 3 - Adding an Id Parameter Embedded in the URL</h4>
+
+			<p>In this task, you will use the <strong>URL</strong> to pass an <strong>Id</strong> parameter to the <strong>Details</strong> action method of the <strong>StoreController</strong>. ASP.NET MVC's default routing convention is to treat the segment of a URL after the action method name as a parameter named <strong>Id</strong>.  If your action method has parameter named Id, then ASP.NET MVC will automatically pass the URL segment to you as a parameter. In the URL <strong>Store/Details/5</strong>, <strong>Id</strong> will be interpreted as <strong>5</strong>.</p>
+
+			<ol>
+				<li>
+					<p>Change the <strong>Details</strong> method of the <strong>StoreController</strong>, adding an <strong>int</strong> parameter called <strong>id</strong>. To do this, replace the <strong>Details</strong> method with the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex3 StoreController DetailsMethod</em>)</p>
+
+					<!-- mark:1-7    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#008000">// GET: /Store/Details/5    </span></strong>
+<strong class="markLine"><span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Details(<span style="color:#0000FF">int</span> id)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">  <span style="color:#0000FF">string</span> message = <span style="color:#8B0000">&quot;Store.Details, ID = &quot;</span> + id;</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">  <span style="color:#0000FF">return</span> message;</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+				</li>
+			</ol>
+
+			<p><a name="Ex3Task4"></a></p>
+
+			<h4 id="Task_4_-_Running_the_Application">Task 4 - Running the Application</h4>
+
+			<p>In this task, you will try out the Application in a web browser and use the <strong>Id</strong> parameter.</p>
+
+			<ol>
+				<li><p>Press <strong>F5</strong> to run the Application.</p></li>
+				<li>
+					<p>The project starts in the <strong>Home</strong> page. Change the URL to <em>/Store/Details/5</em> to verify that the action receives the id parameter.</p>
+
+					<p>
+						<img src="./images/Browsing-StoreDetails5.png?raw=true" alt="Browsing StoreDetails5" title="Browsing StoreDetails5" />
+					</p>
+
+					<p><em>Browsing /Store/Details/5</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Exercise4"></a></p>
+
+			<h3 id="Exercise_4_Creating_a_View">Exercise 4: Creating a View</h3>
+
+			<p>So far you have been returning strings from controller actions. Although that is a useful way of understanding how controllers work, it is not how your real Web applications are built. Views are components that provide a better approach for generating HTML back to the browser with the use of template files.</p>
+
+			<p>In this exercise you will learn how to add a layout master page to setup a template for common HTML content, a StyleSheet to enhance the look and feel of the site and finally a View template to enable HomeController to return HTML.</p>
+
+			<p><a name="Ex4Task1"></a></p>
+
+			<h4 id="Task_1_-_Modifying_the_file__layoutcshtml">Task 1 - Modifying the file _layout.cshtml</h4>
+
+			<p>The file <strong>~/Views/Shared/_layout.cshtml</strong> allows you to setup a template for common HTML to use across the entire website. In this task you will add a layout master page with a common header with links to the Home page and Store area.</p>
+
+			<ol>
+				<li><p>If not already open, start <strong>VS Express for Web</strong>.</p></li>
+				<li>
+					<p>In the <strong>File</strong> menu, choose <strong>Open Project</strong>. In the Open Project dialog, browse to <strong>Source\Ex04-CreatingAView\Begin</strong>, select <strong>Begin.sln</strong> and click <strong>Open</strong>. Alternatively, you may continue with the solution that you obtained after completing the previous exercise.</p>
+
+					<ol>
+						<li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+						<li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+						<li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+					</ol>
+					<blockquote>
+						<p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+					</blockquote>
+				</li>
+				<li>
+					<p>The file <strong>_layout.cshtml</strong> contains the HTML container layout for all pages on the site.  It includes the <strong>&lt;html&gt;</strong> element for the HTML response, as well as the <strong>&lt;head&gt;</strong> and <strong>&lt;body&gt;</strong> elements. <strong>@RenderBody()</strong> within the HTML body identify regions that view templates will be able to fill in with dynamic content.</p>
+
+					<span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	 &lt;meta charset=&quot;utf-8&quot; /&gt;
+	 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+	 &lt;title&gt;@ViewBag.Title&lt;/title&gt;
+	 @Styles.Render(&quot;~/Content/css&quot;)
+	 @Scripts.Render(&quot;~/bundles/modernizr&quot;)
+&lt;/head&gt;
+&lt;body&gt;
+	 @RenderBody()
+	 @Scripts.Render(&quot;~/bundles/jquery&quot;)
+	 @RenderSection(&quot;scripts&quot;, required: false)
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+				</li>
+				<li>
+					<p>Add a common header with links to the Home page and Store area on all pages in the site. In order to do that, add the following code below &lt;body&gt; statement.</p>
+
+					<!-- mark:11-25    -->
+
+					<span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	 &lt;meta charset=&quot;utf-8&quot; /&gt;
+	 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+	 &lt;title&gt;@ViewBag.Title&lt;/title&gt;
+	 @Styles.Render(&quot;~/Content/css&quot;)
+	 @Scripts.Render(&quot;~/bundles/modernizr&quot;)
+&lt;/head&gt;
+&lt;body&gt;
+<strong class="markLine">     &lt;header&gt;</strong>
+<strong class="markLine">          &lt;div class=&quot;content-wrapper&quot;&gt;</strong>
+<strong class="markLine">                &lt;div class=&quot;float-left&quot;&gt;</strong>
+<strong class="markLine">                     &lt;p class=&quot;site-title&quot;&gt;@Html.ActionLink(&quot;ASP.NET MVC Music Store&quot;, &quot;Index&quot;, &quot;Home&quot;)&lt;/p&gt;</strong>
+<strong class="markLine">                &lt;/div&gt;</strong>
+<strong class="markLine">                &lt;div class=&quot;float-right&quot;&gt;</strong>
+<strong class="markLine">                     &lt;nav&gt;</strong>
+<strong class="markLine">                          &lt;ul id=&quot;menu&quot;&gt;</strong>
+<strong class="markLine">                                &lt;li&gt;@Html.ActionLink(&quot;Home&quot;, &quot;Index&quot;, &quot;Home&quot;)&lt;/li&gt;</strong>
+<strong class="markLine">                                &lt;li&gt;@Html.ActionLink(&quot;Store&quot;, &quot;Index&quot;, &quot;Store&quot;)&lt;/li&gt;</strong>
+<strong class="markLine">                          &lt;/ul&gt;</strong>
+<strong class="markLine">                     &lt;/nav&gt;</strong>
+<strong class="markLine">                &lt;/div&gt;</strong>
+<strong class="markLine">          &lt;/div&gt;</strong>
+<strong class="markLine">     &lt;/header&gt;</strong>
+	 @RenderBody()
+	 @Scripts.Render(&quot;~/bundles/jquery&quot;)
+	 @RenderSection(&quot;scripts&quot;, required: false)
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+				</li>
+				<li>
+					<p>Include a div to render the body section of each page. Replace <strong>@RenderBody()</strong> with the following higlighted code:</p>
+
+					<!-- mark:18-23    -->
+
+					<span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)">...
+&lt;body&gt;
+	 &lt;header&gt;
+		  &lt;div class=&quot;content-wrapper&quot;&gt;
+				&lt;div class=&quot;float-left&quot;&gt;
+					 &lt;p class=&quot;site-title&quot;&gt;@Html.ActionLink(&quot;ASP.NET MVC Music Store&quot;, &quot;Index&quot;, &quot;Home&quot;)&lt;/p&gt;
+				&lt;/div&gt;
+				&lt;div class=&quot;float-right&quot;&gt;
+					 &lt;nav&gt;
+						  &lt;ul id=&quot;menu&quot;&gt;
+								&lt;li&gt;@Html.ActionLink(&quot;Home&quot;, &quot;Index&quot;, &quot;Home&quot;)&lt;/li&gt;
+								&lt;li&gt;@Html.ActionLink(&quot;Store&quot;, &quot;Index&quot;, &quot;Store&quot;)&lt;/li&gt;
+						  &lt;/ul&gt;
+					 &lt;/nav&gt;
+				&lt;/div&gt;
+		  &lt;/div&gt;
+	 &lt;/header&gt;
+<strong class="markLine">     &lt;div id=&quot;body&quot;&gt;</strong>
+<strong class="markLine">          @RenderSection(&quot;featured&quot;, required: false)</strong>
+<strong class="markLine">          &lt;section class=&quot;content-wrapper main-content clear-fix&quot;&gt;</strong>
+<strong class="markLine">                @RenderBody()</strong>
+<strong class="markLine">          &lt;/section&gt;</strong>
+<strong class="markLine">     &lt;/div&gt;</strong>
+	 ...
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+					<blockquote>
+						<p><strong>Note:</strong> Did you know? Visual Studio 2012 has snippets that make it easy to add commonly used code in HTML, code files and more! Try it out by typing <strong>&lt;div&gt;</strong> and pressing <strong>TAB</strong> twice to insert a complete <strong>div</strong> tag.</p>
+					</blockquote>
+				</li>
+			</ol>
+
+			<p><a name="Ex4Task2"></a></p>
+
+			<h4 id="Task_2_-_Adding_CSS_Stylesheet">Task 2 - Adding CSS Stylesheet</h4>
+
+			<p>The empty project template includes a very streamlined CSS file which just includes styles used to display basic forms and validation messages. You will use additional CSS and images (potentially provided by a designer) in order to enhance the look and feel of the site.</p>
+
+			<p>In this task, you will add a CSS stylesheet to define the styles of the site.</p>
+
+			<ol>
+				<li>
+					<p>The CSS file and images are included in the <strong>Source\Assets\Content</strong> folder of this Lab. In order to add them to the application, drag their content from a <strong>Windows Explorer</strong> window into the <strong>Solution Explorer</strong> in Visual Studio Express for Web, as shown below:</p>
+
+					<p>
+						<img src="./images/Dragging-style-contents.png?raw=true" alt="Dragging style contents" title="Dragging style contents" />
+					</p>
+
+					<p><em>Dragging style contents</em></p>
+				</li>
+				<li><p>A warning dialog will appear, asking for confirmation to replace <strong>Site.css</strong> file and some existing images. Check <strong>Apply to all items</strong> and click <strong>Yes</strong>.</p></li>
+			</ol>
+
+			<p><a name="Ex4Task3"></a></p>
+
+			<h4 id="Task_3_-_Adding_a_View_Template">Task 3 - Adding a View Template</h4>
+
+			<p>In this task, you will add a View template to generate the HTML response that will use the layout master page and CSS added in this exercise.</p>
+
+			<ol>
+				<li>
+					<p>To use a View template when browsing the site's home page, you will first need to indicate that instead of returning a string, the <strong>HomeController Index</strong> method will return a <strong>View</strong>. Open <strong>HomeController</strong> class and change its <strong>Index</strong> method to return an <strong>ActionResult</strong>, and have it return <strong>View()</strong>.</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex4 HomeController Index</em>)</p>
+
+					<!-- mark:5-9    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> HomeController : Controller
+{
+					<span style="color:#008000">//</span>
+					<span style="color:#008000">// GET: /Home/</span>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">public</span> ActionResult Index()</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View();</strong>
+<strong class="markLine">    }</strong>
+}
+</code></pre>
+				</li>
+				<li>
+					<p>Now, you need to add an appropriate View template. To do this, <strong>right-click</strong> inside the <strong>Index</strong> action method and select <strong>Add View</strong>. This will bring up the <strong>Add View</strong> dialog.</p>
+
+					<p>
+						<img src="./images/Adding-a-View-from-within-the-Index-method.png?raw=true" alt="Adding a View from within the Index method" title="Adding a View from within the Index method" />
+					</p>
+
+					<p><em>Adding a View from within the Index method</em></p>
+				</li>
+				<li>
+					<p>The <strong>Add View</strong> Dialog will appear to generate a View template file. By default, this dialog pre-populates the name of the View template so that it matches the action method that will use it.  Because you used the <strong>Add View</strong> context menu within the <strong>Index</strong> action method within the HomeController, the <strong>Add View</strong> dialog has Index as the default view name. Click <strong>Add</strong>.</p>
+
+					<p>
+						<img src="./images/Add-View-Dialog.png?raw=true" alt="Add View Dialog" title="Add View Dialog" />
+					</p>
+
+					<p><em>Add View Dialog</em></p>
+				</li>
+				<li>
+					<p>Visual Studio generates an <strong>Index.cshtml</strong> view template inside the <strong>Views\Home</strong> folder and then opens it.</p>
+
+					<p>
+						<img src="./images/Add-View-Dialog-solution.png?raw=true" alt="Home Index view created" title="Home Index view created" />
+					</p>
+
+					<p><em>Home Index view created</em></p>
+					<blockquote>
+						<p><strong>Note:</strong> name and location of the <strong>Index.cshtml</strong> file is relevant and follows the default ASP.NET MVC naming conventions.</p>
+
+						<p>The folder \Views\<strong>Home</strong> matches the controller name (<strong>Home</strong>Controller). The View template name (<strong>Index</strong>), matches the controller action method which will be displaying the View.</p>
+
+						<p>This way, ASP.NET MVC avoids having to explicitly specify the name or location of a View template when using this naming convention to return a View.</p>
+					</blockquote>
+				</li>
+				<li>
+					<p>The generated View template is based on the <strong>_layout.cshtml</strong> template earlier defined. Update the ViewBag.Title property to <strong>Home</strong>, and change the main content to <strong>This is the Home Page</strong>, as shown in the code below:</p>
+
+					<!-- mark:1-5    -->
+
+					<span class="codelanguage">HTML</span><pre><code class="HTML"><strong class="markLine">@{</strong>
+<strong class="markLine">    ViewBag.Title = &quot;Home&quot;;</strong>
+<strong class="markLine">}</strong>
+<strong class="markLine"></strong>
+<strong class="markLine"><span style="color:#0000FF">&lt;</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span>This is the Home Page<span style="color:#0000FF">&lt;/</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span></strong>
+</code></pre>
+				</li>
+				<li><p>Select <strong>MvcMusicStore</strong> project in the Solution Explorer and Press <strong>F5</strong> to run the Application.</p></li>
+			</ol>
+
+			<p><a name="Ex4Task4"></a></p>
+
+			<h4 id="Task_4_Verification">Task 4: Verification</h4>
+
+			<p>In order to verify that you have correctly performed all the steps in the previous exercise, proceed as follows:</p>
+
+			<p>With the application opened in a browser, you should note that:</p>
+
+			<ol>
+				<li><p>The HomeController's Index action method found and displayed the <strong>\Views\Home\Index.cshtml</strong> View template, even though the code called <strong>return View()</strong>, because the View template followed the standard naming convention.</p></li>
+				<li><p>The Home Page displays the welcome message defined within the <strong>\Views\Home\Index.cshtml</strong> view template.</p></li>
+				<li>
+					<p>The Home Page is using the <strong>_layout.cshtml</strong> template, and so the welcome message is contained within the standard site HTML layout.</p>
+
+					<p>
+						<img src="./images/Home-Index-View-using-the-layoutPage-and-style-defined.png?raw=true" alt="Home Index View using the defined LayoutPage and style" title="Home Index View using the defined LayoutPage and style" />
+					</p>
+
+					<p><em>Home Index View using the defined LayoutPage and style</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Exercise5"></a></p>
+
+			<h3 id="Exercise_5_Creating_a_View_Model">Exercise 5: Creating a View Model</h3>
+
+			<p>So far, you made your Views display hardcoded HTML, but, in order to create dynamic web applications, the View template should receive information from the Controller. One common technique to be used for that purpose is the <strong>ViewModel</strong> pattern, which allows a Controller to package up all the information needed to generate the appropriate HTML response.</p>
+
+			<p>In this exercise, you will learn how to create a ViewModel class and add the required properties:  the number of genres in the store and a list of those genres. You will also update the StoreController to use the created ViewModel, and finally, you will create a new View template that will display the mentioned properties in the page.</p>
+
+			<p><a name="Ex5Task1"></a></p>
+
+			<h4 id="Task_1_-_Creating_a_ViewModel_Class">Task 1 - Creating a ViewModel Class</h4>
+
+			<p>In this task, you will create a ViewModel class that will implement the Store genre listing scenario.</p>
+
+			<ol>
+				<li><p>If not already open, start <strong>VS Express for Web</strong>.</p></li>
+				<li>
+					<p>In the <strong>File</strong> menu, choose <strong>Open Project</strong>. In the Open Project dialog, browse to <strong>Source\Ex05-CreatingAViewModel\Begin</strong>, select <strong>Begin.sln</strong> and click <strong>Open</strong>. Alternatively, you may continue with the solution that you obtained after completing the previous exercise.</p>
+
+					<ol>
+						<li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+						<li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+						<li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+					</ol>
+					<blockquote>
+						<p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+					</blockquote>
+				</li>
+				<li>
+					<p>Create a <strong>ViewModels</strong> folder to hold the ViewModel. To do this, right-click the top-level <strong>MvcMusicStore</strong> project, select <strong>Add</strong> and then <strong>New Folder</strong>.</p>
+
+					<p>
+						<img src="./images/Adding-a-new-folder.png?raw=true" alt="Adding a new folder" title="Adding a new folder" />
+					</p>
+
+					<p><em>Adding a new folder</em></p>
+				</li>
+				<li>
+					<p>Name the folder <em>ViewModels</em>.</p>
+
+					<p>
+						<img src="./images/ViewModels-folder-in-Solution-Explorer.png?raw=true" alt="ViewModels folder in Solution Explorer" title="ViewModels folder in Solution Explorer" />
+					</p>
+
+					<p><em>ViewModels folder in Solution Explorer</em></p>
+				</li>
+				<li>
+					<p>Create a <strong>ViewModel</strong> class. To do this, right-click on the <strong>ViewModels</strong> folder recently created, select <strong>Add</strong> and then <strong>New Item</strong>. Under <strong>Code</strong>, choose the <strong>Class</strong> item and name the file <em>StoreIndexViewModel.cs</em>, then click <strong>Add</strong>.</p>
+
+					<p>
+						<img src="./images/Adding-a-new-Class.png?raw=true" alt="Adding a new Class" title="Adding a new Class" />
+					</p>
+
+					<p><em>Adding a new Class</em></p>
+
+					<p>
+						<img src="./images/Creating-StoreIndexViewModel-class.png?raw=true" alt="Creating StoreIndexViewModel class" title="Creating StoreIndexViewModel class" />
+					</p>
+
+					<p><em>Creating StoreIndexViewModel class</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Ex5Task2"></a></p>
+
+			<h4 id="Task_2_-_Adding_Properties_to_the_ViewModel_class">Task 2 - Adding Properties to the ViewModel class</h4>
+
+			<p>There are two parameters to be passed from the StoreController to the View template in order to generate the expected HTML response: the number of genres in the store and a list of those genres.</p>
+
+			<p>In this task, you will add those 2 properties to the <strong>StoreIndexViewModel</strong> class: <strong>NumberOfGenres</strong> (an integer) and <strong>Genres</strong> (a list of strings).</p>
+
+			<ol>
+				<li>
+					<p>Add <strong>NumberOfGenres</strong> and <strong>Genres</strong> properties to the <strong>StoreIndexViewModel</strong> class. To do this, add the following 2 lines to the class definition:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex5 StoreIndexViewModel properties</em>)</p>
+
+					<!-- mark:3-5    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreIndexViewModel
+{
+<strong class="markLine">  <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> NumberOfGenres { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">  <span style="color:#0000FF">public</span> List&lt;<span style="color:#0000FF">string</span>&gt; Genres { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+}
+</code></pre>
+					<blockquote>
+						<p><strong>Note</strong>: The <strong>{ get; set; }</strong> notation makes use of C#'s auto-implemented properties feature. It provides the benefits of a property without requiring us to declare a backing field.</p>
+					</blockquote>
+				</li>
+			</ol>
+
+			<p><a name="Ex5Task3"></a></p>
+
+			<h4 id="Task_3_-_Updating_StoreController_to_use_the_StoreIndexViewModel">Task 3 - Updating StoreController to use the StoreIndexViewModel</h4>
+
+			<p>The <strong>StoreIndexViewModel</strong> class encapsulates the information needed to pass from <strong>StoreController</strong>'s <strong>Index</strong> method to a View template in order to generate a response.</p>
+
+			<p>In this task, you will update the <strong>StoreController</strong> to use the <strong>StoreIndexViewModel</strong>.</p>
+
+			<ol>
+				<li>
+					<p>Open <strong>StoreController</strong> class. </p>
+
+					<p>
+						<img src="./images/Opening-StoreController-class.png?raw=true" alt="Opening StoreController class" title="Opening StoreController class" />
+					</p>
+
+					<p><em>Opening StoreController class</em></p>
+				</li>
+				<li>
+					<p>In order to use the <strong>StoreIndexViewModel</strong> class from the <strong>StoreController</strong>, add the following namespace at the top of the <strong>StoreController</strong> code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex5 StoreIndexViewModel using ViewModels</em>)</p>
+
+					<!-- mark:1    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.ViewModels;</strong>
+</code></pre>
+				</li>
+				<li>
+					<p>Change the <strong>StoreController</strong>'s <strong>Index</strong> action method so that it creates and populates a <strong>StoreIndexViewModel</strong> object and then passes it off to a View template to generate an HTML response with it.</p>
+					<blockquote>
+						<p><strong>Note:</strong> In Lab &quot;ASP.NET MVC Models and Data Access&quot; you will write code that retrieves the list of store genres from a database.  In the following code, you will create a <strong>List</strong> of dummy data genres that will populate the <strong>StoreIndexViewModel</strong>.</p>
+
+						<p>After creating and setting up the <strong>StoreIndexViewModel</strong> object, it will be passed as an argument to the <strong>View</strong> method. This indicates that the View template will use that object to generate an HTML response with it.</p>
+					</blockquote>
+				</li>
+				<li>
+					<p>Replace the <strong>Index</strong> method with the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex5 StoreController Index method</em>)</p>
+
+					<!-- mark:1-13    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#0000FF">public</span> ActionResult Index()</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">    <span style="color:#008000">// Create a list of genres</span></strong>
+<strong class="markLine">    <span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">new</span> List&lt;<span style="color:#0000FF">string</span>&gt; {<span style="color:#8B0000">&quot;Rock&quot;</span>, <span style="color:#8B0000">&quot;Jazz&quot;</span>, <span style="color:#8B0000">&quot;Country&quot;</span>, <span style="color:#8B0000">&quot;Pop&quot;</span>, <span style="color:#8B0000">&quot;Disco&quot;</span>};</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#008000">// Create our view model</span></strong>
+<strong class="markLine">    <span style="color:#0000FF">var</span> viewModel = <span style="color:#0000FF">new</span> StoreIndexViewModel { </strong>
+<strong class="markLine">        NumberOfGenres = genres.Count(),</strong>
+<strong class="markLine">        Genres = genres</strong>
+<strong class="markLine">    };</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(viewModel);</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+					<blockquote>
+						<p><strong>Note:</strong> If you're unfamiliar with C#, you may assume that using <strong>var</strong> means that the <strong>viewModel</strong> variable is late-bound. That's not correct - the C# compiler is using type-inference based on what you assign to the variable to determine that <strong>viewModel</strong> is of type <strong>StoreIndexViewModel</strong>. Also, by compiling the local <strong>viewModel</strong> variable as a <strong>StoreIndexViewModel</strong> type you get compile-time checking and Visual Studio code-editor support.</p>
+					</blockquote>
+				</li>
+			</ol>
+
+			<p><a name="Ex5Task4"></a></p>
+
+			<h4 id="Task_4_-_Creating_a_View_Template_that_Uses_StoreIndexViewModel">Task 4 - Creating a View Template that Uses StoreIndexViewModel</h4>
+
+			<p>In this task, you will create a View template that will use a StoreIndexViewModel object passed from the Controller to display a list of genres.</p>
+
+			<ol>
+				<li>
+					<p>Before creating the new View template, let's build the project so that the <strong>Add View Dialog</strong> knows about the <strong>StoreIndexViewModel</strong> class. Build the project by selecting the <strong>Build</strong> menu item and then <strong>Build MvcMusicStore</strong>.</p>
+
+					<p>
+						<img src="./images/Building-the-project.png?raw=true" alt="Building the project" title="Building the project" />
+					</p>
+
+					<p><em>Building the project</em></p>
+				</li>
+				<li>
+					<p>Create a new View template. To do that, right-click inside the <strong>Index</strong> method and select <strong>Add View</strong>.</p>
+
+					<p>
+						<img src="./images/Adding-a-View.png?raw=true" alt="Adding a View" title="Adding a View" />
+					</p>
+
+					<p><em>Adding a View</em></p>
+				</li>
+				<li>
+					<p>Because the <strong>Add View Dialog</strong> was invoked from the <strong>StoreController</strong>, it will add the View template by default in a <strong>\Views\Store\Index.cshtml</strong> file. Check the <strong>Create a strongly-typed-view</strong> checkbox and then select <strong>StoreIndexViewModel</strong> as the <strong>Model class</strong>. Also, make sure that the View engine selected is <strong>Razor</strong>. Click <strong>Add</strong>.</p>
+
+					<p>
+						<img src="./images/Add-View-Dialog-2.png?raw=true" alt="Add View Dialog" title="Add View Dialog" />
+					</p>
+
+					<p><em>Add View Dialog</em></p>
+
+					<p>The <strong>\Views\Store\Index.cshtml</strong> View template file is created and opened. Based on the information provided to the <strong>Add View</strong> dialog in the last step, the View template will expect a <strong>StoreIndexViewModel</strong> instance as the data to use to generate an HTML response. You will notice that the template inherits a <strong>ViewPage<musicstore.viewmodels.storeindexviewmodel></musicstore.viewmodels.storeindexviewmodel></strong> in C#.</p>
+				</li>
+			</ol>
+
+			<p><a name="Ex5Task5"></a></p>
+
+			<h4 id="Task_5_-_Updating_the_View_Template">Task 5 - Updating the View Template</h4>
+
+			<p>In this task, you will update the View template created in the last task to retrieve the number of genres and their names within the page.</p>
+			<blockquote>
+				<p><strong>Note:</strong> You will use @ syntax (often referred to as &quot;code nuggets&quot;) to execute code within the View template.</p>
+			</blockquote>
+			<ol>
+				<li>
+					<p>In the <strong>Index.cshtml</strong> file, within the <strong>Store</strong> folder, replace its code with the following:</p>
+
+					<!-- mark:1-9    -->
+
+					<span class="codelanguage">HTML</span><pre><code class="HTML"><strong class="markLine">@model MvcMusicStore.ViewModels.StoreIndexViewModel</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">@{</strong>
+<strong class="markLine">    ViewBag.Title = &quot;Browse Genres&quot;;</strong>
+<strong class="markLine">}</strong>
+<strong class="markLine"></strong>
+<strong class="markLine"><span style="color:#0000FF">&lt;</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span>Browse Genres<span style="color:#0000FF">&lt;/</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine"><span style="color:#0000FF">&lt;</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span>Select from @Model.NumberOfGenres genres<span style="color:#0000FF">&lt;/</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span></strong>
+</code></pre>
+					<blockquote>
+						<p><strong>Note:</strong> As soon as you finish typing the period after the word <strong>Model</strong>, Visual Studio's Intellisense will show a list of possible properties and methods to choose from.</p>
+
+						<p>
+							<img src="./images/Intelisense.png?raw=true" alt="" />
+						</p>
+
+						<p><em>Getting Model properties and methods with Visual Studio's IntelliSense</em></p>
+
+						<p>The <strong>Model</strong> property references the <strong>StoreIndexViewModel</strong> object that the Controller passed to the View template.  This means that you can access all of the data passed from the Controller to the View template via the <strong>Model</strong> property, and format it into an appropriate HTML response within the View template.</p>
+
+						<p>You can just select the <strong>NumberOfGenres</strong> property from the Intellisense list rather than typing it in and then it will auto-complete it by pressing the <strong>tab key</strong>.</p>
+					</blockquote>
+				</li>
+				<li>
+					<p>Loop over the genre list in <strong>StoreIndexViewModel</strong> and create an HTML <strong>&lt;ul&gt;</strong> list using a <strong>foreach</strong> loop.</p>
+
+					<!-- mark:11-18    -->
+
+					<span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)">@model MvcMusicStore.ViewModels.StoreIndexViewModel
+@{
+	ViewBag.Title = &quot;Browse Genres&quot;;
+}
+&lt;h2&gt;Browse Genres&lt;/h2&gt;
+&lt;p&gt;Select from @Model.NumberOfGenres genres&lt;/p&gt;
+<strong class="markLine">&lt;ul&gt;</strong>
+<strong class="markLine">@foreach (string genreName in Model.Genres)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">    &lt;li&gt;</strong>
+<strong class="markLine">        @genreName</strong>
+<strong class="markLine">    &lt;/li&gt;</strong>
+<strong class="markLine">}</strong>
+<strong class="markLine">&lt;/ul&gt;</strong>
+</code></pre>
+				</li>
+				<li>
+					<p>Press <strong>F5</strong> to run the Application and browse <strong>/Store</strong>. You will see the list of genres passed in the <strong>StoreIndexViewModel</strong> object from the <strong>StoreController</strong> to the View template.</p>
+
+					<p>
+						<img src="./images/View-displaying-a-list-of-genres.png?raw=true" alt="View displaying a list of genres" title="View displaying a list of genres" />
+					</p>
+
+					<p><em>View displaying a list of genres</em></p>
+				</li>
+				<li><p>Close the browser.</p></li>
+			</ol>
+
+			<p><a name="Exercise6"></a></p>
+
+			<h3 id="Exercise_6_Using_Parameters_in_View">Exercise 6: Using Parameters in View</h3>
+
+			<p>In Exercise 3 you learned how to pass parameters to the Controller. In this exercise, you will learn how to use those parameters in the View template. For that purpose, you will be introduced first to Model classes that will help you to manage your data and domain logic. Additionally, you will learn how to create links to pages inside the ASP.NET MVC application without worrying of things like URL paths encoding.</p>
+
+			<p><a name="Ex6Task1"></a></p>
+
+			<h4 id="Task_1_-_Adding_Model_Classes">Task 1 - Adding Model Classes</h4>
+
+			<p>Unlike ViewModels, which are created just to pass information from the Controller to the View, Model classes are built to contain and manage data and domain logic. In this task you will add two model classes to represent these concepts: <strong>Genre</strong> and <strong>Album</strong>.</p>
+
+			<ol>
+				<li><p>If not already open, start <strong>VS Express for Web</strong></p></li>
+				<li>
+					<p>In the <strong>File</strong> menu, choose <strong>Open Project</strong>. In the Open Project dialog, browse to <strong>Source\Ex06-UsingParametersInView\Begin</strong>, select <strong>Begin.sln</strong> and click <strong>Open</strong>. Alternatively, you may continue with the solution that you obtained after completing the previous exercise.</p>
+
+					<ol>
+						<li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+						<li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+						<li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+					</ol>
+					<blockquote>
+						<p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+					</blockquote>
+				</li>
+				<li>
+					<p>Add a <strong>Genre</strong> Model class. To do this, right-click the <strong>Models</strong> folder in the <strong>Solution Explorer</strong>, select <strong>Add</strong> and then the <strong>New Item</strong> option. Under <strong>Code</strong>, choose the <strong>Class</strong> item and name the file <em>Genre.cs</em>, then click <strong>Add</strong>.</p>
+
+					<p>
+						<img src="./images/Adding-a-class.png?raw=true" alt="Adding a class" title="Adding a class" />
+					</p>
+
+					<p><em>Adding a new item</em></p>
+
+					<p>
+						<img src="./images/Add-Genre-Model-Class.png?raw=true" alt="Add Genre Model Class" title="Add Genre Model Class" />
+					</p>
+
+					<p><em>Add Genre Model Class</em></p>
+				</li>
+				<li>
+					<p>Add a <strong>Name</strong> property to the Genre class. To do this, add the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex6 Genre</em>)</p>
+
+					<!-- mark:10    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<span style="color:#0000FF">namespace</span> MvcMusicStore.Models
+{
+					<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Genre
+	{
+<strong class="markLine">        <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Name { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+	}
+}
+</code></pre>
+				</li>
+				<li><p>Following the same procedure as before, add an <strong>Album</strong> class. To do this, right-click the <strong>Models</strong> folder in the <strong>Solution Explorer</strong>, select <strong>Add</strong> and then the <strong>New Item</strong> option. Under <strong>Code</strong>, choose the <strong>Class</strong> item and name the file <em>Album.cs</em>, then click <strong>Add</strong>.</p></li>
+				<li>
+					<p>Add two properties to the Album class: <strong>Genre</strong> and <strong>Title</strong>. To do this, add the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex6 Album</em>)</p>
+
+					<!-- mark:10-12    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<span style="color:#0000FF">namespace</span> MvcMusicStore.Models
+{
+					<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Album
+	{
+<strong class="markLine">        <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Title { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">public</span> Genre Genre { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+	}
+}
+</code></pre>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task2"></a></p>
+
+			<h4 id="Task_2_-_Adding_a_StoreBrowseViewModel">Task 2 - Adding a StoreBrowseViewModel</h4>
+
+			<p>A <strong>StoreBrowseViewModel</strong> will be used in this task to show the Albums that match a selected Genre.  In this task, you will create this class and then add two properties to handle the <strong>Genre</strong> and its <strong>Album</strong>'s List.</p>
+
+			<ol>
+				<li><p>Add a <strong>StoreBrowseViewModel</strong> class. To do this, right-click the <strong>ViewModels</strong> folder in the <strong>Solution Explorer</strong>, select <strong>Add</strong> and then the <strong>New Item</strong> option. Under <strong>Code</strong>, choose the <strong>Class</strong> item and name the file <em>StoreBrowseViewModel.cs</em>, then click <strong>Add</strong>.</p></li>
+				<li>
+					<p>Add a reference to the Models in <strong>StoreBrowseViewModel</strong> class. To do this, add the following using namespace:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex6 UsingModel</em>)</p>
+
+					<!-- mark:5    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Models;</strong>
+<span style="color:#0000FF">namespace</span> MvcMusicStore.ViewModels
+{
+					<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreBrowseViewModel
+	{
+	}
+}
+</code></pre>
+				</li>
+				<li>
+					<p>Add two properties to <strong>StoreBrowseViewModel</strong> class:  <strong>Genre</strong> and <strong>Albums</strong>. To do this, add the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex6 ModelProperties</em>)</p>
+
+					<!-- mark:11-13    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<span style="color:#0000FF">using</span> MvcMusicStore.Models;
+<span style="color:#0000FF">namespace</span> MvcMusicStore.ViewModels
+{
+					<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreBrowseViewModel
+	{
+<strong class="markLine">        <span style="color:#0000FF">public</span> Genre Genre { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">public</span> List&lt;Album&gt; Albums { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+	}
+}
+</code></pre>
+					<blockquote>
+						<p><strong>Note:</strong> What is <strong>List&lt;Album&gt;</strong> ?: This definition is using the <strong>List&lt;T&gt;</strong> type, where <strong>T</strong> constrains the type to which elements of this <strong>List</strong> belong to, in this case <strong>Album</strong> (or any of its descendants).</p>
+
+						<p>This ability to design classes and methods that defer the specification of one or more types until the class or method is declared and instantiated by client code is a feature of the C# language called <strong>Generics</strong>.</p>
+
+						<p><strong>List&lt;T&gt;</strong> is the generic equivalent of the <strong>ArrayList</strong> type and is available in the <strong>System.Collections.Generic</strong> namespace. One of the benefits of using <strong>generics</strong> is that since the type is specified, you do not need to take care of type checking operations such as casting the elements into <strong>Album</strong> as you would do with an <strong>ArrayList</strong>.</p>
+					</blockquote>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task3"></a></p>
+
+			<h4 id="Task_3_-_Using_the_New_ViewModel_in_the_StoreController">Task 3 - Using the New ViewModel in the StoreController</h4>
+
+			<p>In this task, you will modify the <strong>StoreController</strong>'s <strong>Browse</strong> and <strong>Details</strong> action methods to use the new <strong>StoreBrowseViewModel</strong>.</p>
+
+			<ol>
+				<li>
+					<p>Add a reference to the Models folder in <strong>StoreController</strong> class. To do this, expand the <strong>Controllers</strong> folder in the <strong>Solution Explorer</strong> and open the <strong>StoreController</strong> class. Then add the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex6 UsingModelInController</em>)</p>
+
+					<!-- mark:7    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<span style="color:#0000FF">using</span> System.Web.Mvc;
+<span style="color:#0000FF">using</span> MvcMusicStore.ViewModels;
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Models;</strong>
+</code></pre>
+				</li>
+				<li>
+					<p>Replace the <strong>Browse</strong> action method to use the <strong>StoreViewBrowseController</strong> class. You will create a Genre and two new Albums objects with dummy data (in the next Hands-on Lab you will consume real data from a database). To do this, replace the <strong>Browse</strong> method with the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex6 BrowseMethod</em>)</p>
+
+					<!-- mark:1-24    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#008000">//</span></strong>
+<strong class="markLine"><span style="color:#008000">// GET: /Store/Browse?genre=Disco</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine"><span style="color:#0000FF">public</span> ActionResult Browse(<span style="color:#0000FF">string</span> genre)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">    <span style="color:#0000FF">var</span> genreModel = <span style="color:#0000FF">new</span> Genre()</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        Name = genre</strong>
+<strong class="markLine">    };</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">var</span> albums = <span style="color:#0000FF">new</span> List&lt;Album&gt;()</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        <span style="color:#0000FF">new</span> Album() { Title = genre + <span style="color:#8B0000">&quot; Album 1&quot;</span> },</strong>
+<strong class="markLine">        <span style="color:#0000FF">new</span> Album() { Title = genre + <span style="color:#8B0000">&quot; Album 2&quot;</span> }</strong>
+<strong class="markLine">    };</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">var</span> viewModel = <span style="color:#0000FF">new</span> StoreBrowseViewModel()</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        Genre = genreModel,</strong>
+<strong class="markLine">        Albums = albums</strong>
+<strong class="markLine">    };</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(viewModel);</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+				</li>
+				<li>
+					<p>Replace the <strong>Details</strong> action method to use the <strong>StoreViewBrowseController</strong> class. You will create a new <strong>Album</strong> object to be returned to the <strong>View</strong>. To do this, replace the <strong>Details</strong> method with the following code:</p>
+
+					<p>(Code Snippet - <em>ASP.NET MVC 4 Fundamentals - Ex6 DetailsMethod</em>)</p>
+
+					<!-- mark:1-9    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#008000">//</span></strong>
+<strong class="markLine"><span style="color:#008000">// GET: /Store/Details/5</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine"><span style="color:#0000FF">public</span> ActionResult Details(<span style="color:#0000FF">int</span> id)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">  <span style="color:#0000FF">var</span> album = <span style="color:#0000FF">new</span> Album { Title = <span style="color:#8B0000">&quot;Sample Album&quot;</span> };</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">  <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(album);</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task4"></a></p>
+
+			<h4 id="Task_4_-_Adding_a_Browse_View_Template">Task 4 - Adding a Browse View Template</h4>
+
+			<p>In this task, you will add a <strong>Browse</strong> View to show the Albums found for a specific Genre.</p>
+
+			<ol>
+				<li><p>Before creating the new View template, you should build the project so that the <strong>Add View</strong> Dialog knows about the <strong>ViewModel</strong> class to use. Build the project by selecting the <strong>Build</strong> menu item and then <strong>Build MvcMusicStore</strong>.</p></li>
+				<li><p>Add a <strong>Browse</strong> View. To do this, right-click in the <strong>Browse</strong> action method of the <strong>StoreController</strong> and click <strong>Add View</strong>.</p></li>
+				<li>
+					<p>In the <strong>Add View</strong> dialog box, verify that the View Name is <strong>Browse</strong>. Check the <strong>Create a strongly-typed view</strong> checkbox and select <strong>StoreBrowseViewModel</strong> from the <strong>Model class</strong> dropdown. Leave the other fields with their default value. Then click <strong>Add</strong>.</p>
+
+					<p>
+						<img src="./images/Adding-a-Browse-View.png?raw=true" alt="Adding a Browse View" title="Adding a Browse View" />
+					</p>
+
+					<p><em>Adding a Browse View</em></p>
+				</li>
+				<li>
+					<p>Modify the <strong>Browse.cshtml</strong> to display the Genre's information, accessing the <strong>StoreBrowseViewModel</strong> object that is passed to the view template. To do this, replace the content with the following:</p>
+
+					<!-- mark:1-14    -->
+
+					<span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)"><strong class="markLine">@model MvcMusicStore.ViewModels.StoreBrowseViewModel</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">@{</strong>
+<strong class="markLine">    ViewBag.Title = &quot;Browse Albums&quot;;</strong>
+<strong class="markLine">}</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">&lt;h2&gt;Browsing Genre: @Model.Genre.Name&lt;/h2&gt;</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">&lt;ul&gt;</strong>
+<strong class="markLine">    @foreach (var album in Model.Albums)</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        &lt;li&gt;@album.Title&lt;/li&gt;</strong>
+<strong class="markLine">    }</strong>
+<strong class="markLine">&lt;/ul&gt;</strong>
+</code></pre>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task5"></a></p>
+
+			<h4 id="Task_5_-_Running_the_Application">Task 5 - Running the Application</h4>
+
+			<p>In this task, you will test that the <strong>Browse</strong> method retrieves Albums from the <strong>Browse</strong> method action.</p>
+
+			<ol>
+				<li><p>Press <strong>F5</strong> to run the Application.</p></li>
+				<li>
+					<p>The project starts in the Home page. Change the URL to <strong>/Store/Browse?Genre=Disco</strong> to verify that the action returns two Albums.</p>
+
+					<p>
+						<img src="./images/Browsing-Store-Disco-Albums.png?raw=true" alt="Browsing Store Disco Albums" title="Browsing Store Disco Albums" />
+					</p>
+
+					<p><em>Browsing Store Disco Albums</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task6"></a></p>
+
+			<h4 id="Task_6_-_Displaying_information_About_a_Specific_Album">Task 6 - Displaying information About a Specific Album</h4>
+
+			<p>In this task, you will implement the <strong>Store/Details</strong> view to display information about a specific album. In this Hands-on Lab, everything you will display about the album is already contained in the <strong>View</strong> template. So, instead of creating a <strong>StoreDetailsViewModel</strong> class, you will use the current <strong>StoreBrowseViewModel</strong> template passing the Album to it.</p>
+
+			<ol>
+				<li><p>Close the browser if needed, to return to the Visual Studio window. Add a new <strong>Details</strong> view for the <strong>StoreController</strong>'s <strong>Details</strong> action method. To do this, right-click the <strong>Details</strong> method in the <strong>StoreController</strong> class and click <strong>Add View</strong>.</p></li>
+				<li>
+					<p>In the <strong>Add View</strong> dialog, verify that the <strong>View Name</strong> is <strong>Details</strong>. Check the <strong>Create a strongly-typed view</strong> checkbox and select <strong>Album</strong> from the <strong>Model class</strong> drop-down. Leave the other fields with their default value. Then click <strong>Add</strong>. This will create and open a <strong>\Views\Store\Details.cshtml</strong> file.</p>
+
+					<p>
+						<img src="./images/Adding-a-Details-View.png?raw=true" alt="Adding a Details View" title="Adding a Details View" />
+					</p>
+
+					<p><em>Adding a Details View</em></p>
+				</li>
+				<li>
+					<p>Modify the <strong>Details.cshtml</strong> file to display the Album's information, accessing the <strong>Album</strong> object that is passed to the view template.  To do this, replace the content with the following:</p>
+
+					<!-- mark:1-7    -->
+
+					<span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)"><strong class="markLine">@model MvcMusicStore.Models.Album</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">@{</strong>
+<strong class="markLine">    ViewBag.Title = &quot;Details&quot;;</strong>
+<strong class="markLine">}</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">&lt;h2&gt;Album: @Model.Title&lt;/h2&gt;</strong>
+</code></pre>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task7"></a></p>
+
+			<h4 id="Task_7_-_Running_the_Application">Task 7 - Running the Application</h4>
+
+			<p>In this task, you will test that the <strong>Details</strong> View retrieves Album's information from the <strong>Details action</strong> method.</p>
+
+			<ol>
+				<li><p>Press <strong>F5</strong> to run the Application.</p></li>
+				<li>
+					<p>The project starts in the <strong>Home</strong> page. Change the URL to <strong>/Store/Details/5</strong> to verify the album's information.</p>
+
+					<p>
+						<img src="./images/Browsing-Albums-Detail.png?raw=true" alt="Browsing Albums Detail" title="Browsing Albums Detail" />
+					</p>
+
+					<p><em>Browsing Album's Detail</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task8"></a></p>
+
+			<h4 id="Task_8_-_Adding_Links_Between_Pages">Task 8 - Adding Links Between Pages</h4>
+
+			<p>In this task, you will add a link in the Store View to have a link in every Genre name to the appropriate <strong>/Store/Browse</strong> URL. This way, when you click on a Genre, for instance <strong>Disco</strong>, it will navigate to <strong>/Store/Browse?genre=Disco</strong> URL.</p>
+
+			<ol>
+				<li><p>Close the browser if needed, to return to the Visual Studio window. Update the <strong>Index</strong> page to add a link to the <strong>Browse</strong> page. To do this, in the <strong>Solution Explorer</strong> expand the <strong>Views</strong> folder, then the <strong>Store</strong> folder and double-click the <strong>Index.cshtml</strong> page.</p></li>
+				<li>
+					<p>Add a link to the Browse view indicating the genre selected. To do this, replace the following highlighted code within the <strong>&lt;li&gt;</strong> tags:  </p>
+
+					<!-- mark:14    -->
+
+					<span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)">@model MvcMusicStore.ViewModels.StoreIndexViewModel
+@{
+	ViewBag.Title = &quot;Browse Genres&quot;;
+}
+&lt;h2&gt;Browse Genres&lt;/h2&gt;
+&lt;p&gt; Select from @Model.NumberOfGenres genres&lt;/p&gt;
+&lt;ul&gt;
+	@foreach (string genreName in Model.Genres) {
+		&lt;li&gt;
+<strong class="markLine">            @Html.ActionLink(genreName, &quot;Browse&quot;, new { genre = genreName }, null)</strong>
+		&lt;/li&gt;
+		}
+&lt;/ul&gt;
+</code></pre>
+					<blockquote>
+						<p><strong>Note</strong>: another approach would be linking directly to the page, with a code like the following:</p>
+
+						<p>&lt;a href=&quot;/Store/Browse?genre=@genreName&quot;&gt;@genreName&lt;/a&gt;</p>
+
+						<p>Although this approach works, it depends on a hardcoded string. If you later rename the Controller, you will have to change this instruction manually. A better alternative is to use an <strong>HTML Helper</strong> method. ASP.NET MVC includes an HTML Helper method which is available for such tasks. The <strong>Html.ActionLink()</strong> helper method makes it easy to build HTML <strong>&lt;a&gt;</strong> links, making sure URL paths are properly URL encoded.</p>
+
+						<p>Htlm.ActionLink has several overloads. In this exercise you will use one that takes three parameters:</p>
+
+						<ol>
+							<li><p>Link text, which will display the Genre name</p></li>
+							<li><p>Controller action name (<strong>Browse</strong>)</p></li>
+							<li><p>Route parameter values, specifying both the name (<strong>Genre</strong>) and the value (<strong>Genre name</strong>)</p></li>
+						</ol>
+					</blockquote>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task9"></a></p>
+
+			<h4 id="Task_9_-_Running_the_Application">Task 9 - Running the Application</h4>
+
+			<p>In this task, you will test that each Genre is displayed with a link to the appropriate <strong>/Store/Browse</strong> URL.</p>
+
+			<ol>
+				<li><p>Press <strong>F5</strong> to run the Application.</p></li>
+				<li>
+					<p>The project starts in the Home page. Change the URL to <strong>/Store</strong> to verify that each Genre links to the appropriate <strong>/Store/Browse</strong> URL.</p>
+
+					<p>
+						<img src="./images/Browsing-genres-with-links-to-Browse-page.png?raw=true" alt="Browsing Genres with links to Browse page" title="Browsing Genres with links to Browse page" />
+					</p>
+
+					<p><em>Browsing Genres with links to Browse page</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task10"></a></p>
+
+			<h4 id="Task_10_-_Using_Dynamic_ViewModel_Collection_to_Pass_Values">Task 10 - Using Dynamic ViewModel Collection to Pass Values</h4>
+
+			<p>In this task, you will learn a simple and powerful method to pass values between the Controller and the View without making any changes in the Model. ASP.NET MVC 4 provides the collection &quot;ViewModel&quot;, which can be assigned to any dynamic value and accessed inside controllers and views as well.</p>
+
+			<p>You will now use the ViewBag dynamic collection to pass a list of &quot;<strong>Starred genres</strong>&quot; from the controller to the view. The Store Index view will access to <strong>ViewModel</strong> and display the information.</p>
+
+			<ol>
+				<li>
+					<p>Close the browser if needed, to return to the Visual Studio window. Open <strong>StoreController.cs</strong> and modify <strong>Index</strong> method to create a list of starred genres into ViewModel collection :</p>
+
+					<!-- mark:13    -->
+
+					<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> ActionResult Index()
+{
+					<span style="color:#008000">// Create list of genres</span>
+					<span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">new</span> List&lt;<span style="color:#0000FF">string</span>&gt; { <span style="color:#8B0000">&quot;Rock&quot;</span>, <span style="color:#8B0000">&quot;Jazz&quot;</span>, <span style="color:#8B0000">&quot;Country&quot;</span>, <span style="color:#8B0000">&quot;Pop&quot;</span>, <span style="color:#8B0000">&quot;Disco&quot;</span> };
+					<span style="color:#008000">// Create your view model</span>
+					<span style="color:#0000FF">var</span> viewModel = <span style="color:#0000FF">new</span> StoreIndexViewModel
+	{
+		NumberOfGenres = genres.Count,
+		Genres = genres
+	};
+<strong class="markLine">    ViewBag.Starred = <span style="color:#0000FF">new</span> List&lt;<span style="color:#0000FF">string</span>&gt; { <span style="color:#8B0000">&quot;Rock&quot;</span>, <span style="color:#8B0000">&quot;Jazz&quot;</span> };</strong>
+					<span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(viewModel);
+}
+</code></pre>
+					<blockquote>
+						<p><strong>Note:</strong> You could also use the syntax <strong>ViewBag[&quot;Starred&quot;]</strong> to access the properties. </p>
+					</blockquote>
+				</li>
+				<li>
+					<p>The star icon <strong>&quot;starred.png&quot;</strong> is included in the <strong>Source\Assets\Images</strong> folder of this lab. In order to add it to the application, drag their content from a <strong>Windows Explorer</strong> window into the <strong>Solution Explorer</strong> in Visual Web Developer Express, as shown below:</p>
+
+					<p>
+						<img src="./images/Adding-star-image-to-the-solution.png?raw=true" alt="Adding star image to the solution" title="Adding star image to the solution" />
+					</p>
+
+					<p><em>Adding star image to the solution</em></p>
+				</li>
+				<li>
+					<p>Open the view <strong>Store/Index.cshtml</strong> and modify the content. You will read the &quot;starred&quot; property in the <strong>ViewBag</strong> collection, and ask if the current genre name is in the list. In that case you will show a star icon right to the genre link.</p>
+
+					<!-- mark:17-20,24-25    -->
+
+					<span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)">@model MvcMusicStore.ViewModels.StoreIndexViewModel
+@{
+	 ViewBag.Title = &quot;Browse Genres&quot;;
+}
+&lt;h2&gt;Browse Genres&lt;/h2&gt;
+&lt;p&gt;Select from @Model.NumberOfGenres genres&lt;/p&gt;
+&lt;ul&gt;
+	 @foreach (string genreName in Model.Genres)
+	 {
+		  &lt;li&gt;
+				@Html.ActionLink(genreName, &quot;Browse&quot;, new { genre = genreName }, null)
+<strong class="markLine">                @if (ViewBag.Starred.Contains(genreName))</strong>
+<strong class="markLine">                { </strong>
+<strong class="markLine">                     &lt;img src=&quot;../../Content/Images/starred.png&quot; alt=&quot;Starred element&quot; /&gt;</strong>
+<strong class="markLine">                }</strong>
+		  &lt;/li&gt;
+	 }
+&lt;/ul&gt;
+<strong class="markLine">&lt;br /&gt;</strong>
+<strong class="markLine">&lt;h5&gt;&lt;img src=&quot;../../Content/Images/starred.png&quot; alt=&quot;Starred element&quot; /&gt;Starred genres 20% Off!&lt;/h5&gt;</strong>
+</code></pre>
+				</li>
+			</ol>
+
+			<p><a name="Ex6Task11"></a></p>
+
+			<h4 id="Task_11_-_Running_the_Application">Task 11 - Running the Application</h4>
+
+			<p>In this task, you will test that the starred genres display a star icon.</p>
+
+			<ol>
+				<li><p>Press <strong>F5</strong> to run the Application.</p></li>
+				<li>
+					<p>The project starts in the <strong>Home</strong> page. Change the URL to <strong>/Store</strong> to verify that each featured genre has the respecting label:</p>
+
+					<p>
+						<img src="./images/Browsing-Genres-with-starred-elements.png?raw=true" alt="Browsing Genres with starred elements" title="Browsing Genres with starred elements" />
+					</p>
+
+					<p><em>Browsing Genres with starred elements</em></p>
+				</li>
+			</ol>
+
+			<p><a name="Exercise7"></a></p>
+
+			<h3 id="Exercise_7_A_lap_around_ASPNET_MVC_4_new_template">Exercise 7: A lap around ASP.NET MVC 4 new template</h3>
+
+			<p>In this exercise, you will explore the enhancements in the ASP.NET MVC 4 project templates, taking a look at the most relevant features of the new template.</p>
+
+			<p><a name="Ex7Task1"></a></p>
+
+			<h4 id="Task_1_Exploring_the_ASPNET_MVC_4_Internet_Application_Template">Task 1: Exploring the ASP.NET MVC 4 Internet Application Template</h4>
+
+			<ol>
+				<li><p>If not already open, start <strong>VS Express for Web</strong></p></li>
+				<li>
+					<p>Select the <strong>File | New | Project</strong> menu command. In the <strong>New Project</strong> dialog, select the <strong>Visual C#|Web</strong> template on the left pane tree, and choose the <strong>ASP.NET MVC 4 Web Application</strong>. <strong>Name</strong> the project <em>MusicStore</em> and update the <strong>solution name</strong> to <em>Begin</em>, then select a location (or leave the default) and click <strong>OK</strong>. </p>
+
+					<p>
+						<img src="images/creating-a-new-mvc4-project.png?raw=true" alt="Creating a new ASP.NET MVC 4 Project" title="Creating a new ASP.NET MVC 4 Project" />
+					</p>
+
+					<p><em>Creating a new ASP.NET MVC 4 Project</em></p>
+				</li>
+				<li>
+					<p>In the <strong>New ASP.NET MVC 4 Project</strong> dialog, select the <strong>Internet Application</strong> project template and click <strong>OK</strong>. Notice you can select either Razor or ASPX as the view engine.</p>
+
+					<p>
+						<img src="images/creating-a-new-mvc4-internet-application.png?raw=true" alt="Creating a new ASP.NET MVC 4 Internet Application" title="Creating a new ASP.NET MVC 4 Internet Application" />
+					</p>
+
+					<p><em>Creating a new ASP.NET MVC 4 Internet Application</em></p>
+					<blockquote>
+						<p><strong>Note</strong>: Razor syntax has been introduced in ASP.NET MVC 3. Its goal is to minimize the number of characters and keystrokes required in a file, enabling a fast and fluid coding workflow. Razor leverages existing C#/VB (or other) language skills and delivers a template markup syntax that enables an awesome HTML construction workflow.</p>
+					</blockquote>
+				</li>
+				<li>
+					<p>Press <strong>F5</strong> to run the solution and see the renewed template. You can check out the following features:</p>
+
+					<ol>
+						<li>
+							<p><strong>Modern-style templates</strong></p>
+
+							<p>The templates have been renewed, providing more modern-looking styles.</p>
+
+							<p>
+								<img src="images/mvc4-restyled-templates.png?raw=true" alt="ASP.NET MVC 4 restyled templates" title="ASP.NET MVC 4 restyled templates" />
+							</p>
+
+							<p><em>ASP.NET MVC 4 restyled templates</em></p>
+						</li>
+						<li>
+							<p><strong>Adaptive Rendering</strong></p>
+
+							<p>Check out resizing the browser window and notice how the page layout dynamically adapts to the new window size. These templates use the adaptive rendering technique to render properly in both desktop and mobile platforms without any customization. </p>
+
+							<p>
+								<img src="images/mvc-4-project-template-in-different-browser-s.png?raw=true" alt="ASP.NET MVC 4 project template in different browser sizes" title="ASP.NET MVC 4 project template in different browser sizes" />
+							</p>
+
+							<p><em>ASP.NET MVC 4 project template in different browser sizes</em></p>
+						</li>
+					</ol>
+				</li>
+				<li><p>Close the browser to stop the debugger and return to Visual Studio.</p></li>
+				<li>
+					<p>Now you are able to explore the solution and check out some of the new features introduced by ASP.NET MVC 4 in the project template.</p>
+
+					<p>
+						<img src="images/MVC4-internet-application-project-template.png?raw=true" alt="ASP.NET MVC4-internet-application-project-template" title="The ASP.NET MVC 4 Internet Application Project Template" />
+					</p>
+
+					<p><em>The ASP.NET MVC 4 Internet Application Project Template</em>   </p>
+
+					<ol>
+						<li>
+							<p><strong>HTML5 markup</strong></p>
+
+							<p>Browse template views to find out the new theme markup, for example open <strong>About.cshtml</strong> view within <strong>Home</strong> folder.</p>
+
+							<p>
+								<img src="images/new-template-using-razor-and-html5-markup-abo.png?raw=true" alt="New template, using Razor and HTML5 markup" title="New template, using Razor and HTML5 markup" />
+							</p>
+
+							<p><em>New template, using Razor and HTML5 markup</em></p>
+						</li>
+						<li>
+							<p><strong>JavaScript libraries included</strong></p>
+
+							<ol>
+								<li><strong>jQuery</strong>: jQuery  simplifies HTML document traversing, event handling, animating, and Ajax interactions.</li>
+								<li>
+									<p><strong>jQuery UI</strong>: This library provides abstractions for low-level interaction and animation, advanced effects and themeable widgets, built on top of the jQuery JavaScript Library.</p>
+									<blockquote>
+										<p><strong>Note:</strong> You can learn about jQuery and jQuery UI in <a href="http://docs.jquery.com/"><a href="http://docs.jquery.com/">http://docs.jquery.com/</a></a>.</p>
+									</blockquote>
+								</li>
+								<li>
+									<p><strong>KnockoutJS</strong>: The ASP.NET MVC 4 default template now includes <strong>KnockoutJS</strong>, a JavaScript MVVM framework that lets you create rich and highly responsive web applications using JavaScript and HTML. Like in ASP.NET MVC 3, jQuery and jQuery UI libraries are also included in ASP.NET MVC 4.</p>
+									<blockquote>
+										<p><strong>Note:</strong> You can get more information about KnockOutJS library in this link: <a href="http://learn.knockoutjs.com/">http://learn.knockoutjs.com/</a>.</p>
+									</blockquote>
+								</li>
+								<li>
+									<p><strong>Modernizr</strong>: This library runs automatically, making your site compatible with older browsers when using HTML5 and CSS3 technologies.</p>
+									<blockquote>
+										<p><strong>Note:</strong> You can get more information about Modernizr library in this link: <a href="http://www.modernizr.com/">http://www.modernizr.com/</a>.</p>
+									</blockquote>
+								</li>
+							</ol>
+						</li>
+						<li>
+							<p><strong>SimpleMembership included in the solution</strong></p>
+
+							<p>SimpleMembership has been designed as a replacement for the previous ASP.NET Role and Membership provider system. It has many new features that make it easier for the developer to secure web pages in a more flexible way.</p>
+
+							<p>The Internet template already has set up a few things to integrate SimpleMembership, for example, the AccountController is prepared to use OAuthWebSecurity (for OAuth account registration, login, management, etc.) and Web Security.</p>
+
+							<p>
+								<img src="images/simplemembership-included-in-the-solution.png?raw=true" alt="SimpleMembership Included in the solution" title="SimpleMembership Included in the solution" />
+							</p>
+
+							<p><em>SimpleMembership Included in the solution</em></p>
+							<blockquote>
+								<p><strong>Note:</strong> Find more information about  <a href="http://msdn.microsoft.com/en-us/library/jj158393(v=vs.111).aspx">OAuthWebSecurity</a> in MSDN.</p>
+							</blockquote>
+						</li>
+					</ol>
+				</li>
+			</ol>
+			<blockquote>
+				<p><strong>Note:</strong> Additionally, you can deploy this application to Windows Azure Web Sites following <a href="#AppendixB">Appendix B: Publishing an ASP.NET MVC 4 Application using Web Deploy</a>.</p>
+			</blockquote>
+			<hr />
+
+			<p><a name="Summary"></a></p>
+
+			<h2 id="Summary">Summary</h2>
+
+			<p>By completing this Hands-On Lab you have learned the fundamentals of ASP.NET MVC:</p>
+
+			<ul>
+				<li><p>The core elements of an MVC application and how they interact</p></li>
+				<li><p>How to create an ASP.NET MVC Application</p></li>
+				<li><p>How to add and configure Controllers to handle parameters passed through the URL and querystring</p></li>
+				<li><p>How to add a layout master page to setup a template for common HTML content, a StyleSheet to enhance the look and feel and a View template to display HTML content</p></li>
+				<li><p>How to use the ViewModel pattern for passing properties to the View template to display dynamic information</p></li>
+				<li><p>How to use parameters passed to Controllers in the View template</p></li>
+				<li><p>How to add links to pages inside the ASP.NET MVC application</p></li>
+				<li><p>How to add and use dynamic properties in a View</p></li>
+				<li><p>The enhancements in the ASP.NET MVC 4 project templates</p></li>
+			</ul>
+			<br />
+			<p><a href="#top">top of page</a></p>
+			<div class="clearBoth"></div>
+
+		</div>
+	</div>
+
+</body>
+</html>
+

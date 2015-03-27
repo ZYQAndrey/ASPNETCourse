@@ -1,0 +1,843 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="Stylesheet" type="text/css" media="all" href="styles/master.css" />
+</head>
+<body>
+    <div id="outerWrapper">
+        <div id="wrapper" class="landingPage getStartedPage">
+
+
+            <h1 id="ASPNET_MVC_4_Models_and_Data_Access">ASP.NET MVC 4 Models and Data Access</h1>
+
+            <hr />
+
+            <p><a name="Overview"></a></p>
+
+            <h2 id="Overview">Overview</h2>
+            <blockquote>
+                <p><strong>Note:</strong> This Hands-on Lab assumes you have basic knowledge of <strong>ASP.NET MVC</strong>. If you have not used <strong>ASP.NET MVC</strong> before, we recommend you to go over <strong>ASP.NET MVC 4 Fundamentals</strong> Hands-on Lab.</p>
+            </blockquote>
+            <p>In <strong>ASP.NET MVC Fundamentals</strong> Hands-on Lab, you have been passing hard-coded data from the Controllers to the View templates. But, in order to build a real Web application, you might want to use a real database.</p>
+
+            <p>This Hands-on Lab will show you how to use a database engine in order to store and retrieve the data needed for the Music Store application. To accomplish that, you will start with an existing database and create the Entity Data Model from it. Throughout this lab, you will meet the <strong>Database First</strong> approach as well as the <strong>Code First</strong> approach.</p>
+
+            <p>However, you can also use the <strong>Model First</strong> approach, create the same model using the tools, and then generate the database from it.</p>
+
+            <p>
+                <img src="./images/Database-First-vs.-Model-First.png?raw=true" alt="Database First vs. Model First" title="Database First vs. Model First" />
+            </p>
+
+            <p><em>Database First vs. Model First</em></p>
+
+            <p>After generating the Model, you will make the proper adjustments in the StoreController to provide the Store Views with the data taken from the database, instead of using hard-coded data. You will not need to make any change to the View templates because the StoreController will be returning the same ViewModels to the View templates, although this time the data will come from the database.</p>
+
+            <p><strong>The Code First Approach</strong></p>
+
+            <p>The Code First approach allows us to define the model from the code without generating classes that are generally coupled with the framework.</p>
+
+            <p>In code first, model objects are defined with POCOs , &quot;Plain Old CLR Objects&quot;. POCOs are simple plain classes that have no inheritance and do not implement interfaces. We can automatically generate the database from them, or we can use an existing database and generate the class mapping from the code.</p>
+
+            <p>The benefits of using this approach is that the Model remains independent from the persistence framework (in this case, Entity Framework), as the POCOs classes are not coupled with the mapping framework.</p>
+            <blockquote>
+                <p><strong>Note:</strong> This Lab is based on ASP.NET MVC 4 and a version of the Music Store sample application customized and minimized to fit only the features shown in this Hands-On Lab.</p>
+
+                <p>If you wish to explore the whole <strong>Music Store</strong> tutorial application you can find it in <a href="http://mvcmusicstore.codeplex.com/"><a href="http://mvcmusicstore.codeplex.com/">http://mvcmusicstore.codeplex.com/</a></a>.</p>
+            </blockquote>
+            
+            <p><a name="Exercises"></a></p>
+
+            <h2 id="Exercises">Exercises</h2>
+
+            <p>This Hands-on Lab is comprised by the following exercises:</p>
+
+            <ol>
+                <li><p><a href="#Exercise1">Exercise 1: Adding a Database</a></p></li>
+                <li><p><a href="#Exercise2">Exercise 2: Creating a Database using Code First</a></p></li>
+                <li><p><a href="#Exercise3">Exercise 3: Querying the Database with Parameters</a></p></li>
+            </ol>
+            <blockquote>
+                <p><strong>Note:</strong> Each exercise is accompanied by an <strong>End</strong> folder containing the resulting solution you should obtain after completing the exercises. You can use this solution as a guide if you need additional help working through the exercises.</p>
+            </blockquote>
+            <p>Estimated time to complete this lab: <strong>35 minutes</strong>.</p>
+
+            <p><a name="Exercise1"></a></p>
+
+            <h3 id="Exercise_1_Adding_a_Database">Exercise 1: Adding a Database</h3>
+
+            <p>In this exercise, you will learn how to add a database with the tables of the MusicStore application to the solution in order to consume its data. Once the database is generated with the model, and added to the solution, you will modify the StoreController class to provide the View template with the data taken from the database, instead of using hard-coded values.</p>
+
+            <p><a name="Ex1Task1"></a></p>
+
+            <h4 id="Task_1_-_Adding_a_Database">Task 1 - Adding a Database</h4>
+
+            <p>In this task, you will add an already created database with the main tables of the MusicStore application to the solution. </p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex1-AddingADatabaseDBFirst/Begin/</strong> folder.</p>
+
+                    <ol>
+                        <li>You will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Add <strong>MvcMusicStore</strong> database file. In this Hands-on Lab, you will use an already created database called <strong>MvcMusicStore.mdf</strong>. To do that, right-click <strong>App_Data</strong> folder, point to <strong>Add</strong> and then click <strong>Existing Item</strong>. Browse to <strong>\Source\Assets</strong> and select the <strong>MvcMusicStore.mdf</strong> file.</p>
+
+                    <p>
+                        <img src="./images/Adding-an-Existing-Item.png?raw=true" alt="Adding an Existing Item" title="Adding an Existing Item" />
+                    </p>
+
+                    <p><em>Adding an Existing Item</em></p>
+
+                    <p>
+                        <img src="./images/MvcMusicStore.mdf-database-file.png?raw=true" alt="MvcMusicStore.mdf database file" title="MvcMusicStore.mdf database file" />
+                    </p>
+
+                    <p><em>MvcMusicStore.mdf database file</em></p>
+
+                    <p>The database has been added to the project. Even when the database is located inside the solution, you can query and update it as it was hosted in a different database server.</p>
+
+                    <p>
+                        <img src="./images/MvcMusicStore-database-in-Solution-Explorer.png?raw=true" alt="MvcMusicStore database in Solution Explorer" title="MvcMusicStore database in Solution Explorer" />
+                    </p>
+
+                    <p><em>MvcMusicStore database in Solution Explorer</em></p>
+                </li>
+                <li>
+                    <p>Verify the connection to the database. To do this, double-click <strong>MvcMusicStore.mdf</strong> to establish a connection.</p>
+
+                    <p>
+                        <img src="./images/Connecting-to-MvcMusicStore.mdf.png?raw=true" alt="Connecting to MvcMusicStore.mdf" title="Connecting to MvcMusicStore.mdf" />
+                    </p>
+
+                    <p><em>Connecting to MvcMusicStore.mdf</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task2"></a></p>
+
+            <h4 id="Task_2_-_Creating_a_Data_Model">Task 2 - Creating a Data Model</h4>
+
+            <p>In this task, you will create a data model to interact with the database added in the previous task. </p>
+
+            <ol>
+                <li>
+                    <p>Create a data model that will represent the database. To do this, in Solution Explorer right-click the <strong>Models</strong> folder, point to <strong>Add</strong> and then click <strong>New Item</strong>. In the <strong>Add New Item</strong> dialog, select the <strong>Data</strong> template and then the <strong>ADO.NET Entity Data Model</strong> item. Change the data model name to <strong>StoreDB.edmx</strong> and click <strong>Add</strong>.</p>
+
+                    <p>
+                        <img src="./images/Adding-the-StoreDB-ADO.NET-Entity-Data-Model.png?raw=true" alt="Adding the StoreDB ADO.NET Entity Data Model" title="Adding the StoreDB ADO.NET Entity Data Model" />
+                    </p>
+
+                    <p><em>Adding the StoreDB ADO.NET Entity Data Model</em></p>
+                </li>
+                <li>
+                    <p>The <strong>Entity Data Model Wizard</strong> will appear. This wizard will guide you through the creation of the model layer. Since the model should be created based on the existing database recentyl added, select <strong>Generate from database</strong> and click <strong>Next</strong>.</p>
+
+                    <p>
+                        <img src="./images/Choosing-the-model-content.png?raw=true" alt="Choosing the model content" title="Choosing the model content" />
+                    </p>
+
+                    <p><em>Choosing the model content</em></p>
+                </li>
+                <li><p>Since you are generating a model from a database, you will need to specify the connection to use. Click <strong>New Connection</strong>.</p></li>
+                <li>
+                    <p>Select <strong>Microsoft SQL Server Database File</strong> and click <strong>Continue</strong>.</p>
+
+                    <p>
+                        <img src="images/choose-data-source.png?raw=true" alt="Choose data source" title="Choose data source" />
+                    </p>
+
+                    <p><em>Choose data source dialog</em></p>
+                </li>
+                <li>
+                    <p>Click <strong>Browse</strong> and select the database <strong>MvcMusicStore.mdf</strong> you located in the <strong>App_Data</strong> folder and click <strong>OK</strong>.</p>
+
+                    <p>
+                        <img src="images/connection-properties.png?raw=true" alt="Connection properties" title="Connection properties" />
+                    </p>
+
+                    <p><em>Connection properties</em></p>
+                </li>
+                <li>
+                    <p>The generated class should have the same name as the entity connection string, so change its name to <strong>MusicStoreEntities</strong> and click <strong>Next</strong>.</p>
+
+                    <p>
+                        <img src="./images/Choosing-the-data-connection.png?raw=true" alt="Choosing the data connection" title="Choosing the data connection" />
+                    </p>
+
+                    <p><em>Choosing the data connection</em></p>
+                </li>
+                <li>
+                    <p>Choose the database objects to use. As the Entity Model will use just the database's tables, select the <strong>Tables</strong> option, and make sure that the <strong>Include foreign key columns in the model</strong> and <strong>Pluralize or singularize generated object names</strong> options are also selected. Change the Model Namespace to <strong>MvcMusicStore.Model</strong> and click <strong>Finish</strong>.</p>
+
+                    <p>
+                        <img src="./images/Choosing-the-database-objects.png?raw=true" alt="Choosing the database objects" title="Choosing the database objects" />
+                    </p>
+
+                    <p><em>Choosing the database objects</em></p>
+                    <blockquote>
+                        <p><strong>Note:</strong> If a Security Warning dialog is shown, click <strong>OK</strong> to run the template and generate the classes for the model entities.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>An entity diagram for the database will appear, while a separate class that maps each table to the database will be created. For example, the <strong>Albums</strong> table will be represented by an <strong>Album</strong> class, where each column in the table will map to a class property. This will allow you to query and work with objects that represent rows in the database.</p>
+
+                    <p>
+                        <img src="./images/Entity-diagram.png?raw=true" alt="Entity diagram" title="Entity diagram" />
+                    </p>
+
+                    <p><em>Entity diagram</em></p>
+                </li>
+            </ol>
+            <blockquote>
+                <p><strong>Note:</strong> The T4 templates (.tt) run code to generate the entities classes and will overwrite the existing classes with the same name. In this example, the classes &quot;Album&quot;, &quot;Genre&quot; and &quot;Artist&quot; were overwritten with the generated code.</p>
+            </blockquote>
+            <p><a name="Ex1Task3"></a></p>
+
+            <h4 id="Task_3_-_Building_the_Application">Task 3 - Building the Application</h4>
+
+            <p>In this task, you will check that, although the model generation have removed the <strong>Album</strong>, <strong>Genre</strong> and <strong>Artist</strong> model classes, the project builds successfully by using the new data model classes. </p>
+
+            <ol>
+                <li>
+                    <p>Build the project by selecting the <strong>Build</strong> menu item and then <strong>Build MvcMusicStore</strong>.</p>
+
+                    <p>
+                        <img src="./images/Building-the-project.png?raw=true" alt="Building the project" title="Building the project" />
+                    </p>
+
+                    <p><em>Building the project</em></p>
+                </li>
+                <li>
+                    <p>The project builds successfully. Why does it still work? It works because the database tables have fields that include the properties that you were using in the removed classes <strong>Album</strong> and <strong>Genre</strong>.</p>
+
+                    <p>
+                        <img src="./images/Builds-succeeded.png?raw=true" alt="Builds succeeded" title="Builds succeeded" />
+                    </p>
+
+                    <p><em>Builds succeeded</em></p>
+                </li>
+                <li>
+                    <p>While the designer displays the entities in a diagram format, they are really C# classes. Expand the <strong>StoreDB.edmx</strong> node in the Solution Explorer and then <strong>StoreDB.tt</strong>, you will see the new generated entities.</p>
+
+                    <p>
+                        <img src="./images/StoreDB.Designer.cs-file.png?raw=true" alt="Generated files" title="Generated files" />
+                    </p>
+
+                    <p><em>Generated files</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task4"></a></p>
+
+            <h4 id="Task_4_-_Querying_the_Database">Task 4 - Querying the Database</h4>
+
+            <p>In this task, you will update the StoreController class so that, instead of using hardcoded data, it will query the database to retrieve the information. </p>
+
+            <ol>
+                <li>
+                    <p>Open <strong>Controllers\StoreController.cs</strong> and add the following field to the class to hold an instance of the <strong>MusicStoreEntities</strong> class, named <strong>storeDB</strong>:</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex1 storeDB</em>)</p>
+
+                    <!-- mark:3-4    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+{
+<strong class="markLine">    <span style="color:#0000FF">private</span> MusicStoreEntities storeDB = <span style="color:#0000FF">new</span> MusicStoreEntities();</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>The <strong>MusicStoreEntities</strong> class exposes a collection property for each table in the database. Update <strong>Browse</strong> action method to retrieve a Genre with all of the <strong>Albums</strong>.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex1 Store Browse</em>)</p>
+
+                    <!-- mark:4-8    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> ActionResult Browse(<span style="color:#0000FF">string</span> genre)
+{
+                    <span style="color:#008000">// Retrieve Genre and its Associated Albums from database</span>
+<strong class="markLine">    <span style="color:#0000FF">var</span> genreModel = <span style="color:#0000FF">new</span> Genre</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        Name = genre,</strong>
+<strong class="markLine">        Albums = <span style="color:#0000FF">this</span>.storeDB.Albums.ToList()</strong>
+<strong class="markLine">    };</strong>
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(genreModel);
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> You are using a capability of .NET called <strong>LINQ</strong> (language-integrated query) to write strongly-typed query expressions against these collections - which will execute code against the database and return objects that you can program against.</p>
+
+                        <p>For more information about LINQ, please visit the <a href="http://msdn.microsoft.com/en-us/library/bb397926&amp;#040;v=vs.110&amp;#041;.aspx">msdn site</a>.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Update <strong>Index</strong> action method to retrieve all the genres.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex1 Store Index</em>)</p>
+
+                    <!-- mark:3    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> ActionResult Index()
+{
+<strong class="markLine">     <span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">this</span>.storeDB.Genres;</strong>
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(genres);
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Update <strong>Index</strong> action method to retrieve all the genres and transform the collection to a list.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex1 Store GenreMenu</em>)</p>
+
+                    <!-- mark:5    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#008000">// GET: /Store/GenreMenu</span>
+[ChildActionOnly]
+<span style="color:#0000FF">public</span> ActionResult GenreMenu()
+{
+<strong class="markLine">     <span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">this</span>.storeDB.Genres.Take(9).ToList();</strong>
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.PartialView(genres);
+}
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task5"></a></p>
+
+            <h4 id="Task_5_-_Running_the_Application">Task 5 - Running the Application</h4>
+
+            <p>In this task, you will check that the Store Index page will now display the Genres stored in the database instead of the hardcoded ones. There is no need to change the View template because the <strong>StoreController</strong> is returning the same entities as before, although this time the data will come from the database. </p>
+
+            <ol>
+                <li><p>Rebuild the solution and press <strong>F5</strong> to run the Application.</p></li>
+                <li>
+                    <p>The project starts in the Home page. Verify that the menu of <strong>Genres</strong> is no longer a hardcoded list, and the data is directly retrieved from the database.</p>
+
+                    <p>
+                        <img src="images/browsinggenresfromdatabase.png?raw=true" alt="BrowsingGenresFromDataBase" />
+                    </p>
+
+                    <p><em>Browsing Genres from the database</em></p>
+                </li>
+                <li>
+                    <p>Now browse to any genre and verify the albums are populated from database.</p>
+
+                    <p>
+                        <img src="images/browsing-albums-from-the-database.png?raw=true" alt="Browsing Albums from the database" title="Browsing Albums from the database" />
+                    </p>
+
+                    <p><em>Browsing Albums from the database</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Exercise2"></a></p>
+
+            <h3 id="Exercise_2_Creating_a_Database_Using_Code_First">Exercise 2: Creating a Database Using Code First</h3>
+
+            <p>In this exercise, you will learn how to use the Code First approach to create a database with the tables of the MusicStore application, and how to access its data.</p>
+
+            <p>Once the model is generated, you will modify the StoreController to provide the View template with the data taken from the database, instead of using hardcoded values.</p>
+            <blockquote>
+                <p>
+                    <strong>Note:</strong> If you have completed Exercise 1 and have already worked with the Database First approach, you will now learn how to get the same results with a different process. The tasks that are in common with Exercise 1 have been marked to make your reading easier.
+                    If you have not completed Exercise 1 but would like to learn the Code First approach, you can start from this exercise and get a full coverage of the topic.
+                </p>
+            </blockquote>
+            <p><a name="Ex2Task1"></a></p>
+
+            <h4 id="Task_1_-_Populating_Sample_Data">Task 1 - Populating Sample Data</h4>
+
+            <p>In this task, you will populate the database with sample data when it is intially created using Code-First.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex2-CreatingADatabaseCodeFirst/Begin/</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Add the <strong>SampleData.cs</strong> file to the <strong>Models</strong> folder. To do that, right-click <strong>Models</strong> folder, point to <strong>Add</strong> and then click <strong>Existing Item</strong>. Browse to <strong>\Source\Assets</strong> and select the <strong>SampleData.cs</strong> file.</p>
+
+                    <p>
+                        <img src="images/sample-data-populate-code.png?raw=true" alt="Sample data populate code" title="Sample data populate code" />
+                    </p>
+
+                    <p><em>Sample data populate code</em></p>
+                </li>
+                <li>
+                    <p>Open the <strong>Global.asax.cs</strong> file and add the following <em>using</em> statements.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Global Asax Usings</em>)</p>
+
+                    <!-- mark:1-2    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"> <span style="color:#0000FF">using</span> MvcMusicStore.Models;</strong>
+<strong class="markLine"> <span style="color:#0000FF">using</span> System.Data.Entity;</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>In the <strong>Application_Start()</strong> method add the following line to set the database initializer.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Global Asax SetInitializer</em>)</p>
+
+                    <!-- mark:10    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">protected</span> <span style="color:#0000FF">void</span> Application_Start()
+{
+     AreaRegistration.RegisterAllAreas();
+     WebApiConfig.Register(GlobalConfiguration.Configuration);
+     FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+     RouteConfig.RegisterRoutes(RouteTable.Routes);
+     BundleConfig.RegisterBundles(BundleTable.Bundles);
+<strong class="markLine">     Database.SetInitializer(<span style="color:#0000FF">new</span> SampleData());</strong>
+}
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task2"></a></p>
+
+            <h4 id="Task_2_-_Configuring_the_connection_to_the_Database">Task 2 - Configuring the connection to the Database</h4>
+
+            <p>Now that you have already added a database to our project, you will write in the <strong>Web.config</strong> file the connection string.</p>
+
+            <ol>
+                <li>
+                    <p>Add a connection string at <strong>Web.config</strong>. To do that, open <strong>Web.config</strong> at project root and replace the connection string named DefaultConnection with this line in the <strong>&lt;connectionStrings&gt;</strong> section:</p>
+
+                    <p>
+                        <img src="./images/Web.config-file-location.png?raw=true" alt="Web.config file location" title="Web.config file location" />
+                    </p>
+
+                    <p><em>Web.config file location</em></p>
+
+                    <!-- mark:4    -->
+
+                    <span class="codelanguage">XML</span><pre><code class="XML"><span style="color:#0000FF">&lt;</span><span style="color:#800000">configuration</span><span style="color:#0000FF">&gt;</span>
+...
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">connectionStrings</span><span style="color:#0000FF">&gt;</span>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">add</span> <span style="color:#FF0000">name</span>=<span style="color:#0000FF">&quot;MusicStoreEntities&quot;</span> <span style="color:#FF0000">connectionString</span>=<span style="color:#0000FF">&quot;data source=(LocalDb)\v11.0;initial catalog=MvcMusicStore;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\MvcMusicStore.mdf&quot;</span> <span style="color:#FF0000">providerName</span>=<span style="color:#0000FF">&quot;System.Data.SqlClient&quot;</span> <span style="color:#0000FF">/&gt;</span></strong>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">connectionStrings</span><span style="color:#0000FF">&gt;</span>
+...
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task3"></a></p>
+
+            <h4 id="Task_3_-_Working_with_the_Model">Task 3 - Working with the Model</h4>
+
+            <p>Now that you have already configured the connection to the database, you will link the model with the database tables. In this task, you will create a class that will be linked to the database with Code First. Remember that there is an existent POCO model class that should be modified.</p>
+            <blockquote>
+                <p><strong>Note:</strong> If you completed Exercise 1, you will note that this step was performed by a wizard. By doing Code First, you will manually create classes that will be linked to data entities.</p>
+            </blockquote>
+            <ol>
+                <li>
+                    <p>Open the POCO model class <strong>Genre</strong> from <strong>Models</strong> project folder and include an ID. Use an int property with the name <strong>GenreId</strong>.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Code First Genre</em>)</p>
+
+                    <!-- mark:7    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Models
+{
+                    <span style="color:#0000FF">using</span> System.Collections.Generic;
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Genre
+     {
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> GenreId { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Name { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Description { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+                    <span style="color:#0000FF">public</span> List&lt;Album&gt; Albums { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+     }
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> To work with Code First conventions, the class Genre must have a primary key property that will be automatically detected.</p>
+
+                        <p>You can read more about Code First Conventions in this <a href="http://msdn.microsoft.com/en-us/library/hh161541&amp;#040;v=vs.103&amp;#041;.aspx">msdn article</a>.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Now, open the POCO model class <strong>Album</strong> from <strong>Models</strong> project folder and include the foreign keys, create properties with the names <strong>GenreId</strong> and <strong>ArtistId</strong>. This class already have the <strong>GenreId</strong> for the primary key.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Code First Album</em>)</p>
+
+                    <!-- mark:7,9    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Models
+{
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Album
+     {
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> AlbumId { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> GenreId { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> ArtistId { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Title { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">decimal</span> Price { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> AlbumArtUrl { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">virtual</span> Genre Genre { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">virtual</span> Artist Artist { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+     }
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Open the POCO model class <strong>Artist</strong> and include the <strong>ArtistId</strong> property.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Code First Artist</em>)</p>
+
+                    <!-- mark:5    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Models
+{
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Artist
+     {
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> ArtistId { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Name { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+     }
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Right-click the <strong>Models</strong> project folder and select <strong>Add | Class</strong>. Name the file <strong>MusicStoreEntities.cs</strong>. Then, click <strong>Add.</strong></p>
+
+                    <p>
+                        <img src="./images/Adding-a-class.png?raw=true" alt="Adding a class" title="Adding a class" />
+                    </p>
+
+                    <p><em>Adding a new item</em></p>
+
+                    <p>
+                        <img src="./images/Adding-a-class2.png?raw=true" alt="Adding a class2" title="Adding a class2" />
+                    </p>
+
+                    <p><em>Adding a class</em></p>
+                </li>
+                <li>
+                    <p>Open the class you have just created, <strong>MusicStoreEntities.cs</strong>, and include the namespaces <strong>System.Data.Entity</strong> and <strong>System.Data.Entity.Infrastructure</strong>.</p>
+
+                    <!-- mark:5-7    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<strong class="markLine"><span style="color:#0000FF">using</span> System.Data.Entity;</strong>
+<strong class="markLine"><span style="color:#0000FF">using</span> System.Data.Entity.Infrastructure;</strong>
+<strong class="markLine">...</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Replace the class declaration to extend the <strong>DbContext</strong> class: declare a public <strong>DBSet</strong> and override <strong>OnModelCreating</strong> method. After this step you will get a domain class that will link your model with the Entity Framework. In order to do that, replace the class code with the following:</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Code First MusicStoreEntities</em>)</p>
+
+                    <!-- mark:10-26    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<span style="color:#0000FF">using</span> System.Data.Entity;
+<span style="color:#0000FF">using</span> System.Data.Entity.Infrastructure;
+<span style="color:#0000FF">namespace</span> MvcMusicStore.Models
+{
+<strong class="markLine">    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> MusicStoreEntities : DbContext</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        <span style="color:#0000FF">public</span> DbSet&lt;Genre&gt; Genres { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">public</span> DbSet&lt;Album&gt; Albums { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">public</span> DbSet&lt;Artist&gt; Artists { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">protected</span> <span style="color:#0000FF">override</span> <span style="color:#0000FF">void</span> OnModelCreating(DbModelBuilder modelBuilder)</strong>
+<strong class="markLine">        {</strong>
+<strong class="markLine">            modelBuilder.Entity&lt;Genre&gt;().ToTable(<span style="color:#8B0000">&quot;Genres&quot;</span>);</strong>
+<strong class="markLine">            modelBuilder.Entity&lt;Album&gt;().ToTable(<span style="color:#8B0000">&quot;Albums&quot;</span>);</strong>
+<strong class="markLine">            modelBuilder.Entity&lt;Artist&gt;().ToTable(<span style="color:#8B0000">&quot;Artists&quot;</span>);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">            <span style="color:#0000FF">base</span>.OnModelCreating(modelBuilder);</strong>
+<strong class="markLine">        }</strong>
+<strong class="markLine">    }</strong>
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> With Entity Framework <strong>DbContext</strong> and <strong>DBSet</strong> you will be able to query the POCO class Genre. By extending <strong>OnModelCreating</strong> method, you are specifying in the <strong>code</strong> how Genre will be mapped to a database table. You can find more information about DBContext and DBSet in this msdn article: <a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbcontext(v=vs.103">link</a>.aspx)</p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task4"></a></p>
+
+            <h4 id="Task_4_-_Querying_the_Database">Task 4 - Querying the Database</h4>
+
+            <p>In this task, you will update the StoreController class so that, instead of using hardcoded data, it will retrieve it from the database.</p>
+            <blockquote>
+                <p><strong>Note:</strong> This task is in common with Exercise 1.</p>
+
+                <p>If you completed Exercise 1 you will note these steps are the same in both approaches (Database first or Code first). They are different in how the data is linked with the model, but the access to data entities is yet transparent from the controller.</p>
+            </blockquote>
+            <ol>
+                <li>
+                    <p>Open <strong>Controllers\StoreController.cs</strong> and add the following field to the class to hold an instance of the <strong>MusicStoreEntities</strong> class, named <strong>storeDB</strong>:</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex1 storeDB</em>)</p>
+
+                    <!-- mark:3    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+{
+<strong class="markLine">    <span style="color:#0000FF">private</span> MusicStoreEntities storeDB = <span style="color:#0000FF">new</span> MusicStoreEntities();</strong>
+    ...
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>The <strong>MusicStoreEntities</strong> class exposes a collection property for each table in the database. Update <strong>Browse</strong> action method to retrieve a Genre with all of the <strong>Albums</strong>.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Store Browse</em>)</p>
+
+                    <!-- mark:4-8    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> ActionResult Browse(<span style="color:#0000FF">string</span> genre)
+{
+                    <span style="color:#008000">// Retrieve Genre and its Associated Albums from database</span>
+<strong class="markLine">     <span style="color:#0000FF">var</span> genreModel = <span style="color:#0000FF">new</span> Genre</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        Name = genre,</strong>
+<strong class="markLine">        Albums = <span style="color:#0000FF">this</span>.storeDB.Albums.ToList()</strong>
+<strong class="markLine">    };</strong>
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(genreModel);
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> You are using a capability of .NET called <strong>LINQ</strong> (language-integrated query) to write strongly-typed query expressions against these collections - which will execute code against the database and return objects that you can program against.</p>
+
+                        <p>For more information about LINQ, please visit the <a href="http://msdn.microsoft.com/en-us/library/bb397926(v=vs.110">msdn site</a>.aspx).</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Update <strong>Index</strong> action method to retrieve all the genres.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Store Index</em>)</p>
+
+                    <!-- mark:3    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> ActionResult Index()
+{
+<strong class="markLine">     <span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">this</span>.storeDB.Genres;</strong>
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(genres);
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Update <strong>Index</strong> action method to retrieve all the genres and transform the collection to a list.</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex2 Store GenreMenu</em>)</p>
+
+                    <!-- mark:5    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#008000">// GET: /Store/GenreMenu</span>
+[ChildActionOnly]
+<span style="color:#0000FF">public</span> ActionResult GenreMenu()
+{
+<strong class="markLine">     <span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">this</span>.storeDB.Genres.Take(9).ToList();</strong>
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.PartialView(genres);
+}
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task5"></a></p>
+
+            <h4 id="Task_5_-_Running_the_Application">Task 5 - Running the Application</h4>
+
+            <p>In this task, you will check that the Store Index page will now display the Genres stored in the database instead of the hardcoded ones. There is no need to change the View template because the <strong>StoreController</strong> is returning the same <strong>StoreIndexViewModel</strong> as before, but this time the data will come from the database. </p>
+
+            <ol>
+                <li><p>Rebuild the solution and press <strong>F5</strong> to run the Application.</p></li>
+                <li>
+                    <p>The project starts in the Home page. Verify that the menu of <strong>Genres</strong> is no longer a hardcoded list, and the data is directly retrieved from the database.</p>
+
+                    <p>
+                        <img src="images/browsinggenresfromdatabase.png?raw=true" alt="BrowsingGenresFromDataBase" />
+                    </p>
+
+                    <p><em>Browsing Genres from the database</em></p>
+                </li>
+                <li>
+                    <p>Now browse to any genre and verify the albums are populated from database.</p>
+
+                    <p>
+                        <img src="images/browsing-albums-from-the-database.png?raw=true" alt="Browsing Albums from the database" title="Browsing Albums from the database" />
+                    </p>
+
+                    <p><em>Browsing Albums from the database</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Exercise3"></a></p>
+
+            <h3 id="Exercise_3_Querying_the_Database_with_Parameters">Exercise 3: Querying the Database with Parameters</h3>
+
+            <p>In this exercise, you will learn how to query the database using parameters, and how to use Query Result Shaping, a feature that reduces the number database accesses retrieving data in a more efficient way.</p>
+            <blockquote>
+                <p><strong>Note:</strong> For further information on Query Result Shaping, visit the following <a href="http://msdn.microsoft.com/en-us/library/bb896272&amp;#040;v=vs.100&amp;#041;.aspx">msdn article</a>.</p>
+            </blockquote>
+            <p><a name="Ex3Task1"></a></p>
+
+            <h4 id="Task_1_-_Modifying_StoreController_to_Retrieve_Albums_from_Database">Task 1 - Modifying StoreController to Retrieve Albums from Database</h4>
+
+            <p>In this task, you will change the <strong>StoreController</strong> class to access the database to retrieve albums from a specific genre.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at the <strong>Source\Ex3-QueryingTheDatabaseWithParametersCodeFirst\Begin</strong> folder if you want to use Code-First approach or <strong>Source\Ex3-QueryingTheDatabaseWithParametersDBFirst\Begin</strong> folder if you want to use Database-First approach. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li><p>Open the <strong>StoreController</strong> class to change the <strong>Browse</strong> action method. To do this, in the <strong>Solution Explorer</strong>, expand the <strong>Controllers</strong> folder and double-click <strong>StoreController.cs</strong>.</p></li>
+                <li>
+                    <p>Change the <strong>Browse</strong> action method to retrieve albums for a specific genre. To do this, replace the following code:</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex3 StoreController BrowseMethod</em>)</p>
+
+                    <!-- mark:4-5    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> ActionResult Browse(<span style="color:#0000FF">string</span> genre)
+{
+                    <span style="color:#008000">// Retrieve Genre and its Associated Albums from database</span>
+<strong class="markLine">     <span style="color:#0000FF">var</span> genreModel = <span style="color:#0000FF">this</span>.storeDB.Genres.Include(<span style="color:#8B0000">&quot;Albums&quot;</span>)</strong>
+<strong class="markLine">          .Single(g =&gt; g.Name == genre);</strong>
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(genreModel);
+}
+</code></pre>
+                    <blockquote>
+                        <p>
+                            <strong>Note:</strong> To populate a collection of the entity, you need to use the <strong>Include</strong> method to specify you want to retrieve the albums too.
+                            You can use the .<strong>Single()</strong> extension in LINQ because in this case only one genre is expected for an album. The <strong>Single()</strong> method takes a Lambda expression as a parameter, which in this case specifies a single Genre object such that its name matches the value defined.
+                        </p>
+
+                        <p>You will take advantage of a feature that allows you to indicate other related entities you want loaded as well when the Genre object is retrieved. This feature is called <strong>Query Result Shaping</strong>, and enables you to reduce the number of times needed to access the database to retrieve information. In this scenario, you will want to pre-fetch the Albums for the Genre you retrieve.</p>
+
+                        <p>The query includes <strong>Genres.Include(&quot;Albums&quot;)</strong> to indicate that you want related albums as well. This will result in a more efficient application, since it will retrieve both Genre and Album data in a single database request.</p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task2"></a></p>
+
+            <h4 id="Task_2_-_Running_the_Application">Task 2 - Running the Application</h4>
+
+            <p>In this task, you will run the application and retrieve albums of a specific genre from the database.</p>
+
+            <ol>
+                <li><p>Press <strong>F5</strong> to run the Application.</p></li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/Store/Browse?genre=Pop</strong> to verify that the results are being retrieved from the database.</p>
+
+                    <p>
+                        <img src="./images/Browsing-Genre.png?raw=true" alt="Browsing by genre" title="Browsing by genre" />
+                    </p>
+
+                    <p><em>Browsing /Store/Browse?genre=Pop</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task3"></a></p>
+
+            <h4 id="Task_3_-_Accessing_Albums_by_Id">Task 3 - Accessing Albums by Id</h4>
+
+            <p>In this task, you will repeat the previous procedure to get albums by their Id.</p>
+
+            <ol>
+                <li><p>Close the browser if needed, to return to Visual Studio. Open the <strong>StoreController</strong> class to change the <strong>Details</strong> action method. To do this, in the <strong>Solution Explorer</strong>, expand the <strong>Controllers</strong> folder and double-click <strong>StoreController.cs</strong>.</p></li>
+                <li>
+                    <p>Change the <strong>Details</strong> action method to retrieve albums details based on their <strong>Id</strong>. To do this, replace the following code:</p>
+
+                    <p>(Code Snippet - <em>Models And Data Access - Ex3 StoreController DetailsMethod</em>)</p>
+
+                    <!-- mark:4    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#008000">// GET: /Store/</span>
+<span style="color:#0000FF">public</span> ActionResult Details(<span style="color:#0000FF">int</span> id)
+{
+<strong class="markLine">     <span style="color:#0000FF">var</span> album = <span style="color:#0000FF">this</span>.storeDB.Albums.Find(id);</strong>
+                    <span style="color:#0000FF">if</span> (album == <span style="color:#0000FF">null</span>)
+     {
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.HttpNotFound();
+     }
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(album);
+}
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task4"></a></p>
+
+            <h4 id="Task_4_-_Running_the_Application">Task 4 - Running the Application</h4>
+
+            <p>In this task, you will run the Application in a web browser and obtain album details by their Id.</p>
+
+            <ol>
+                <li><p>Press <strong>F5</strong> to run the Application.</p></li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/Store/Details/51</strong> or browse the genres and select an album to verify that the results are being retrieved from the database.</p>
+
+                    <p>
+                        <img src="./images/Browsing-StoreDetails500.png?raw=true" alt="Browsing Details" title="Browsing Details" />
+                    </p>
+
+                    <p><em>Browsing /Store/Details/51</em></p>
+                </li>
+            </ol>
+            <blockquote>
+                <p><strong>Note:</strong> Additionally, you can deploy this application to Windows Azure Web Sites following <a href="#AppendixB">Appendix B: Publishing an ASP.NET MVC 4 Application using Web Deploy</a>.</p>
+            </blockquote>
+            <hr />
+
+            <p><a name="Summary"></a></p>
+
+            <h2 id="Summary">Summary</h2>
+
+            <p>By completing this Hands-on Lab you have learned the fundamentals of ASP.NET MVC Models and Data Access, using the <strong>Database First</strong> approach as well as the <strong>Code First</strong> Approach:</p>
+
+            <ul>
+                <li><p>How to add a database to the solution in order to consume its data</p></li>
+                <li><p>How to update Controllers to provide View templates with the data taken from the database instead of hard-coded one</p></li>
+                <li><p>How to query the database using parameters</p></li>
+                <li><p>How to use the Query Result Shaping, a feature that reduces the number of database accesses, retrieving data in a more efficient way</p></li>
+                <li><p>How to use both Database First and Code First approaches in Microsoft Entity Framework to link the database with the model</p></li>
+            </ul>
+        </div>
+        <br />
+        <p><a href="#top">top of page</a></p>
+    </div>
+    <div class="clearBoth"></div>
+
+
+</body>
+</html>
+

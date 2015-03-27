@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ASPNETCourse.Models.Answer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Answers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AnswerTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Correctness)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Answers)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Correctness)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

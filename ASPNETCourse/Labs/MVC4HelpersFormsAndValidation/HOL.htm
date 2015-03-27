@@ -1,0 +1,1409 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="Stylesheet" type="text/css" media="all" href="styles/master.css" />
+</head>
+<body>
+
+    <div id="outerWrapper">
+        <div id="wrapper" class="landingPage getStartedPage">
+            <h1 id="ASPNET_MVC_4_Helpers_Forms_and_Validation">ASP.NET MVC 4 Helpers, Forms and Validation</h1>
+
+            <hr />
+
+            <p><a name="Overview"></a></p>
+
+            <h2 id="Overview">Overview</h2>
+
+            <p>In <strong>ASP.NET MVC 4 Models and Data Access</strong> Hands-on Lab, you have been loading and displaying data from the database. In this Hands-on Lab, you will add to the <strong>Music Store</strong> application the ability to edit that data.</p>
+
+            <p>With that goal in mind, you will first create the controller that will support the Create, Read, Update and Delete (CRUD) actions of albums. You will generate an Index View template taking advantage of ASP.NET MVC's scaffolding feature to display the albums' properties in an HTML table. To enhance that view, you will add a custom HTML helper that will truncate long descriptions.</p>
+
+            <p>Afterwards, you will add the Edit and Create Views that will let you alter the albums in the database, with the help of form elements like dropdowns.</p>
+
+            <p>Lastly, you will let users delete an album and also you will prevent them from entering wrong data by validating their input.</p>
+            <blockquote>
+                <p><strong>Note:</strong> This Hands-on Lab assumes you have basic knowledge of <strong>ASP.NET MVC</strong>. If you have not used <strong>ASP.NET MVC</strong> before, we recommend you to go over <strong>ASP.NET MVC Fundamentals</strong> Hands-on Lab.</p>
+            </blockquote>
+            <p><a name="Objectives"></a></p>
+
+            <h3 id="Objectives">Objectives</h3>
+
+            <p>In this Hands-On Lab, you will learn how to:</p>
+
+            <ul>
+                <li>Create a controller to support CRUD operations</li>
+                <li>Generate an Index View to display entity properties in an HTML table</li>
+                <li>Add a custom HTML helper</li>
+                <li>Create and customize an Edit View</li>
+                <li>Differentiate between action methods that react to either HTTP-GET or HTTP-POST calls</li>
+                <li>Add and customize a Create View</li>
+                <li>Handle the deletion of an entity</li>
+                <li>Validate user input</li>
+            </ul>
+
+            <p><a name="Exercises"></a></p>
+
+            <h2 id="Exercises">Exercises</h2>
+
+            <p>The following exercises make up this Hands-On Lab:</p>
+
+            <ol>
+                <li><p><a href="#Exercise1">Creating the Store Manager controller and its Index view</a></p></li>
+                <li><p><a href="#Exercise2">Adding an HTML Helper</a></p></li>
+                <li><p><a href="#Exercise3">Creating the Edit View</a></p></li>
+                <li><p><a href="#Exercise4">Adding a Create View</a></p></li>
+                <li><p><a href="#Exercise5">Handling Deletion</a></p></li>
+                <li><p><a href="#Exercise6">Adding Validation</a></p></li>
+                <li><p><a href="#Exercise7">Using Unobtrusive jQuery at Client Side</a></p></li>
+            </ol>
+            <blockquote>
+                <p><strong>Note:</strong> Each exercise is accompanied by an <strong>End</strong> folder containing the resulting solution you should obtain after completing the exercises. You can use this solution as a guide if you need additional help working through the exercises.</p>
+            </blockquote>
+            <p>Estimated time to complete this lab: <strong>60 minutes</strong></p>
+
+            <p><a name="Exercise1"></a></p>
+
+            <h3 id="Exercise_1_Creating_the_Store_Manager_controller_and_its_Index_view">Exercise 1: Creating the Store Manager controller and its Index view</h3>
+
+            <p>In this exercise, you will learn how to create a new controller to support CRUD operations, customize its Index action method to return a list of albums from the database and finally generating an Index View template taking advantage of ASP.NET MVC's scaffolding feature to display the albums' properties in an HTML table.</p>
+
+            <p><a name="Ex1Task1"></a></p>
+
+            <h4 id="Task_1_-_Creating_the_StoreManagerController">Task 1 - Creating the StoreManagerController</h4>
+
+            <p>In this task, you will create a new controller called <strong>StoreManagerController</strong> to support CRUD operations.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex1-CreatingTheStoreManagerController/Begin/</strong> folder.</p>
+
+                    <ol>
+                        <li>You will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Add a new controller. To do this, right-click the <strong>Controllers</strong> folder within the Solution Explorer, select <strong>Add</strong> and then the <strong>Controller</strong> command. Change the <strong>Controller</strong> <strong>Name</strong> to <strong>StoreManagerController</strong> and make sure the option <strong>MVC controller with empty read/write actions</strong> is selected. Click <strong>Add</strong>.</p>
+
+                    <p>
+                        <img src="images/add-controller-dialog.png?raw=true" alt="Add controller dialog" title="Add controller dialog" />
+                    </p>
+
+                    <p><em>Add Controller Dialog</em></p>
+
+                    <p>A new Controller class is generated. Since you indicated to add actions for read/write, stub methods for those, common CRUD actions are created with TODO comments filled in, prompting to include the application specific logic.</p>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task2"></a></p>
+
+            <h4 id="Task_2_-_Customizing_the_StoreManager_Index">Task 2 - Customizing the StoreManager Index</h4>
+
+            <p>In this task, you will customize the StoreManager Index action method to return a View with the list of albums from the database.</p>
+
+            <ol>
+                <li>
+                    <p>In the StoreManagerController class, add the following  <em>using</em> directives.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex1 using MvcMusicStore</em>)</p>
+
+                    <!-- mark:1-3    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#0000FF">using</span> System.Data;</strong>
+<strong class="markLine"><span style="color:#0000FF">using</span> System.Data.Entity;</strong>
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Models;</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Add a field to the <strong>StoreManagerController</strong> to hold an instance of <strong>MusicStoreEntities.</strong></p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex1 MusicStoreEntities</em>)</p>
+
+                    <!-- mark:3    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreManagerController : Controller
+{
+<strong class="markLine">    <span style="color:#0000FF">private</span> MusicStoreEntities db = <span style="color:#0000FF">new</span> MusicStoreEntities();</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Implement the StoreManagerController Index action to return a View with the list of albums. </p>
+
+                    <p>The Controller action logic will be very similar to the StoreController's Index action written earlier. Use LINQ to retrieve all albums, including Genre and Artist information for display.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex1 StoreManagerController Index</em>)</p>
+
+                    <!-- mark:6-9    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#008000">//</span>
+<span style="color:#008000">// GET: /StoreManager/</span>
+<span style="color:#0000FF">public</span> ActionResult Index()
+{
+<strong class="markLine">    <span style="color:#0000FF">var</span> albums = <span style="color:#0000FF">this</span>.db.Albums.Include(a =&gt; a.Genre).Include(a =&gt; a.Artist)</strong>
+<strong class="markLine">         .OrderBy(a =&gt; a.Price);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(albums.ToList());</strong>
+}
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task3"></a></p>
+
+            <h4 id="strongTask_3_-_Creating_the_Index_Viewstrong"><strong>Task 3 - Creating the Index View</strong></h4>
+
+            <p>In this task, you will create the Index View template to display the list of albums returned by the <strong>StoreManager</strong> Controller.</p>
+
+            <ol>
+                <li><p>Before creating the new View template, you should build the project so that the <strong>Add View Dialog</strong> knows about the <strong>Album</strong> class to use. Select <strong>Build | Build MvcMusicStore</strong> to build the project.</p></li>
+                <li>
+                    <p>Right-click inside the <strong>Index</strong> action method and select <strong>Add View</strong>. This will bring up the <strong>Add View</strong> dialog.</p>
+
+                    <p>
+                        <img src="images/index-add-view.png?raw=true" alt="Add view" title="Add view" />
+                    </p>
+
+                    <p><em>Adding a View from within the Index method</em> </p>
+                </li>
+                <li>
+                    <p>In the Add View dialog, verify that the View Name is <strong>Index</strong>. Select the <strong>Create a strongly-typed view</strong> option, and select <strong>Album (MvcMusicStore.Models)</strong> from the <strong>Model class</strong> drop-down. Select <strong>List</strong> from the <strong>Scaffold template</strong> drop-down. Leave the <strong>View engine</strong> to <strong>Razor</strong>  and the other fields with their default value and then click <strong>Add</strong>.</p>
+
+                    <p>
+                        <img src="images/index-add-view-dialog.png?raw=true" alt="Adding an index view" title="Adding an index view" />
+                    </p>
+
+                    <p><em>Adding an Index View</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task4"></a></p>
+
+            <h4 id="Task_4_-_Customizing_the_scaffold_of_the_Index_View">Task 4 - Customizing the scaffold of the Index View</h4>
+
+            <p>In this task, you will adjust the simple View template created with ASP.NET MVC scaffolding feature to have it display the fields you want.</p>
+            <blockquote>
+                <p><strong>Note:</strong> The <strong>scaffolding</strong> support within ASP.NET MVC generates a simple View template which lists all fields in the Album model. <strong>Scaffolding</strong> provides a quick way to get started on a strongly typed view: rather than having to write the View template manually, scaffolding quickly generates a default template and then you can modify the generated code.</p>
+            </blockquote>
+            <ol>
+                <li>
+                    <p>Review the code created. The generated list of fields will be part of the following HTML table that <strong>Scaffolding</strong> is using for displaying tabular data.</p>
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML">@model IEnumerable<span style="color:#0000FF">&lt;</span><span style="color:#800000">MvcMusicStore.Models.Album</span><span style="color:#0000FF">&gt;</span>
+@{
+     ViewBag.Title = &quot;Index&quot;;
+}
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span>Index<span style="color:#0000FF">&lt;/</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span>
+     @Html.ActionLink(&quot;Create New&quot;, &quot;Create&quot;)
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">table</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayNameFor(model =&gt; model.GenreId)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayNameFor(model =&gt; model.ArtistId)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayNameFor(model =&gt; model.Title)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayNameFor(model =&gt; model.Price)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayNameFor(model =&gt; model.AlbumArtUrl)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span><span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span>
+@foreach (var item in Model) {
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayFor(modelItem =&gt; item.GenreId)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayFor(modelItem =&gt; item.ArtistId)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayFor(modelItem =&gt; item.Title)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayFor(modelItem =&gt; item.Price)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                @Html.DisplayFor(modelItem =&gt; item.AlbumArtUrl)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                @Html.ActionLink(&quot;Edit&quot;, &quot;Edit&quot;, new { id=item.AlbumId }) |
+                @Html.ActionLink(&quot;Details&quot;, &quot;Details&quot;, new { id=item.AlbumId }) |
+                @Html.ActionLink(&quot;Delete&quot;, &quot;Delete&quot;, new { id=item.AlbumId })
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span>
+}
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">table</span><span style="color:#0000FF">&gt;</span>
+</code></pre>
+                </li>
+                <li>
+                    <p>Replace the <strong>&lt;table&gt;</strong> code with the following code to display only the <strong>Genre</strong>, <strong>Artist</strong>, <strong>Album Title</strong>, and <strong>Price</strong> fields. This deletes the <strong>AlbumId</strong> and <strong>Album Art URL</strong> columns. Also, it changes GenreId and ArtistId columns to display their linked class properties of <strong>Artist.Name</strong> and <strong>Genre.Name</strong>, and removes the <strong>Details</strong> link.</p>
+
+                    <!-- mark:1-39    -->
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML"><strong class="markLine"><span style="color:#0000FF">&lt;</span><span style="color:#800000">table</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">      <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span><span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">      <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>Genre<span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">      <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>Artist<span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">      <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>Title<span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">      <span style="color:#0000FF">&lt;</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span>Price<span style="color:#0000FF">&lt;/</span><span style="color:#800000">th</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    @foreach (var item in Model) {</strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">                @Html.ActionLink(&quot;Edit&quot;, &quot;Edit&quot;, new { id=item.AlbumId }) |</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">                @Html.ActionLink(&quot;Delete&quot;, &quot;Delete&quot;, new { id=item.AlbumId })</strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">                @Html.DisplayFor(modelItem =&gt; item.Genre.Name)</strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">                @Html.DisplayFor(modelItem =&gt; item.Artist.Name)</strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">                @Html.DisplayFor(modelItem =&gt; item.Title)</strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">                @Html.DisplayFor(modelItem =&gt; item.Price)</strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;/</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">    }</strong>
+<strong class="markLine"><span style="color:#0000FF">&lt;/</span><span style="color:#800000">table</span><span style="color:#0000FF">&gt;</span></strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Change the following descriptions.</p>
+
+                    <!-- mark:3,6    -->
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML">@model IEnumerable<span style="color:#0000FF">&lt;</span><span style="color:#800000">MvcMusicStore.Models.Album</span><span style="color:#0000FF">&gt;</span>
+@{
+<strong class="markLine">    ViewBag.Title = &quot;Store Manager - All Albums&quot;;</strong>
+}
+<strong class="markLine"><span style="color:#0000FF">&lt;</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span>Albums<span style="color:#0000FF">&lt;/</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span></strong>
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task5"></a></p>
+
+            <h4 id="Task_5_-_Running_the_Application">Task 5 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager</strong> <strong>Index</strong> View template displays a list of albums according to the design of the previous steps.</p>
+
+            <ol>
+                <li> Press <strong>F5</strong> to run the Application.</li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager</strong> to verify that a list of albums is displayed, showing their <strong>Title</strong>, <strong>Artist</strong> and <strong>Genre</strong>.</p>
+
+                    <p>
+                        <img src="images/browsing-the-list-of-albums.png?raw=true" alt="Browsing the list of albums" title="Browsing the list of albums" />
+                    </p>
+
+                    <p><em>Browsing the list of albums</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Exercise2"></a></p>
+
+            <h3 id="Exercise_2_Adding_an_HTML_Helper">Exercise 2: Adding an HTML Helper</h3>
+
+            <p>The StoreManager Index page has one potential issue: Title and Artist Name properties can both be long enough to throw off the table formatting. In this exercise you will learn how to add a custom HTML helper to truncate that text.</p>
+
+            <p>In the following figure, you can see how the format is modified because of the length of the text when you use a small browser size.</p>
+
+            <p>
+                <img src="images/browsing-the-list-of-albums-with-not-truncate.png?raw=true" alt="Browsing the list of Albums with not truncated text" title="Browsing the list of Albums with not truncated text" />
+            </p>
+
+            <p><em>Browsing the list of Albums with not truncated text</em></p>
+
+            <p><a name="Ex2Task1"></a></p>
+
+            <h4 id="Task_1_-_Extending_the_HTML_Helper">Task 1 - Extending the HTML Helper</h4>
+
+            <p>In this task, you will add a new method <strong>Truncate</strong> to the <strong>HTML</strong> object exposed within ASP.NET MVC Views. To do this, you will implement an <strong>extension method</strong> to the built-in <strong>System.Web.Mvc.HtmlHelper</strong> class provided by ASP.NET MVC.</p>
+            <blockquote>
+                <p><strong>Note:</strong> To read more about <strong>Extension Methods</strong>, please visit this msdn article. <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">http://msdn.microsoft.com/en-us/library/bb383977.aspx</a>.</p>
+            </blockquote>
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex2-AddingAnHTMLHelper/Begin/</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li><p>Open StoreManager's Index View. To do this, in the Solution Explorer expand the <strong>Views</strong> folder, then the <strong>StoreManager</strong> and open the <strong>Index.cshtml</strong> file.</p></li>
+                <li>
+                    <p>Add the following code below the <strong>@model</strong> directive to define the <strong>Truncate</strong> helper method.</p>
+
+                    <!-- mark:3-10    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#">@model IEnumerable&lt;MvcMusicStore.Models.Album&gt;
+<strong class="markLine">@helper Truncate(<span style="color:#0000FF">string</span> input, <span style="color:#0000FF">int</span> length)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">     <span style="color:#0000FF">if</span> (input.Length &lt;= length) {</strong>
+<strong class="markLine">          @input</strong>
+<strong class="markLine">     } <span style="color:#0000FF">else</span> {</strong>
+<strong class="markLine">          @input.Substring(0, length)&lt;text&gt;...&lt;/text&gt;</strong>
+<strong class="markLine">     }</strong>
+<strong class="markLine">} </strong>
+@{
+     ViewBag.Title = <span style="color:#8B0000">&quot;Store Manager - All Albums&quot;</span>;
+}
+&lt;h2&gt;Albums&lt;/h2&gt;
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task2"></a></p>
+
+            <h4 id="Task_2_-_Truncating_Text_in_the_Page">Task 2 - Truncating Text in the Page</h4>
+
+            <p>In this task, you will use the <strong>Truncate</strong> method to truncate the text in the View template.</p>
+
+            <ol>
+                <li>Open StoreManager's Index View. To do this, in the Solution Explorer expand the <strong>Views</strong> folder, then the <strong>StoreManager</strong> and open the <strong>Index.cshtml</strong> file.</li>
+                <li>
+                    <p>Replace the lines that show the <strong>Artist Name</strong> and Album's <strong>Title</strong>. To do this, replace the following lines.</p>
+
+                    <!-- mark:11,14    -->
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML"><span style="color:#0000FF">&lt;</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+          @Html.ActionLink(&quot;Edit&quot;, &quot;Edit&quot;, new { id=item.AlbumId }) |
+          @Html.ActionLink(&quot;Delete&quot;, &quot;Delete&quot;, new { id=item.AlbumId })
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+          @Html.DisplayFor(modelItem =&gt; item.Genre.Name)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+<strong class="markLine">          @Truncate(item.Artist.Name, 25)</strong>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+<strong class="markLine">          @Truncate(item.Title, 25)</strong>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+          @Html.DisplayFor(modelItem =&gt; item.Price)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">td</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">tr</span><span style="color:#0000FF">&gt;</span>
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task3"></a></p>
+
+            <h4 id="Task_3_-_Running_the_Application">Task 3 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager</strong> <strong>Index</strong> View template truncates the Album's Title and Artist Name.</p>
+
+            <ol>
+                <li> Press <strong>F5</strong> to run the Application.</li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager</strong> to verify that long texts in the <strong>Title</strong> and <strong>Artist</strong> column are truncated.</p>
+
+                    <p>
+                        <img src="images/truncated-titles-and-artists-names.png?raw=true" alt="Truncated titles and artists names" title="Truncated titles and artists names" />
+                    </p>
+
+                    <p><em>Truncated Titles and Artist Names</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Exercise3"></a></p>
+
+            <h3 id="Exercise_3_Creating_the_Edit_View">Exercise 3: Creating the Edit View</h3>
+
+            <p>In this exercise, you will learn how to create a form to allow store managers to edit an Album. They will browse the <strong>/StoreManager/Edit/id</strong> URL (<strong>id</strong> being the unique id of the album to edit), thus making an HTTP-GET call to the server.</p>
+
+            <p>The Controller Edit action method will retrieve the appropriate Album from the database, create a <strong>StoreManagerViewModel</strong> object to encapsulate it (along with a list of Artists and Genres), and then pass it off to a View template to render the HTML page back to the user. This page will contain a <strong>&lt;form&gt;</strong> element with textboxes and dropdowns for editing the Album properties.</p>
+
+            <p>Once the user updates the Album form values and clicks the <strong>Save</strong> button, the changes are submitted via an HTTP-POST call back to <strong>/StoreManager/Edit/id</strong>. Although the URL remains the same as in the last call, ASP.NET MVC identifies that this time it is an HTTP-POST and therefore executes a different Edit action method (one decorated with <strong>[HttpPost]</strong>).</p>
+
+            <p><a name="Ex3Task1"></a></p>
+
+            <h4 id="Task_1_-_Implementing_the_HTTP-GET_Edit_Action_Method">Task 1 - Implementing the HTTP-GET Edit Action Method</h4>
+
+            <p>In this task, you will implement the HTTP-GET version of the Edit action method to retrieve the appropriate Album from the database, as well as a list of all Genres and Artists. It will package this data up into the <strong>StoreManagerViewModel</strong> object defined in the last step, which will then be passed to a View template to render the response with.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex3-CreatingTheEditView/Begin/</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li><p>Open the <strong>StoreManagerController</strong> class. To do this, expand the <strong>Controllers</strong> folder and double-click <strong>StoreManagerController.cs</strong>.</p></li>
+                <li>
+                    <p>Replace the <strong>HTTP-GET Edit</strong> action method with the following code to retrieve the appropriate <strong>Album</strong> as well as the <strong>Genres</strong> and <strong>Artists</strong> lists.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex3 StoreManagerController HTTP-GET Edit action</em>)</p>
+
+                    <!-- mark:3-13    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> ActionResult Edit(<span style="color:#0000FF">int</span> id)
+{
+<strong class="markLine">    Album album = <span style="color:#0000FF">this</span>.db.Albums.Find(id);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">if</span> (album == <span style="color:#0000FF">null</span>)</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">         <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.HttpNotFound();</strong>
+<strong class="markLine">    }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">this</span>.ViewBag.GenreId = <span style="color:#0000FF">new</span> SelectList(<span style="color:#0000FF">this</span>.db.Genres, <span style="color:#8B0000">&quot;GenreId&quot;</span>, <span style="color:#8B0000">&quot;Name&quot;</span>, album.GenreId);</strong>
+<strong class="markLine">    <span style="color:#0000FF">this</span>.ViewBag.ArtistId = <span style="color:#0000FF">new</span> SelectList(<span style="color:#0000FF">this</span>.db.Artists, <span style="color:#8B0000">&quot;ArtistId&quot;</span>, <span style="color:#8B0000">&quot;Name&quot;</span>, album.ArtistId);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(album);</strong>
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> You are using <strong>System.Web.Mvc</strong> <strong>SelectList</strong> for Artists and Genres instead of the <strong>System.Collections.Generic</strong> List.</p>
+
+                        <p><strong>SelectList</strong> is a cleaner way to populate HTML dropdowns and manage things like current selection. Instantiating and later setting up these ViewModel objects in the controller action will make the Edit form scenario cleaner.</p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task2"></a></p>
+
+            <h4 id="Task_2_-_Creating_the_Edit_View">Task 2 - Creating the Edit View</h4>
+
+            <p>In this task, you will create an Edit View template that will later display the album properties.</p>
+
+            <ol>
+                <li>Create the Edit View. To do this, right-click inside the <strong>Edit</strong> action method and select <strong>Add View</strong>.</li>
+                <li>
+                    <p>In the Add View dialog, verify that the View Name is <strong>Edit</strong>. Check the <strong>Create a strongly-typed view</strong> checkbox and select <strong>Album (MvcMusicStore.Models)</strong> from the <strong>View data class</strong> drop-down. Select <strong>Edit</strong> from the <strong>Scaffold template</strong> drop-down. Leave the other fields with their default value and then click <strong>Add</strong>.</p>
+
+                    <p>
+                        <img src="images/adding-an-edit-view.png?raw=true" alt="Adding an Edit view" title="Adding an Edit view" />
+                    </p>
+
+                    <p><em>Adding an Edit view</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task3"></a></p>
+
+            <h4 id="Task_3_-_Running_the_Application">Task 3 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager</strong> <strong>Edit</strong> View page displays the properties' values for the album passed as parameter.</p>
+
+            <ol>
+                <li> Press <strong>F5</strong> to run the Application.</li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager/Edit/1</strong> to verify that the properties' values for the album passed are displayed.</p>
+
+                    <p>
+                        <img src="images/browsing-albums-edit-view.png?raw=true" alt="Browsing Album's Edit View" title="Browsing Album's Edit View" />
+                    </p>
+
+                    <p><em>Browsing Album's Edit view</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task4"></a></p>
+
+            <h4 id="Task_4_-_Implementing_drop-downs_on_the_Album_Editor_Template">Task 4 - Implementing drop-downs on the Album Editor Template</h4>
+
+            <p>In this task, you will add drop-downs to the View template created in the last task, so that the user can select from a list of Artists and Genres.</p>
+
+            <ol>
+                <li>
+                    <p>Replace all the <strong>Album</strong> fieldset code with the following:</p>
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML"><span style="color:#0000FF">&lt;</span><span style="color:#800000">fieldset</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">legend</span><span style="color:#0000FF">&gt;</span>Album<span style="color:#0000FF">&lt;/</span><span style="color:#800000">legend</span><span style="color:#0000FF">&gt;</span>
+     @Html.HiddenFor(model =&gt; model.AlbumId)
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.LabelFor(model =&gt; model.Title)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.EditorFor(model =&gt; model.Title)
+          @Html.ValidationMessageFor(model =&gt; model.Title)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.LabelFor(model =&gt; model.Price)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.EditorFor(model =&gt; model.Price)
+          @Html.ValidationMessageFor(model =&gt; model.Price)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.LabelFor(model =&gt; model.AlbumArtUrl)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.EditorFor(model =&gt; model.AlbumArtUrl)
+          @Html.ValidationMessageFor(model =&gt; model.AlbumArtUrl)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.LabelFor(model =&gt; model.Artist)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.DropDownList(&quot;ArtistId&quot;, (SelectList) ViewData[&quot;Artists&quot;])
+          @Html.ValidationMessageFor(model =&gt; model.ArtistId)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.LabelFor(model =&gt; model.Genre)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.DropDownList(&quot;GenreId&quot;, (SelectList) ViewData[&quot;Genres&quot;])
+          @Html.ValidationMessageFor(model =&gt; model.GenreId)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;submit&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;Save&quot;</span> <span style="color:#0000FF">/&gt;</span>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">fieldset</span><span style="color:#0000FF">&gt;</span>          
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> An <strong>Html.DropDownList</strong> helper has been added to render drop-downs for choosing Artists and Genres. The parameters passed to <strong>Html.DropDownList</strong> are:</p>
+
+                        <ol>
+                            <li>The name of the form field (<strong>&quot;ArtistId&quot;</strong>).</li>
+                            <li>The <strong>SelectList</strong> of values for the drop-down.</li>
+                        </ol>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task5"></a></p>
+
+            <h4 id="Task_5_-_Running_the_Application">Task 5 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager</strong> <strong>Edit</strong> View page displays drop-downs instead of Artist and Genre ID text fields.</p>
+
+            <ol>
+                <li> Press <strong>F5</strong> to run the Application.</li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager/Edit/1</strong> to verify that it displays drop-downs instead of Artist and Genre ID text fields.</p>
+
+                    <p>
+                        <img src="images/browsing-albums-edit-view-with-drop-downs.png?raw=true" alt="Browsing Album's Edit View with drop downs" title="Browsing Album's Edit View with drop downs" />
+                    </p>
+
+                    <p><em>Browsing Album's Edit view, this time with dropdowns</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task6"></a></p>
+
+            <h4 id="Task_6_-_Implementing_the_HTTP-POST_Edit_action_method">Task 6 - Implementing the HTTP-POST Edit action method</h4>
+
+            <p>Now that the Edit View displays as expected, you need to implement the HTTP-POST Edit Action method to save the changes made to the Album.</p>
+
+            <ol>
+                <li> Close the browser if needed, to return to the Visual Studio window. Open <strong>StoreManagerController</strong> from the <strong>Controllers</strong> folder.</li>
+                <li>
+                    <p>Replace <strong>HTTP-POST Edit</strong> action method code with the following (note that the method that must be replaced is overloaded version that receives two parameters):</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex3 StoreManagerController HTTP-POST Edit action</em>)</p>
+
+                    <!-- mark:2-16    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#">[HttpPost]
+<strong class="markLine"><span style="color:#0000FF">public</span> ActionResult Edit(Album album)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">     <span style="color:#0000FF">if</span> (ModelState.IsValid)</strong>
+<strong class="markLine">     {</strong>
+<strong class="markLine">          <span style="color:#0000FF">this</span>.db.Entry(album).State = EntityState.Modified;</strong>
+<strong class="markLine">          <span style="color:#0000FF">this</span>.db.SaveChanges();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.RedirectToAction(<span style="color:#8B0000">&quot;Index&quot;</span>);</strong>
+<strong class="markLine">     }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">this</span>.ViewBag.GenreId = <span style="color:#0000FF">new</span> SelectList(<span style="color:#0000FF">this</span>.db.Genres, <span style="color:#8B0000">&quot;GenreId&quot;</span>, <span style="color:#8B0000">&quot;Name&quot;</span>, album.GenreId);</strong>
+<strong class="markLine">     <span style="color:#0000FF">this</span>.ViewBag.ArtistId = <span style="color:#0000FF">new</span> SelectList(<span style="color:#0000FF">this</span>.db.Artists, <span style="color:#8B0000">&quot;ArtistId&quot;</span>, <span style="color:#8B0000">&quot;Name&quot;</span>, album.ArtistId);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(album);</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+                    <blockquote>
+                        <p>
+                            <strong>Note:</strong> This method will be executed when the user clicks the <strong>Save</strong> button of the View and performs an HTTP-POST of the form values back to the server to persist them in the database. The decorator <strong>[HttpPost]</strong> indicates that the method should be used for those HTTP-POST scenarios.
+                            The method takes an <strong>Album</strong> object. ASP.NET MVC will automatically create the Album object from the posted &lt;form&gt; values.
+                        </p>
+
+                        <p>The method will perform these steps:</p>
+
+                        <ol>
+                            <li>
+                                <p>If model is valid:</p>
+
+                                <ol>
+                                    <li>Update the album entry in the context to mark it as a modified object.</li>
+                                    <li>Save the changes and redirect to the index view.</li>
+                                </ol>
+                            </li>
+                            <li><p>If the model is not valid, it will populate the ViewBag with the <strong>GenreId</strong> and <strong>ArtistId</strong>, then it will return the view with the received Album object to allow the user perform any required update.</p></li>
+                        </ol>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task7"></a></p>
+
+            <h4 id="Task_7_-_Running_the_Application">Task 7 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager Edit</strong> View page actually saves the updated Album data in the database.</p>
+
+            <ol>
+                <li><p>Press <strong>F5</strong> to run the Application.</p></li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager/Edit/1</strong>. Change the Album title to <strong>Load</strong> and click on <strong>Save</strong>. Verify that album's title actually changed in the list of albums.</p>
+
+                    <p>
+                        <img src="images/updating-an-album.png?raw=true" alt="Updating an album" title="Updating an album" />
+                    </p>
+
+                    <p><em>Updating an Album</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Exercise4"></a></p>
+
+            <h3 id="Exercise_4_Adding_a_Create_View">Exercise 4: Adding a Create View</h3>
+
+            <p>Now that the <strong>StoreManagerController</strong> supports the <strong>Edit</strong> ability, in this exercise you will learn how to add a Create View template to let store managers add new Albums to the application.</p>
+
+            <p>Like you did with the Edit functionality, you will implement the Create scenario using two separate methods within the <strong>StoreManagerController</strong> class:</p>
+
+            <ol>
+                <li><p>One action method will display an empty form when store managers first visit the <strong>/StoreManager/Create</strong> URL. </p></li>
+                <li><p>A second action method will handle the scenario where the store manager clicks the <strong>Save</strong> button within the form and submits the values back to the <strong>/StoreManager/Create</strong> URL as an HTTP-POST.</p></li>
+            </ol>
+
+            <p><a name="Ex4Task1"></a></p>
+
+            <h4 id="Task_1_-_Implementing_the_HTTP-GET_Create_action_method">Task 1 - Implementing the HTTP-GET Create action method</h4>
+
+            <p>In this task, you will implement the HTTP-GET version of the Create action method to retrieve a list of all Genres and Artists, package this data up into a <strong>StoreManagerViewModel</strong> object, which will then be passed to a View template.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex4-AddingACreateView/Begin/</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li><p>Open <strong>StoreManagerController</strong> class. To do this, expand the <strong>Controllers</strong> folder and double-click <strong>StoreManagerController.cs</strong>.</p></li>
+                <li>
+                    <p>Replace the <strong>Create</strong> action method code with the following:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex4 StoreManagerController HTTP-GET Create action</em>)</p>
+
+                    <!-- mark:4-10    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#008000">//</span>
+<span style="color:#008000">// GET: /StoreManager/Create</span>
+<strong class="markLine"><span style="color:#0000FF">public</span> ActionResult Create()</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">     <span style="color:#0000FF">this</span>.ViewBag.GenreId = <span style="color:#0000FF">new</span> SelectList(<span style="color:#0000FF">this</span>.db.Genres, <span style="color:#8B0000">&quot;GenreId&quot;</span>, <span style="color:#8B0000">&quot;Name&quot;</span>);</strong>
+<strong class="markLine">     <span style="color:#0000FF">this</span>.ViewBag.ArtistId = <span style="color:#0000FF">new</span> SelectList(<span style="color:#0000FF">this</span>.db.Artists, <span style="color:#8B0000">&quot;ArtistId&quot;</span>, <span style="color:#8B0000">&quot;Name&quot;</span>);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View();</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex4Task2"></a></p>
+
+            <h4 id="Task_2_-_Adding_the_Create_View">Task 2 - Adding the Create View</h4>
+
+            <p>In this task, you will add the Create View template that will display a new (empty) Album form.</p>
+
+            <ol>
+                <li> Right-click inside the <strong>Create</strong> action method and select <strong>Add View</strong>. This will bring up the Add View dialog.</li>
+                <li>
+                    <p>In the Add View dialog, verify that the View Name is <strong>Create</strong>. Select the <strong>Create a strongly-typed view</strong> option and select <strong>Album (MvcMusicStore.Models)</strong> from the <strong>Model class</strong> drop-down and <strong>Create</strong> from the <strong>Scaffold template</strong> drop-down. Leave the other fields with their default value and then click <strong>Add</strong>. </p>
+
+                    <p>
+                        <img src="images/adding-a-create-view.png?raw=true" alt="Adding a create view" title="adding-a-create-view.png" />
+                    </p>
+
+                    <p><em>Adding the Create View</em></p>
+                </li>
+                <li>
+                    <p>Update the <strong>GenreId</strong> and <strong>ArtistId</strong> fields to use a drop-down list as shown below:</p>
+
+                    <!-- mark:5-19    -->
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML">...
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">fieldset</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">legend</span><span style="color:#0000FF">&gt;</span>Album<span style="color:#0000FF">&lt;/</span><span style="color:#800000">legend</span><span style="color:#0000FF">&gt;</span>
+<strong class="markLine">     <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          @Html.LabelFor(model =&gt; model.GenreId, &quot;Genre&quot;)</strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          @Html.DropDownList(&quot;GenreId&quot;, String.Empty)</strong>
+<strong class="markLine">          @Html.ValidationMessageFor(model =&gt; model.GenreId)</strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          @Html.LabelFor(model =&gt; model.ArtistId, &quot;Artist&quot;)</strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          @Html.DropDownList(&quot;ArtistId&quot;, String.Empty)</strong>
+<strong class="markLine">          @Html.ValidationMessageFor(model =&gt; model.ArtistId)</strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span></strong>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+          @Html.LabelFor(model =&gt; model.Title)
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+    ...
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex4Task3"></a></p>
+
+            <h4 id="Task_3_-_Running_the_Application">Task 3 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager</strong> <strong>Create</strong> View page displays an empty Album form.</p>
+
+            <ol>
+                <li>Press <strong>F5</strong> to run the Application.</li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager/Create</strong>. Verify that an empty form is displayed for filling the new Album properties.</p>
+
+                    <p>
+                        <img src="images/create-view-empty-form.png?raw=true" alt="Create View with an empty form" title="Create View with an empty form" />
+                    </p>
+
+                    <p><em>Create View with an empty form</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex4Task4"></a></p>
+
+            <h4 id="Task_4_-_Implementing_the_HTTP-POST_Create_Action_Method">Task 4 - Implementing the HTTP-POST Create Action Method</h4>
+
+            <p>In this task, you will implement the HTTP-POST version of the Create action method that will be invoked when a user clicks the <strong>Save</strong> button. The method should save the new album in the database.</p>
+
+            <ol>
+                <li> Close the browser if needed, to return to the Visual Studio window. Open <strong>StoreManagerController</strong> class. To do this, expand the <strong>Controllers</strong> folder and double-click <strong>StoreManagerController.cs</strong>.</li>
+                <li>
+                    <p>Replace <strong>HTTP-POST Create</strong> action method code with the following:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex4 StoreManagerController HTTP- POST Create action</em>)</p>
+
+                    <!-- mark:2-16    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#">[HttpPost]
+<strong class="markLine"><span style="color:#0000FF">public</span> ActionResult Create(Album album)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">     <span style="color:#0000FF">if</span> (ModelState.IsValid)</strong>
+<strong class="markLine">     {</strong>
+<strong class="markLine">          <span style="color:#0000FF">this</span>.db.Albums.Add(album);</strong>
+<strong class="markLine">          <span style="color:#0000FF">this</span>.db.SaveChanges();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.RedirectToAction(<span style="color:#8B0000">&quot;Index&quot;</span>);</strong>
+<strong class="markLine">     }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">this</span>.ViewBag.GenreId = <span style="color:#0000FF">new</span> SelectList(<span style="color:#0000FF">this</span>.db.Genres, <span style="color:#8B0000">&quot;GenreId&quot;</span>, <span style="color:#8B0000">&quot;Name&quot;</span>, album.GenreId);</strong>
+<strong class="markLine">     <span style="color:#0000FF">this</span>.ViewBag.ArtistId = <span style="color:#0000FF">new</span> SelectList(<span style="color:#0000FF">this</span>.db.Artists, <span style="color:#8B0000">&quot;ArtistId&quot;</span>, <span style="color:#8B0000">&quot;Name&quot;</span>, album.ArtistId);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(album);</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> The Create action is pretty similar to the previous Edit action method but instead of setting the object as modified, it is being added to the context.</p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex4Task5"></a></p>
+
+            <h4 id="Task_5_-_Running_the_Application">Task 5 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager Create</strong> View page lets you create a new Album and then redirects to the StoreManager Index View.</p>
+
+            <ol>
+                <li>Press <strong>F5</strong> to run the Application.</li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager/Create</strong>. Fill all the form fields with data for a new Album, like the one in the following figure:</p>
+
+                    <p>
+                        <img src="images/creating-an-album.png?raw=true" alt="Creating an Album" title="Creating an Album" />
+                    </p>
+
+                    <p><em>Creating an Album</em></p>
+                </li>
+                <li>
+                    <p>Verify that you get redirected to the StoreManager Index View that includes the new Album just created.</p>
+
+                    <p>
+                        <img src="images/new-album-created.png?raw=true" alt="New Album Created" title="New Album Created" />
+                    </p>
+
+                    <p><em>New Album Created</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Exercise5"></a></p>
+
+            <h3 id="Exercise_5_Handling_Deletion">Exercise 5: Handling Deletion</h3>
+
+            <p>The ability to delete albums is not yet implemented. This is what this exercise will be about. Like before, you will implement the Delete scenario using two separate methods within the <strong>StoreManagerController</strong> class:</p>
+
+            <ol>
+                <li>One action method will display a confirmation form</li>
+                <li>A second action method will handle the form submission</li>
+            </ol>
+
+            <p><a name="Ex5Task1"></a></p>
+
+            <h4 id="Task_1_-_Implementing_the_HTTP-GET_Delete_Action_Method">Task 1 - Implementing the HTTP-GET Delete Action Method</h4>
+
+            <p>In this task, you will implement the HTTP-GET version of the Delete action method to retrieve the album's information.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex5-HandlingDeletion/Begin/</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li><p>Open <strong>StoreManagerController</strong> class. To do this, expand the <strong>Controllers</strong> folder and double-click <strong>StoreManagerController.cs</strong>.</p></li>
+                <li>
+                    <p>The Delete controller action is exactly the same as the previous Store Details controller action: it queries the <strong>album</strong> object from the database using the <strong>id</strong> provided in the URL and returns the appropriate <strong>View</strong>. To do this, replace the HTTP-GET <strong>Delete</strong> action method code with the following:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex5 Handling Deletion HTTP-GET Delete action</em>)</p>
+
+                    <!-- mark:4-14    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#008000">//</span>
+<span style="color:#008000">// GET: /StoreManager/Delete/5</span>
+<strong class="markLine"><span style="color:#0000FF">public</span> ActionResult Delete(<span style="color:#0000FF">int</span> id)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">     Album album = <span style="color:#0000FF">this</span>.db.Albums.Find(id);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">if</span> (album == <span style="color:#0000FF">null</span>)</strong>
+<strong class="markLine">     {</strong>
+<strong class="markLine">          <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.HttpNotFound();</strong>
+<strong class="markLine">     }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(album);</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+                </li>
+                <li><p>Right-click inside the <strong>Delete</strong> action method and select <strong>Add View</strong>. This will bring up the Add View dialog.</p></li>
+                <li>
+                    <p>In the Add View dialog, verify that the View name is <strong>Delete</strong>. Select the <strong>Create a strongly-typed view</strong> option and select <strong>Album (MvcMusicStore.Models)</strong> from the <strong>Model class</strong> drop-down. Select <strong>Delete</strong> from the <strong>Scaffold template</strong> drop-down. Leave the other fields with their default value and then click <strong>Add</strong>.</p>
+
+                    <p>
+                        <img src="images/adding-a-delete-view.png?raw=true" alt="Adding a Delete View" title="Adding a Delete View" />
+                    </p>
+
+                    <p><em>Adding a Delete View</em></p>
+                </li>
+                <li>
+                    <p>The Delete template shows all the fields from the model. You will show only the album's title. To do this, replace the content of the view with the following code:</p>
+
+                    <!-- mark:5-14    -->
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML">@model MvcMusicStore.Models.Album
+@{
+     ViewBag.Title = &quot;Delete&quot;;
+}
+<strong class="markLine"><span style="color:#0000FF">&lt;</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span>Delete Confirmation<span style="color:#0000FF">&lt;/</span><span style="color:#800000">h2</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine"><span style="color:#0000FF">&lt;</span><span style="color:#800000">h3</span><span style="color:#0000FF">&gt;</span> Are you sure you want to delete the album title <span style="color:#0000FF">&lt;</span><span style="color:#800000">strong</span><span style="color:#0000FF">&gt;</span>@Model.Title <span style="color:#0000FF">&lt;/</span><span style="color:#800000">strong</span><span style="color:#0000FF">&gt;</span> ? <span style="color:#0000FF">&lt;/</span><span style="color:#800000">h3</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine">@using (Html.BeginForm()) {</strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">          <span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;submit&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;Delete&quot;</span> <span style="color:#0000FF">/&gt;</span> |</strong>
+<strong class="markLine">          @Html.ActionLink(&quot;Back to List&quot;, &quot;Index&quot;)</strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;/</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span></strong>
+<strong class="markLine">}</strong>
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex05Task2"></a></p>
+
+            <h4 id="Task_2_-_Running_the_Application">Task 2 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager</strong> <strong>Delete</strong> View page displays a confirmation deletion form.</p>
+
+            <ol>
+                <li><p>Press <strong>F5</strong> to run the Application.</p></li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager</strong>. Select one album to delete by clicking <strong>Delete</strong> and verify that the new view is uploaded.</p>
+
+                    <p>
+                        <img src="images/deleting-an-album.png?raw=true" alt="Deleting an Album" title="Deleting an Album" />
+                    </p>
+
+                    <p><em>Deleting an Album</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex05Task3"></a></p>
+
+            <h4 id="Task_3-_Implementing_the_HTTP-POST_Delete_Action_Method">Task 3- Implementing the HTTP-POST Delete Action Method</h4>
+
+            <p>In this task, you will implement the HTTP-POST version of the Delete action method that will be invoked when a user clicks the <strong>Delete</strong> button. The method should delete the album in the database.</p>
+
+            <ol>
+                <li><p>Close the browser if needed, to return to the Visual Studio window. Open <strong>StoreManagerController</strong> class. To do this, expand the <strong>Controllers</strong> folder and double-click <strong>StoreManagerController.cs</strong>.</p></li>
+                <li>
+                    <p>Replace <strong>HTTP-POST Delete</strong> action method code with the following:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex5 Handling Deletion HTTP-POST Delete action</em>)</p>
+
+                    <!-- mark:5-12    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#008000">//</span>
+<span style="color:#008000">// POST: /StoreManager/Delete/5</span>
+[HttpPost]
+<strong class="markLine"><span style="color:#0000FF">public</span> ActionResult Delete(<span style="color:#0000FF">int</span> id, FormCollection collection)</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">     Album album = <span style="color:#0000FF">this</span>.db.Albums.Find(id);</strong>
+<strong class="markLine">     <span style="color:#0000FF">this</span>.db.Albums.Remove(album);</strong>
+<strong class="markLine">     <span style="color:#0000FF">this</span>.db.SaveChanges();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.RedirectToAction(<span style="color:#8B0000">&quot;Index&quot;</span>); </strong>
+<strong class="markLine">}</strong>
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex5Task4"></a></p>
+
+            <h4 id="Task_4_-_Running_the_Application">Task 4 - Running the Application</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager Delete</strong> View page lets you delete an Album and then redirects to the StoreManager Index View.</p>
+
+            <ol>
+                <li>Press <strong>F5</strong> to run the Application.</li>
+                <li>
+                    <p>The project starts in the Home page. Change the URL to <strong>/StoreManager</strong>.  Select one album to delete by clicking <strong>Delete.</strong> Confirm the deletion by clicking <strong>Delete</strong> button:</p>
+
+                    <p>
+                        <img src="images/deleting-an-album-confirmation.png?raw=true" alt="Deleting an Album" title="Deleting an Album" />
+                    </p>
+
+                    <p><em>Deleting an Album</em> </p>
+                </li>
+                <li><p>Verify that the album was deleted since it does not appear in the <strong>Index</strong> page.</p></li>
+            </ol>
+
+            <p><a name="Exercise6"></a></p>
+
+            <h3 id="Exercise_6_Adding_Validation">Exercise 6: Adding Validation</h3>
+
+            <p>Currently, the Create and Edit forms you have in place do not perform any kind of validation. If the user leaves a required field blank or type letters in the price field, the first error you will get will be from the database.</p>
+
+            <p>You can add validation to the application by adding Data Annotations to your model class. Data Annotations allow describing the rules you want applied to your model properties, and ASP.NET MVC will take care of enforcing and displaying appropriate message to users.</p>
+
+            <p><a name="Ex06Task1"></a></p>
+
+            <h4 id="Task_1_-_Adding_Data_Annotations">Task 1 - Adding Data Annotations</h4>
+
+            <p>In this task, you will add Data Annotations to the Album Model that will make the Create and Edit page display validation messages when appropriate.</p>
+
+            <p>
+                For a simple Model class, adding a Data Annotation is just handled by adding a <strong>using</strong> statement for <strong>System.ComponentModel.DataAnnotation</strong>, then placing a <strong>[Required]</strong> attribute on the appropriate properties.
+                The following example would make the <strong>Name</strong> property a required field in the View.
+            </p>
+
+            <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System.ComponentModel.DataAnnotations;
+<span style="color:#0000FF">namespace</span> SuperheroSample.Models
+{
+            <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Superhero
+    {
+        [Required]
+            <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Name { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+            <span style="color:#0000FF">public</span> <span style="color:#0000FF">bool</span> WearsCape { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+    }
+}
+</code></pre>
+
+            <p>
+                This is a little more complex in cases like this application where the Entity Data Model is generated. If you added Data Annotations directly to the model classes, they would be overwritten if you update the model from the database.
+                Instead, you can make use of metadata partial classes which will exist to hold the annotations and are associated with the model classes using the <strong>[MetadataType]</strong> attribute.
+            </p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex6-AddingValidation/Begin/</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li><p>Open the <strong>Album.cs</strong> from the <strong>Models</strong> folder.</p></li>
+                <li>
+                    <p>Replace <strong>Album.cs</strong> content with the highlighted code, so that it looks like the following:</p>
+                    <blockquote>
+                        <p>
+                            <strong>Note:</strong> The line <strong>[DisplayFormat(ConvertEmptyStringToNull=false)]</strong> indicates that empty strings from the model won't be converted to null when the data field is updated in the data source.
+                            This setting will avoid an exception when the Entity Framework assigns null values to the model before Data Annotation validates the fields.
+                        </p>
+                    </blockquote>
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Helpers and Forms and Validation - Ex6 Album metadata partial class</em>)</p>
+
+                    <!-- mark:1-36    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#0000FF">namespace</span> MvcMusicStore.Models</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">     <span style="color:#0000FF">using</span> System.ComponentModel;</strong>
+<strong class="markLine">     <span style="color:#0000FF">using</span> System.ComponentModel.DataAnnotations;</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">     <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Album</strong>
+<strong class="markLine">     {</strong>
+<strong class="markLine">          [ScaffoldColumn(<span style="color:#0000FF">false</span>)]</strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> AlbumId { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          [DisplayName(<span style="color:#8B0000">&quot;Genre&quot;</span>)]</strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> GenreId { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          [DisplayName(<span style="color:#8B0000">&quot;Artist&quot;</span>)]</strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> ArtistId { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          [Required(ErrorMessage = <span style="color:#8B0000">&quot;An Album Title is required&quot;</span>)]</strong>
+<strong class="markLine">          [DisplayFormat(ConvertEmptyStringToNull = <span style="color:#0000FF">false</span>)]</strong>
+<strong class="markLine">          [StringLength(160, MinimumLength = 2)]</strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> Title { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          [Required(ErrorMessage = <span style="color:#8B0000">&quot;Price is required&quot;</span>)]</strong>
+<strong class="markLine">          [Range(0.01, 100.00, ErrorMessage = <span style="color:#8B0000">&quot;Price must be between 0.01 and 100.00&quot;</span>)]</strong>
+<strong class="markLine">          [DataType(DataType.Currency)]</strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">decimal</span> Price { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          [DisplayName(<span style="color:#8B0000">&quot;Album Art URL&quot;</span>)]</strong>
+<strong class="markLine">          [DataType(DataType.ImageUrl)]</strong>
+<strong class="markLine">          [StringLength(1024)]</strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> AlbumArtUrl { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">virtual</span> Genre Genre { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">          <span style="color:#0000FF">public</span> <span style="color:#0000FF">virtual</span> Artist Artist { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine">     }</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> This <strong>Album</strong> partial class has a <strong>MetadataType</strong> attribute which points to the <strong>AlbumMetaData</strong> class for the Data Annotations. These are some of the Data Annotation attributes you are using to annotate the Album model:</p>
+
+                        <ul>
+                            <li>Required - Indicates that the property is a required field</li>
+                            <li> DisplayName - Defines the text to be used on form fields and validation messages</li>
+                            <li> DisplayFormat - Specifies how data fields are displayed and formatted.</li>
+                            <li> StringLength - Defines a maximum length for a string field</li>
+                            <li> Range - Gives a maximum and minimum value for a numeric field</li>
+                            <li> ScaffoldColumn - Allows hiding fields from editor forms</li>
+                        </ul>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex06Task2"></a></p>
+
+            <h4 id="Task_2_-_Running_the_Application">Task 2 - Running the Application</h4>
+
+            <p>In this task, you will test that the Create and Edit pages validate fields, using the display names chosen in the last task.</p>
+
+            <ol>
+                <li> Press <strong>F5</strong> to run the Application.</li>
+                <li> The project starts in the Home page. Change the URL to <strong>/StoreManager/Create</strong>.  Verify that the display names match the ones in the partial class (like <strong>Album Art URL</strong> instead of <strong>AlbumArtUrl</strong>)</li>
+                <li>
+                    <p>Click <strong>Create</strong>, without filling the form. Verify that you get the corresponding validation messages.</p>
+
+                    <p>
+                        <img src="images/validated-fields-in-create-page.png?raw=true" alt="Validated fields in the Create page" title="Validated fields in the Create page" />
+                    </p>
+
+                    <p><em>Validated fields in the Create page</em></p>
+                </li>
+                <li>
+                    <p>You can verify that the same occurs with the <strong>Edit</strong> page. Change the URL to <strong>/StoreManager/Edit/1</strong> and verify that the display names match the ones in the partial class (like <strong>Album Art URL</strong> instead of <strong>AlbumArtUrl</strong>). Empty the <strong>Title</strong> and <strong>Price</strong> fields and click <strong>Save</strong>. Verify that you get the corresponding validation messages.</p>
+
+                    <p>
+                        <img src="images/validated-fields-in-edit-page.png?raw=true" alt="Validated fields in the Edit page" />
+                    </p>
+
+                    <p><em>Validated fields in the Edit page</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Exercise7"></a> </p>
+
+            <h3 id="Exercise_7_Using_Unobtrusive_jQuery_at_Client_Side">Exercise 7: Using Unobtrusive jQuery at Client Side</h3>
+
+            <p>In this exercise, you will learn how to enable MVC 4 Unobtrusive jQuery validation at client side.</p>
+            <blockquote>
+                <p><strong>Note:</strong> The Unobtrusive jQuery uses data-ajax prefix JavaScript to invoke action methods on the server rather than intrusively emitting inline client scripts.</p>
+            </blockquote>
+            <p><a name="Ex7Task1"></a></p>
+
+            <h4 id="Task_1_-_Running_the_Application_before_Enabling_Unobtrusive_jQuery">Task 1 - Running the Application before Enabling Unobtrusive jQuery</h4>
+
+            <p>In this task, you will run the application before including jQuery in order to compare both validation models.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>Source/Ex7-UnobtrusivejQueryValidation/Begin/</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li><p>Press <strong>F5</strong> to run the application.</p></li>
+                <li>
+                    <p>The project starts in the Home page. Browse <strong>/StoreManager/Create</strong> and click <strong>Create</strong> without filling the form to verify that you get validation messages:</p>
+
+                    <p>
+                        <img src="./images/validated-fields-in-create-page.png?raw=true" alt="Client validation disabled" title="Client validation disabled" />
+                    </p>
+
+                    <p><em>Client validation disabled</em></p>
+                </li>
+                <li>
+                    <p>In the browser, open the HTML source code:</p>
+
+                    <!-- mark:7,15    -->
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML">...
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">label</span> <span style="color:#FF0000">for</span>=<span style="color:#0000FF">&quot;Price&quot;</span><span style="color:#0000FF">&gt;</span>Price<span style="color:#0000FF">&lt;/</span><span style="color:#800000">label</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;text-box single-line&quot;</span> <span style="color:#FF0000">id</span>=<span style="color:#0000FF">&quot;Price&quot;</span> <span style="color:#FF0000">name</span>=<span style="color:#0000FF">&quot;Price&quot;</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;text&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;&quot;</span> <span style="color:#0000FF">/&gt;</span>
+<strong class="markLine">                <span style="color:#0000FF">&lt;</span><span style="color:#800000">span</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;field-validation-valid&quot;</span> <span style="color:#FF0000">id</span>=<span style="color:#0000FF">&quot;Price_validationMessage&quot;</span><span style="color:#0000FF">&gt;</span><span style="color:#0000FF">&lt;/</span><span style="color:#800000">span</span><span style="color:#0000FF">&gt;</span></strong>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">label</span> <span style="color:#FF0000">for</span>=<span style="color:#0000FF">&quot;AlbumArtUrl&quot;</span><span style="color:#0000FF">&gt;</span>Album Art URL<span style="color:#0000FF">&lt;/</span><span style="color:#800000">label</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;text-box single-line&quot;</span> <span style="color:#FF0000">id</span>=<span style="color:#0000FF">&quot;AlbumArtUrl&quot;</span> <span style="color:#FF0000">name</span>=<span style="color:#0000FF">&quot;AlbumArtUrl&quot;</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;text&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;&quot;</span> <span style="color:#0000FF">/&gt;</span>
+<strong class="markLine">                <span style="color:#0000FF">&lt;</span><span style="color:#800000">span</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;field-validation-valid&quot;</span> <span style="color:#FF0000">id</span>=<span style="color:#0000FF">&quot;AlbumArtUrl_validationMessage&quot;</span><span style="color:#0000FF">&gt;</span><span style="color:#0000FF">&lt;/</span><span style="color:#800000">span</span><span style="color:#0000FF">&gt;</span></strong>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;submit&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;Create&quot;</span> <span style="color:#0000FF">/&gt;</span>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">p</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;/</span><span style="color:#800000">fieldset</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">form</span><span style="color:#0000FF">&gt;</span><span style="color:#0000FF">&lt;</span><span style="color:#800000">script</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;text/javascript&quot;</span><span style="color:#0000FF">&gt;</span>
+//<span style="color:#0000FF">&lt;</span>![CDATA[
+if (!window.mvcClientValidationMetadata) { window.mvcClientValidationMetadata = []; }
+window.mvcClientValidationMetadata.push({&quot;Fields&quot;:[{&quot;FieldName&quot;:&quot;GenreId&quot;,&quot;ReplaceValidationMessageContents&quot;:true,&quot;ValidationMessageId&quot;:&quot;GenreId_validationMessage&quot;,&quot;ValidationRules&quot;:[{&quot;ErrorMessage&quot;:&quot;The Genre field is required.&quot;,&quot;ValidationParameters&quot;:{},&quot;ValidationType&quot;:&quot;required&quot;},{&quot;ErrorMessage&quot;:&quot;The field Genre must be a number.&quot;,&quot;ValidationParameters&quot;:{},&quot;ValidationType&quot;:&quot;number&quot;}]},{&quot;FieldName&quot;:&quot;ArtistId&quot;,&quot;ReplaceValidationMessageContents&quot;:true,&quot;ValidationMessageId&quot;:&quot;ArtistId_validationMessage&quot;,&quot;ValidationRules&quot;:[{&quot;ErrorMessage&quot;:&quot;The Artist field is required.&quot;,&quot;ValidationParameters&quot;:{},&quot;ValidationType&quot;:&quot;required&quot;},{&quot;ErrorMessage&quot;:&quot;The field Artist must be a number.&quot;,&quot;ValidationParameters&quot;:{},&quot;ValidationType&quot;:&quot;number&quot;}]},{&quot;FieldName&quot;:&quot;Title&quot;,&quot;ReplaceValidationMessageContents&quot;:true,&quot;ValidationMessageId&quot;:&quot;Title_validationMessage&quot;,&quot;ValidationRules&quot;:[{&quot;ErrorMessage&quot;:&quot;An Album Title is required&quot;,&quot;ValidationParameters&quot;:{},&quot;ValidationType&quot;:&quot;required&quot;},{&quot;ErrorMessage&quot;:&quot;The field Title must be a string with a minimum length of 2 and a maximum length of 160.&quot;,&quot;ValidationParameters&quot;:{&quot;min&quot;:2,&quot;max&quot;:160},&quot;ValidationType&quot;:&quot;length&quot;}]},{&quot;FieldName&quot;:&quot;Price&quot;,&quot;ReplaceValidationMessageContents&quot;:true,&quot;ValidationMessageId&quot;:&quot;Price_validationMessage&quot;,&quot;ValidationRules&quot;:[{&quot;ErrorMessage&quot;:&quot;Price must be between 0.01 and 100.00&quot;,&quot;ValidationParameters&quot;:{&quot;min&quot;:0.01,&quot;max&quot;:100},&quot;ValidationType&quot;:&quot;range&quot;},{&quot;ErrorMessage&quot;:&quot;Price is required&quot;,&quot;ValidationParameters&quot;:{},&quot;ValidationType&quot;:&quot;required&quot;},{&quot;ErrorMessage&quot;:&quot;The field Price must be a number.&quot;,&quot;ValidationParameters&quot;:{},&quot;ValidationType&quot;:&quot;number&quot;}]},{&quot;FieldName&quot;:&quot;AlbumArtUrl&quot;,&quot;ReplaceValidationMessageContents&quot;:true,&quot;ValidationMessageId&quot;:&quot;AlbumArtUrl_validationMessage&quot;,&quot;ValidationRules&quot;:[{&quot;ErrorMessage&quot;:&quot;The field Album Art URL must be a string with a maximum length of 1024.&quot;,&quot;ValidationParameters&quot;:{&quot;max&quot;:1024},&quot;ValidationType&quot;:&quot;length&quot;}]}],&quot;FormId&quot;:&quot;form0&quot;,&quot;ReplaceValidationSummary&quot;:false,&quot;ValidationSummaryId&quot;:&quot;validationSummary&quot;});
+//]]<span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">script</span><span style="color:#0000FF">&gt;</span>
+...
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex7Task2"></a></p>
+
+            <h4 id="Task_2_-_Enabling_Unobtrusive_Client_Validation">Task 2 - Enabling Unobtrusive Client Validation</h4>
+
+            <p>
+                In this task, you will enable jQuery <strong>unobtrusive client validation</strong> from <strong>Web.config</strong> file, which is by default set to false in all new ASP.NET MVC 4 projects.
+                Additionally, you will add the necessary scripts references to make jQuery Unobtrusive Client Validation work.
+            </p>
+
+            <ol>
+                <li>
+                    <p>Open <strong>Web.Config</strong> file at project root, and make sure that the <strong>ClientValidationEnabled</strong> and <strong>UnobtrusiveJavaScriptEnabled</strong> keys values are set to <strong>true</strong>.</p>
+
+                    <!-- mark:7-8    -->
+
+                    <span class="codelanguage">XML</span><pre><code class="XML">...
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">configuration</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">appSettings</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">add</span> <span style="color:#FF0000">key</span>=<span style="color:#0000FF">&quot;webpages:Version&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;2.0.0.0&quot;</span> <span style="color:#0000FF">/&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">add</span> <span style="color:#FF0000">key</span>=<span style="color:#0000FF">&quot;webpages:Enabled&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;false&quot;</span> <span style="color:#0000FF">/&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">add</span> <span style="color:#FF0000">key</span>=<span style="color:#0000FF">&quot;PreserveLoginUrl&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;true&quot;</span> <span style="color:#0000FF">/&gt;</span>
+<strong class="markLine">     <span style="color:#0000FF">&lt;</span><span style="color:#800000">add</span> <span style="color:#FF0000">key</span>=<span style="color:#0000FF">&quot;ClientValidationEnabled&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;true&quot;</span> <span style="color:#0000FF">/&gt;</span></strong>
+<strong class="markLine">     <span style="color:#0000FF">&lt;</span><span style="color:#800000">add</span> <span style="color:#FF0000">key</span>=<span style="color:#0000FF">&quot;UnobtrusiveJavaScriptEnabled&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;true&quot;</span> <span style="color:#0000FF">/&gt;</span></strong>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">appSettings</span><span style="color:#0000FF">&gt;</span>
+...
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> You can also enable client validation by code at Global.asax.cs to get the same results: </p>
+
+                        <p><strong>HtmlHelper.ClientValidationEnabled = true;</strong></p>
+
+                        <p>Additionally, you can assign ClientValidationEnabled attribute into any controller to have a custom behavior.</p>
+                    </blockquote>
+                </li>
+                <li><p>Open <strong>Create.cshtml</strong> at <strong>Views\StoreManager</strong>.</p></li>
+                <li>
+                    <p>Make sure the following script files, <strong>jquery.validate</strong> and  <strong>jquery.validate.unobtrusive</strong>, are referenced in the view throught the &quot;<strong>~/bundles/jqueryval</strong>&quot; bundle.</p>
+
+                    <span class="codelanguage">CSHTML</span><pre><code class="CSHTML">...
+@section Scripts {
+     @Scripts.Render(&quot;~/bundles/jqueryval&quot;)
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> All these jQuery libraries are included in MVC 4 new projects. You can find more libraries in the <strong>/Scripts</strong> folder of you project.</p>
+
+                        <p>In order to make this validation libraries work, you need to add a reference to the jQuery framework library. Since this reference is already added in the <strong>_Layout.cshtml</strong> file, you do not need to add it in this particular view.</p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex7Task3"></a></p>
+
+            <h4 id="Task_3_-_Running_the_Application_Using_Unobtrusive_jQuery_Validation">Task 3 - Running the Application Using Unobtrusive jQuery Validation</h4>
+
+            <p>In this task, you will test that the <strong>StoreManager</strong> create view template performs client side validation using jQuery libraries when the user creates a new album.</p>
+
+            <ol>
+                <li><p>Press <strong>F5</strong> to run the application.</p></li>
+                <li>
+                    <p>The project starts in the Home page. Browse <strong>/StoreManager/Create</strong> and click <strong>Create</strong> without filling the form to verify that you get validation messages:</p>
+
+                    <p>
+                        <img src="./images/Client-validation-with-jQuery-enabled.png?raw=true" alt="Client validation with jQuery enabled" title="Client validation with jQuery enabled" />
+                    </p>
+
+                    <p><em>Client validation with jQuery enabled</em></p>
+                </li>
+                <li>
+                    <p>In the browser, open the source code for Create view:</p>
+
+                    <!-- mark:6-7,14-15,22-23    -->
+
+                    <span class="codelanguage">HTML</span><pre><code class="HTML">...
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">label</span> <span style="color:#FF0000">for</span>=<span style="color:#0000FF">&quot;Title&quot;</span><span style="color:#0000FF">&gt;</span>Title<span style="color:#0000FF">&lt;/</span><span style="color:#800000">label</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;text-box single-line&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>=<span style="color:#0000FF">&quot;true&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">length</span>=<span style="color:#0000FF">&quot;The field Title must be a string with a minimum length of 2 and a maximum length of 160.&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">length</span>-<span style="color:#FF0000">max</span>=<span style="color:#0000FF">&quot;160&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">length</span>-<span style="color:#FF0000">min</span>=<span style="color:#0000FF">&quot;2&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">required</span>=<span style="color:#0000FF">&quot;An Album Title is required&quot;</span> <span style="color:#FF0000">id</span>=<span style="color:#0000FF">&quot;Title&quot;</span> <span style="color:#FF0000">name</span>=<span style="color:#0000FF">&quot;Title&quot;</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;text&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;&quot;</span> <span style="color:#0000FF">/&gt;</span></strong>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">span</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;field-validation-valid&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">valmsg</span>-<span style="color:#FF0000">for</span>=<span style="color:#0000FF">&quot;Title&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">valmsg</span>-<span style="color:#FF0000">replace</span>=<span style="color:#0000FF">&quot;true&quot;</span><span style="color:#0000FF">&gt;</span><span style="color:#0000FF">&lt;/</span><span style="color:#800000">span</span><span style="color:#0000FF">&gt;</span></strong>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">label</span> <span style="color:#FF0000">for</span>=<span style="color:#0000FF">&quot;Price&quot;</span><span style="color:#0000FF">&gt;</span>Price<span style="color:#0000FF">&lt;/</span><span style="color:#800000">label</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;text-box single-line&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>=<span style="color:#0000FF">&quot;true&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">number</span>=<span style="color:#0000FF">&quot;The field Price must be a number.&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">range</span>=<span style="color:#0000FF">&quot;Price must be between 0.01 and 100.00&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">range</span>-<span style="color:#FF0000">max</span>=<span style="color:#0000FF">&quot;100&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">range</span>-<span style="color:#FF0000">min</span>=<span style="color:#0000FF">&quot;0.01&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">required</span>=<span style="color:#0000FF">&quot;Price is required&quot;</span> <span style="color:#FF0000">id</span>=<span style="color:#0000FF">&quot;Price&quot;</span> <span style="color:#FF0000">name</span>=<span style="color:#0000FF">&quot;Price&quot;</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;text&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;&quot;</span> <span style="color:#0000FF">/&gt;</span></strong>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">span</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;field-validation-valid&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">valmsg</span>-<span style="color:#FF0000">for</span>=<span style="color:#0000FF">&quot;Price&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">valmsg</span>-<span style="color:#FF0000">replace</span>=<span style="color:#0000FF">&quot;true&quot;</span><span style="color:#0000FF">&gt;</span><span style="color:#0000FF">&lt;/</span><span style="color:#800000">span</span><span style="color:#0000FF">&gt;</span></strong>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-label&quot;</span><span style="color:#0000FF">&gt;</span>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">label</span> <span style="color:#FF0000">for</span>=<span style="color:#0000FF">&quot;AlbumArtUrl&quot;</span><span style="color:#0000FF">&gt;</span>Album Art URL<span style="color:#0000FF">&lt;/</span><span style="color:#800000">label</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>
+<span style="color:#0000FF">&lt;</span><span style="color:#800000">div</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;editor-field&quot;</span><span style="color:#0000FF">&gt;</span>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;text-box single-line&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>=<span style="color:#0000FF">&quot;true&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">length</span>=<span style="color:#0000FF">&quot;The field Album Art URL must be a string with a maximum length of 1024.&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">length</span>-<span style="color:#FF0000">max</span>=<span style="color:#0000FF">&quot;1024&quot;</span> <span style="color:#FF0000">id</span>=<span style="color:#0000FF">&quot;AlbumArtUrl&quot;</span> <span style="color:#FF0000">name</span>=<span style="color:#0000FF">&quot;AlbumArtUrl&quot;</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;text&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;&quot;</span> <span style="color:#0000FF">/&gt;</span></strong>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">span</span> <span style="color:#FF0000">class</span>=<span style="color:#0000FF">&quot;field-validation-valid&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">valmsg</span>-<span style="color:#FF0000">for</span>=<span style="color:#0000FF">&quot;AlbumArtUrl&quot;</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">valmsg</span>-<span style="color:#FF0000">replace</span>=<span style="color:#0000FF">&quot;true&quot;</span><span style="color:#0000FF">&gt;</span><span style="color:#0000FF">&lt;/</span><span style="color:#800000">span</span><span style="color:#0000FF">&gt;</span></strong>
+<span style="color:#0000FF">&lt;/</span><span style="color:#800000">div</span><span style="color:#0000FF">&gt;</span>        
+...
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> For each client validation rule, Unobtrusive jQuery adds an attribute with data-val-<em>rulename</em>=&quot;<em>message</em>&quot;. Below is a list of tags that Unobtrusive jQuery inserts into the html input field to perform client validation:</p>
+
+                        <ul>
+                            <li>Data-val</li>
+                            <li>Data-val-number</li>
+                            <li>Data-val-range</li>
+                            <li>Data-val-range-min / Data-val-range-max</li>
+                            <li>Data-val-required</li>
+                            <li>Data-val-length</li>
+                            <li>Data-val-length-max / Data-val-length-min</li>
+                        </ul>
+
+                        <p>
+                            All the data values are filled with model <strong>Data Annotation</strong>. Then, all the logic that works at server side can be run at client side.
+                            For example, Price attribute has the following data annotation in the model:
+                        </p>
+
+                        <span class="codelanguage">C#</span><pre><code class="C#">[Required(ErrorMessage = <span style="color:#8B0000">&quot;Price is required&quot;</span>)]
+[Range(0.01, 100.00, ErrorMessage = <span style="color:#8B0000">&quot;Price must be between 0.01 and 100.00&quot;</span>)]
+<span style="color:#0000FF">public</span> <span style="color:#0000FF">object</span> Price { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+</code></pre>
+
+                        <p>After using Unobtrusive jQuery, the generated code is:</p>
+
+                        <span class="codelanguage">HTML</span><pre><code class="HTML"><span style="color:#0000FF">&lt;</span><span style="color:#800000">input</span> <span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>=<span style="color:#0000FF">&quot;true&quot;</span>
+<span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">number</span>=<span style="color:#0000FF">&quot;The field Price must be a number.&quot;</span>
+<span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">range</span>=<span style="color:#0000FF">&quot;Price must be between 0.01 and 100.00&quot;</span>
+<span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">range</span>-<span style="color:#FF0000">max</span>=<span style="color:#0000FF">&quot;100&quot;</span>
+<span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">range</span>-<span style="color:#FF0000">min</span>=<span style="color:#0000FF">&quot;0.01&quot;</span>
+<span style="color:#FF0000">data</span>-<span style="color:#FF0000">val</span>-<span style="color:#FF0000">required</span>=<span style="color:#0000FF">&quot;Price is required&quot;</span>
+<span style="color:#FF0000">id</span>=<span style="color:#0000FF">&quot;Album_Price&quot;</span> <span style="color:#FF0000">name</span>=<span style="color:#0000FF">&quot;Album.Price&quot;</span> <span style="color:#FF0000">type</span>=<span style="color:#0000FF">&quot;text&quot;</span> <span style="color:#FF0000">value</span>=<span style="color:#0000FF">&quot;0&quot;</span> <span style="color:#0000FF">/&gt;</span>
+</code></pre>
+                    </blockquote>
+                </li>
+            </ol>
+            <blockquote>
+                <p><strong>Note:</strong> Additionally, you can deploy this application to Windows Azure Web Sites following <a href="#AppendixB">Appendix B: Publishing an ASP.NET MVC 4 Application using Web Deploy</a>.</p>
+            </blockquote>
+            <hr />
+
+            <p><a name="Summary"></a></p>
+
+            <h2 id="Summary">Summary</h2>
+
+            <p>By completing this Hands-On Lab you have learned how to enable users to change the data stored in the database with the use of the following:</p>
+
+            <ul>
+                <li>Controller actions like Index, Create, Edit, Delete</li>
+                <li>ASP.NET MVC's scaffolding feature for displaying properties in an HTML table</li>
+                <li>Custom HTML helpers to improve user experience</li>
+                <li>Action methods that react to either HTTP-GET or HTTP-POST calls</li>
+                <li>A shared editor template for similar View templates like Create and Edit</li>
+                <li>Form elements like drop-downs</li>
+                <li>Data annotations for Model validation</li>
+                <li>Client Side Validation using jQuery Unobtrusive library</li>
+            </ul>
+        </div>
+        <br />
+        <p><a href="#top">top of page</a></p>
+
+        <div class="clearBoth"></div>
+
+    </div>
+</body>
+</html>
+

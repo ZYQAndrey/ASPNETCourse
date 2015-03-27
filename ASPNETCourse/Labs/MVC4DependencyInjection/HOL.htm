@@ -1,0 +1,962 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="Stylesheet" type="text/css" media="all" href="styles/master.css" />
+</head>
+<body>
+    <div id="outerWrapper">
+        <div id="wrapper" class="landingPage getStartedPage">
+
+
+            <h1 id="ASPNET_MVC_4_Dependency_Injection">ASP.NET MVC 4 Dependency Injection</h1>
+
+            <hr />
+
+            <p><a name="Overview"></a></p>
+
+            <h2 id="Overview">Overview</h2>
+            <blockquote>
+                <p><strong>Note:</strong> This Hands-on Lab assumes you have basic knowledge of <strong>ASP.NET MVC</strong> and <strong>ASP.NET MVC 4 filters</strong>. If you have not used <strong>ASP.NET MVC 4 filters</strong> before, we recommend you to go over <strong>ASP.NET MVC Custom Action Filters</strong> Hands-on Lab.</p>
+            </blockquote>
+            <p>In <strong>Object Oriented Programming</strong> paradigm, objects work together in a collaboration model where there are contributors and consumers. Naturally, this communication model generates dependencies between objects and components, becoming difficult to manage when complexity increases.</p>
+
+            <p>
+                <img src="./images/Class_dependencies_and_model_complexity.png?raw=true" alt="Class dependencies and model complexity" title="Class dependencies and model complexity" />
+            </p>
+
+            <p><em>Class dependencies and model complexity</em></p>
+
+            <p>You have probably heard about the <strong>Factory Pattern</strong> and the separation between the interface and the implementation using services, where the client objects are often responsible for service location.</p>
+
+            <p>The Dependency Injection pattern is a particular implementation of Inversion of Control. <strong>Inversion of Control (IoC)</strong> means that objects do not create other objects on which they rely to do their work. Instead, they get the objects that they need from an outside source (for example, an xml configuration file).</p>
+
+            <p><strong>Dependency Injection (DI)</strong> means that this is done without the object intervention, usually by a framework component that passes constructor parameters and set properties.</p>
+
+            <h3 id="The_Dependency_Injection_DI_Design_Pattern">The Dependency Injection (DI) Design Pattern</h3>
+
+            <p>At a high level, the goal of Dependency Injection is that a client class (e.g. <em>the golfer</em>) needs something that satisfies an interface (e.g. <em>IClub</em>). It doesn't care what the concrete type is  (e.g. <em>WoodClub, IronClub, WedgeClub</em> or <em>PutterClub</em>), it wants someone else to handle that (e.g. a good <em>caddy</em>). The Dependency Resolver in ASP.NET MVC can allow you to register your dependency logic somewhere else (e.g. a container or a <em>bag of clubs</em>).</p>
+
+            <p>
+                <img src="./images/dependency-injection-golf.png?raw=true" alt="Dependency Injection diagram" title="Dependency Injection illustration" />
+            </p>
+
+            <p><em>Dependency Injection - Golf analogy</em></p>
+
+            <p>The advantages of using Dependency Injection pattern and Inversion of Control are the following:</p>
+
+            <ul>
+                <li><p>Reduces class coupling</p></li>
+                <li><p>Increases code reusing</p></li>
+                <li><p>Improves code maintainability</p></li>
+                <li><p>Improves application testing</p></li>
+            </ul>
+            <blockquote>
+                <p><strong>Note:</strong> Dependency Injection is sometimes compared with Abstract Factory Design Pattern, but there is a slight difference between both approaches. DI has a Framework working behind to solve dependencies by calling the factories and the registered services.</p>
+            </blockquote>
+            <p>Now that you understand the Dependency Injection Pattern, you will learn throughout this lab how to apply it in ASP.NET MVC 4. You will start using Dependency Injection in the <strong>Controllers</strong> to include a database access service. Next, you will apply Dependency Injection to the <strong>Views</strong> to consume a service and show information. Finally, you will extend the DI to ASP.NET MVC 4 Filters, injecting a custom action filter in the solution.</p>
+
+            <p>In this Hands-on Lab, you will learn how to:</p>
+
+            <ul>
+                <li><p>Integrate ASP.NET MVC 4 with Unity for Dependency Injection using NuGet Packages</p></li>
+                <li><p>Use Dependency Injection inside an ASP.NET MVC Controller</p></li>
+                <li><p>Use Dependency Injection inside an ASP.NET MVC View</p></li>
+                <li><p>Use Dependency Injection inside an ASP.NET MVC Action Filter</p></li>
+            </ul>
+            <blockquote>
+                <p><strong>Note:</strong> This Lab is using Unity.Mvc3 NuGet Package for dependency resolution, but it is possible to adapt any Dependency Injection Framework to work with ASP.NET MVC 4.</p>
+            </blockquote>
+            
+            <hr />
+
+            <p><a name="Exercises"></a></p>
+
+            <h2 id="Exercises">Exercises</h2>
+
+            <p>This Hands-On Lab is comprised by the following exercises:</p>
+
+            <ol>
+                <li><p><a href="#Exercise1">Exercise 1: Injecting a Controller</a></p></li>
+                <li><p><a href="#Exercise2">Exercise 2: Injecting a View</a></p></li>
+                <li><p><a href="#Exercise3">Exercise 3: Injecting Filters</a></p></li>
+            </ol>
+            <blockquote>
+                <p><strong>Note:</strong> Each exercise is accompanied by an <strong>End</strong> folder containing the resulting solution you should obtain after completing the exercises. You can use this solution as a guide if you need additional help working through the exercises.</p>
+            </blockquote>
+            <p>Estimated time to complete this lab: <strong>30 minutes</strong>.</p>
+
+            <p><a name="Exercise1"></a></p>
+
+            <h3 id="Exercise_1_Injecting_a_Controller">Exercise 1: Injecting a Controller</h3>
+
+            <p>In this exercise, you will learn how to use Dependency Injection in ASP.NET MVC Controllers by integrating Unity using a NuGet Package. For that reason, you will include services into your MvcMusicStore controllers to separate the logic from the data access. The services will create a new dependence in the controller constructor, which will be resolved using Dependency Injection with the help of <strong>Unity</strong>.</p>
+
+            <p>This approach will show you how to generate less coupled applications, which are more flexible and easier to maintain and test. You will also learn how to integrate ASP.NET MVC with Unity.</p>
+
+            <h4 id="About_StoreManager_Service">About StoreManager Service</h4>
+
+            <p>The MVC Music Store provided in the begin solution now includes a service that manages the Store Controller data named <strong>StoreService</strong>. Below you will find the Store Service implementation. Note that all the methods return Model entities.</p>
+
+            <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Controllers
+{    
+            <span style="color:#0000FF">using</span> System.Web.Mvc;
+            <span style="color:#0000FF">using</span> MvcMusicStore.Filters;
+            <span style="color:#0000FF">using</span> MvcMusicStore.Services;
+    [MyNewCustomActionFilter(Order = 1)]
+    [CustomActionFilter(Order = 2)]
+            <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+    {
+            <span style="color:#0000FF">private</span> IStoreService service;
+            <span style="color:#0000FF">public</span> StoreController(IStoreService service)
+        {
+            <span style="color:#0000FF">this</span>.service = service;
+        }
+            <span style="color:#008000">// GET: /Store/</span>
+            <span style="color:#0000FF">public</span> ActionResult Details(<span style="color:#0000FF">int</span> id)
+        {
+            <span style="color:#0000FF">var</span> album = <span style="color:#0000FF">this</span>.service.GetAlbum(id);
+            <span style="color:#0000FF">if</span> (album == <span style="color:#0000FF">null</span>)
+            {
+            <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.HttpNotFound();
+            }
+            <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(album);
+        }
+            <span style="color:#0000FF">public</span> ActionResult Browse(<span style="color:#0000FF">string</span> genre)
+        {
+            <span style="color:#008000">// Retrieve Genre and its Associated Albums from database</span>
+            <span style="color:#0000FF">var</span> genreModel = <span style="color:#0000FF">this</span>.service.GetGenreByName(genre);
+            <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(genreModel);
+        }
+            <span style="color:#0000FF">public</span> ActionResult Index()
+        {
+            <span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">this</span>.service.GetGenres();
+            <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.View(genres);
+        }
+            <span style="color:#008000">// GET: /Store/GenreMenu</span>
+            <span style="color:#0000FF">public</span> ActionResult GenreMenu()
+        {
+            <span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">this</span>.service.GetGenres();
+            <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.PartialView(genres);
+        }
+    }
+}
+</code></pre>
+
+            <p><strong>StoreController</strong> from the begin solution now consumes <strong>StoreService</strong>. All the data references were removed from <strong>StoreController</strong>, and now possible to modify the current data access provider without changing any method that consumes <strong>StoreService</strong>.</p>
+
+            <p>You will find below that the <strong>StoreController</strong> implementation has a dependency with  <strong>StoreService</strong> inside the class constructor.</p>
+            <blockquote>
+                <p><strong>Note:</strong> The dependency introduced in this exercise is related to <strong>Inversion of Control</strong> (IoC).</p>
+
+                <p>The <strong>StoreController</strong> class constructor receives an <strong>IStoreService</strong> type parameter, which is essential to perform service calls from inside the class. However, <strong>StoreController</strong> does not implement the default constructor (with no parameters) that any controller must have to work with ASP.NET MVC.</p>
+
+                <p>To resolve the dependency, the controller has to be created by an abstract factory (a class that returns any object of the specified type).</p>
+            </blockquote>
+            <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<span style="color:#0000FF">using</span> System.Web.Mvc;
+<span style="color:#0000FF">using</span> MvcMusicStore.ViewModels;
+<span style="color:#0000FF">using</span> MvcMusicStore.Models;
+<span style="color:#0000FF">using</span> MvcMusicStore.Services;
+<span style="color:#0000FF">namespace</span> MvcMusicStore.Controllers
+{
+            <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+    {
+            <span style="color:#0000FF">private</span> IStoreService service;
+            <span style="color:#0000FF">public</span> StoreController(IStoreService service)
+        {
+            <span style="color:#0000FF">this</span>.service = service;
+        }
+            <span style="color:#008000">//</span>
+            <span style="color:#008000">// GET: /Store/</span>
+            <span style="color:#0000FF">public</span> ActionResult Index()
+        {
+            <span style="color:#008000">// Create list of genres</span>
+            <span style="color:#0000FF">var</span> genres = <span style="color:#0000FF">this</span>.service.GetGenreNames();
+            <span style="color:#008000">// Create your view model</span>
+            <span style="color:#0000FF">var</span> viewModel = <span style="color:#0000FF">new</span> StoreIndexViewModel
+            {
+                Genres = genres.ToList(),
+                NumberOfGenres = genres.Count()
+            };
+            <span style="color:#0000FF">return</span> View(viewModel);
+        }
+            <span style="color:#008000">//</span>
+            <span style="color:#008000">// GET: /Store/Browse?genre=Disco</span>
+            <span style="color:#0000FF">public</span> ActionResult Browse(<span style="color:#0000FF">string</span> genre)
+        {
+            <span style="color:#0000FF">var</span> genreModel = <span style="color:#0000FF">this</span>.service.GetGenreByName(genre);
+            <span style="color:#0000FF">var</span> viewModel = <span style="color:#0000FF">new</span> StoreBrowseViewModel()
+            {
+                Genre = genreModel,
+                Albums = genreModel.Albums.ToList()
+            };
+            <span style="color:#0000FF">return</span> View(viewModel);
+        }
+            <span style="color:#008000">//</span>
+            <span style="color:#008000">// GET: /Store/Details/5</span>
+            <span style="color:#0000FF">public</span> ActionResult Details(<span style="color:#0000FF">int</span> id)
+        {
+            <span style="color:#0000FF">var</span> album = <span style="color:#0000FF">this</span>.service.GetAlbum(id);
+            <span style="color:#0000FF">return</span> View(album);
+        }
+    }
+}
+</code></pre>
+            <blockquote>
+                <p><strong>Note:</strong> You will get an error when the class tries to create the StoreController without sending the service object, as there is no parameterless constructor declared.</p>
+            </blockquote>
+            <p><a name="Ex1Task1"></a></p>
+
+            <h4 id="Task_1_-_Running_the_Application">Task 1 - Running the Application</h4>
+
+            <p>In this task, you will run the Begin application, which includes the service into the Store Controller that separates the data access from the application logic.</p>
+
+            <p>When running the application, you will receive an exception, as the controller service is not passed as a parameter by default:</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located in <strong>Source\Ex01-Injecting Controller\Begin</strong>.</p>
+
+                    <ol>
+                        <li>You will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Press <strong>Ctrl + F5</strong> to run the application without debugging. You will get the error message &quot;<strong>No parameterless constructor defined for this object</strong>&quot;:</p>
+
+                    <p>
+                        <img src="./images/Error_while_running_MVC_Begin_Application.png?raw=true" alt="Error while running ASP.NET MVC Begin Application" title="Error while running ASP.NET MVC Begin Application" />
+                    </p>
+
+                    <p><em>Error while running ASP.NET MVC Begin Application</em></p>
+                </li>
+                <li><p>Close the browser.</p></li>
+            </ol>
+
+            <p>In the following steps you will work on the Music Store Solution to inject the dependency this controller needs.</p>
+
+            <p><a name="Ex1Task2"></a></p>
+
+            <h4 id="Task_2_-_Including_Unity_into_MvcMusicStore_Solution">Task 2 - Including Unity into MvcMusicStore Solution</h4>
+
+            <p>In this task, you will include <strong>Unity.Mvc3</strong> NuGet Package to the solution.</p>
+            <blockquote>
+                <p><strong>Note:</strong> Unity.Mvc3 package was designed for ASP.NET MVC 3, but it is fully compatible with ASP.NET MVC 4.</p>
+
+                <p>Unity is a lightweight, extensible dependency injection container with optional support for instance and type interception. It is a general-purpose container for use in any type of .NET application. It provides all the common features found in dependency injection mechanisms including: object creation, abstraction of requirements by specifying dependencies at runtime and flexibility, by deferring the component configuration to the container.</p>
+            </blockquote>
+            <ol>
+                <li><p>Install <strong>Unity.Mvc3</strong> NuGet Package in the <strong>MvcMusicStore</strong> project. To do this, open the <strong>Package Manager Console</strong> from <strong>View</strong> | <strong>Other Windows</strong>.</p></li>
+                <li>
+                    <p>Run the following command.</p>
+
+                    <span class="codelanguage">PMC</span><pre><code class="PMC">Install-Package Unity.Mvc3
+</code></pre>
+
+                    <p>
+                        <img src="images/installing-unitymvc3-nuget-package.png?raw=true" alt="Installing Unity.Mvc3 NuGet Package" title="Installing Unity.Mvc3 NuGet Package" />
+                    </p>
+
+                    <p><em>Installing Unity.Mvc3 NuGet Package</em></p>
+                </li>
+                <li>
+                    <p>Once the <strong>Unity.Mvc3</strong> package is installed, explore the files and folders it automatically adds in order to simplify Unity configuration.</p>
+
+                    <p>
+                        <img src="images/unitymvc3-package-installed.png?raw=true" alt="Unity.Mvc3 package installed" title="Unity.Mvc3 package installed" />
+                    </p>
+
+                    <p><em>Unity.Mvc3 package installed</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task3"></a></p>
+
+            <h4 id="Task_3_-_Registering_Unity_in_Globalasaxcs_Application_Start">Task 3 - Registering Unity in Global.asax.cs Application_Start</h4>
+
+            <p>In this task, you will update the <strong>Application_Start</strong> method located in <strong>Global.asax.cs</strong> to call the Unity Bootstrapper initializer and then, update the Bootstrapper file registering the Service and Controller you will use for Dependency Injection.</p>
+
+            <ol>
+                <li>
+                    <p>Now, you will hook up the Bootstrapper which is the file that initializes the Unity container and Dependency Resolver. To do this, open <strong>Global.asax.cs</strong> and add the following highlighted code within the <strong>Application_Start</strong> method.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex01 - Initialize Unity</em>)</p>
+
+                    <!-- mark: 10    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">protected</span> <span style="color:#0000FF">void</span> Application_Start()
+  {
+        AreaRegistration.RegisterAllAreas();
+        WebApiConfig.Register(GlobalConfiguration.Configuration);
+        FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+        RouteConfig.RegisterRoutes(RouteTable.Routes);
+        BundleConfig.RegisterBundles(BundleTable.Bundles);
+<strong class="markLine">        Bootstrapper.Initialise();</strong>
+        AppConfig.Configure();
+  }
+</code></pre>
+                </li>
+                <li><p>Open <strong>Bootstrapper.cs</strong> file.</p></li>
+                <li>
+                    <p>Include the following namespaces: <strong>MvcMusicStore.Services</strong> and <strong>MusicStore.Controllers</strong>.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex01 - Bootstrapper Adding Namespaces</em>)</p>
+
+                    <!-- mark: 4-5    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System.Web.Mvc;
+<span style="color:#0000FF">using</span> Microsoft.Practices.Unity;
+<span style="color:#0000FF">using</span> Unity.Mvc3;
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Services;</strong>
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Controllers;</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Replace <strong>BuildUnityContainer</strong> method's content with the following code that registers Store Controller and Store Service.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex01 - Register Store Controller and Service</em>)</p>
+
+                    <!-- mark:3-8    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">private</span> <span style="color:#0000FF">static</span> IUnityContainer BuildUnityContainer()
+  {
+<strong class="markLine">        <span style="color:#0000FF">var</span> container = <span style="color:#0000FF">new</span> UnityContainer();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        container.RegisterType&lt;IStoreService, StoreService&gt;();</strong>
+<strong class="markLine">        container.RegisterType&lt;IController, StoreController&gt;(<span style="color:#8B0000">&quot;Store&quot;</span>);        </strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">return</span> container;</strong>
+  }
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task4"></a></p>
+
+            <h4 id="Task_4_-_Running_the_Application">Task 4 - Running the Application</h4>
+
+            <p>In this task, you will run the application to verify that it can now be loaded after including Unity.</p>
+
+            <ol>
+                <li>
+                    <p>Press <strong>F5</strong> to run the application, the application should now load without showing any error message.</p>
+
+                    <p>
+                        <img src="images/running-application-with-dependency-injection.png?raw=true" alt="Running Application with Dependency Injection" title="Running Application with Dependency Injection" />
+                    </p>
+
+                    <p><em>Running Application with Dependency Injection</em></p>
+                </li>
+                <li>
+                    <p>Browse to <strong>/Store</strong>. This will invoke <strong>StoreController</strong>, which is now created using <strong>Unity</strong>.</p>
+
+                    <p>
+                        <img src="./images/MVC_Music_Store.png?raw=true" alt="MVC Music Store" title="MVC Music Store" />
+                    </p>
+
+                    <p><em>MVC Music Store</em></p>
+                </li>
+                <li><p>Close the browser.</p></li>
+            </ol>
+
+            <p>In the following exercises you will learn how to extend the Dependency Injection scope to use it inside ASP.NET MVC Views and Action Filters.</p>
+
+            <p><a name="Exercise2"></a></p>
+
+            <h3 id="Exercise_2_Injecting_a_View">Exercise 2: Injecting a View</h3>
+
+            <p>In this exercise, you will learn how to use Dependency Injection in a view with the new features of ASP.NET MVC 4 for Unity integration. In order to do that, you will call a custom service inside the Store Browse View, which will show a message and an image below.</p>
+
+            <p>Then, you will integrate the project with Unity and create a custom dependency resolver to inject the dependencies.</p>
+
+            <p><a name="Ex2Task1"></a></p>
+
+            <h4 id="Task_1_-_Creating_a_View_that_Consumes_a_Service">Task 1 - Creating a View that Consumes a Service</h4>
+
+            <p>In this task, you will create a view that performs a service call to generate a new dependency. The service consists in a simple messaging service included in this solution.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located in the <strong>Source\Ex02-Injecting View\Begin</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+
+                        <p>For more information, see this article: <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages</a>.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Include the <strong>MessageService.cs</strong> and the <strong>IMessageService.cs</strong> classes located in the <strong>Source\Assets</strong> folder in <strong>/Services</strong>. To do this, right-click <strong>Services</strong> folder and select <strong>Add Existing Item</strong>. Browse to the files' location and include them.</p>
+
+                    <p>
+                        <img src="images/adding-message-service-and-service-interface.png?raw=true" alt="Adding Message Service and Service Interface" title="Adding Message Service and Service Interface" />
+                    </p>
+
+                    <p><em>Adding Message Service and Service Interface</em></p>
+                    <blockquote>
+                        <p><strong>Note:</strong> The <strong>IMessageService</strong> interface defines two properties implemented by the <strong>MessageService</strong> class. These properties -<strong>Message</strong> and <strong>ImageUrl</strong>- store the message and the URL of the image to be displayed.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Create the folder <strong>/Pages</strong> in the project's root folder, and then add the existing class <strong>MyBasePage.cs</strong> from <strong>Source\Assets</strong>. The base page you will inherit from has the following structure.</p>
+
+                    <p>
+                        <img src="images/pages-folder.png?raw=true" alt="Pages folder" title="Pages folder" />
+                    </p>
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Pages
+{
+                    <span style="color:#0000FF">using</span> System;
+                    <span style="color:#0000FF">using</span> System.Collections.Generic;
+                    <span style="color:#0000FF">using</span> System.Linq;
+                    <span style="color:#0000FF">using</span> System.Web;
+                    <span style="color:#0000FF">using</span> Microsoft.Practices.Unity;
+                    <span style="color:#0000FF">using</span> MvcMusicStore.Models;
+                    <span style="color:#0000FF">using</span> MvcMusicStore.Services;
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> MyBasePage : System.Web.Mvc.WebViewPage&lt;Genre&gt;
+     {
+          [Dependency]
+                    <span style="color:#0000FF">public</span> IMessageService MessageService { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">override</span> <span style="color:#0000FF">void</span> Execute()
+          {
+          }
+     }
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Open <strong>Browse.cshtml</strong> view from <strong>/Views/Store</strong> folder, and make it inherit from <strong>MyBasePage.cs</strong>.</p>
+
+                    <!-- mark: 1    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine">@inherits MvcMusicStore.Pages.MyBasePage</strong>
+@{
+     ViewBag.Title = <span style="color:#8B0000">&quot;Browse Albums&quot;</span>;
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>In the <strong>Browse</strong> view, add a call to <strong>MessageService</strong> to display an image and a message retrieved by the service.</p>
+
+                    <!-- mark: 4-9    -->
+
+                    <span class="codelanguage">HTML(C#)</span><pre><code class="HTML(C#)">@inherits MvcMusicStore.Pages.MyBasePage    
+@{
+    Viewbag.Title = &quot;Browse Albums&quot;;
+<strong class="markLine">}</strong>
+<strong class="markLine">&lt;div&gt;</strong>
+<strong class="markLine">    @this.MessageService.Message</strong>
+<strong class="markLine">    &lt;br /&gt;</strong>
+<strong class="markLine">    &lt;img alt=&quot;@this.MessageService.Message&quot; src=&quot;@this.MessageService.ImageUrl&quot; /&gt;</strong>
+<strong class="markLine">&lt;/div&gt;</strong>
+...
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task2"></a></p>
+
+            <h4 id="Task_2_-_Including_a_Custom_Dependency_Resolver_and_a_Custom_View_Page_Activator">Task 2 - Including a Custom Dependency Resolver and a Custom View Page Activator</h4>
+
+            <p>In the previous task, you injected a new dependency inside a view to perform a service call inside it. Now, you will resolve that dependency by implementing the ASP.NET MVC Dependency Injection interfaces <strong>IViewPageActivator</strong> and <strong>IDependencyResolver</strong>. You will include in the solution an implementation of <strong>IDependencyResolver</strong> that will deal with the service retrieval by using Unity. Then, you will include another custom implementation of <strong>IViewPageActivator</strong> interface that will solve the creation of the views.</p>
+            <blockquote>
+                <p><strong>Note:</strong> Since ASP.NET MVC 3, the implementation for Dependency Injection had simplified the interfaces to register services. <strong>IDependencyResolver</strong> and <strong>IViewPageActivator</strong> are part of ASP.NET MVC 3 features for Dependency Injection.</p>
+
+                <p><strong>- IDependencyResolver</strong> interface replaces the previous IMvcServiceLocator. Implementers of IDependencyResolver must return an instance of the service or a service collection.</p>
+
+                <span class="codelanguage">C#</span><pre><code class="C#">  <span style="color:#0000FF">public</span> <span style="color:#0000FF">interface</span> IDependencyResolver {
+                <span style="color:#0000FF">object</span> GetService(Type serviceType);
+      IEnumerable&lt;<span style="color:#0000FF">object</span>&gt; GetServices(Type serviceType);
+  }
+</code></pre>
+
+                <p><strong>- IViewPageActivator</strong> interface provides more fine-grained control over how view pages are instantiated via dependency injection. The classes that implement <strong>IViewPageActivator</strong> interface can create view instances using context information.</p>
+
+                <span class="codelanguage">C#</span><pre><code class="C#">  <span style="color:#0000FF">public</span> <span style="color:#0000FF">interface</span> IViewPageActivator {
+                <span style="color:#0000FF">object</span> Create(ControllerContext controllerContext, Type type);
+  }
+</code></pre>
+            </blockquote>
+            <ol>
+                <li><p>Create the /<strong>Factories</strong> folder in the project's root folder.</p></li>
+                <li>
+                    <p>Include <strong>CustomViewPageActivator.cs</strong> to your solution from <strong>/Sources/Assets/</strong> to <strong>Factories</strong> folder. To do that, right-click  the <strong>/Factories</strong> folder, select <strong>Add | Existing Item</strong> and then select <strong>CustomViewPageActivator.cs</strong>. This class implements the <strong>IViewPageActivator</strong> interface to hold the Unity Container.</p>
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Factories
+{
+                    <span style="color:#0000FF">using</span> System;
+                    <span style="color:#0000FF">using</span> System.Collections.Generic;
+                    <span style="color:#0000FF">using</span> System.Linq;
+                    <span style="color:#0000FF">using</span> System.Web;
+                    <span style="color:#0000FF">using</span> System.Web.Mvc;
+                    <span style="color:#0000FF">using</span> Microsoft.Practices.Unity;
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> CustomViewPageActivator : IViewPageActivator
+     {
+                    <span style="color:#0000FF">private</span> IUnityContainer container;
+                    <span style="color:#0000FF">public</span> CustomViewPageActivator(IUnityContainer container)
+          {
+                    <span style="color:#0000FF">this</span>.container = container;
+          }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">object</span> Create(ControllerContext controllerContext, Type type)
+          {
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.container.Resolve(type);
+          }
+     }
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> <strong>CustomViewPageActivator</strong> is responsible for managing the creation of a view by using a Unity container.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Include <strong>UnityDependencyResolver.cs</strong> file from <strong>/Sources/Assets</strong> to  <strong>/Factories</strong> folder. To do that, right-click  the <strong>/Factories</strong> folder, select <strong>Add | Existing Item</strong> and then select <strong>UnityDependencyResolver.cs</strong> file.</p>
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Factories
+{
+                    <span style="color:#0000FF">using</span> System;
+                    <span style="color:#0000FF">using</span> System.Collections.Generic;
+                    <span style="color:#0000FF">using</span> System.Linq;
+                    <span style="color:#0000FF">using</span> System.Web;
+                    <span style="color:#0000FF">using</span> System.Web.Mvc;
+                    <span style="color:#0000FF">using</span> Microsoft.Practices.Unity;
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> UnityDependencyResolver : IDependencyResolver
+     {
+                    <span style="color:#0000FF">private</span> IUnityContainer container;
+                    <span style="color:#0000FF">private</span> IDependencyResolver resolver;
+                    <span style="color:#0000FF">public</span> UnityDependencyResolver(IUnityContainer container, IDependencyResolver resolver)
+          {
+                    <span style="color:#0000FF">this</span>.container = container;
+                    <span style="color:#0000FF">this</span>.resolver = resolver;
+          }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">object</span> GetService(Type serviceType)
+          {
+                    <span style="color:#0000FF">try</span>
+                {
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.container.Resolve(serviceType);
+                }
+                    <span style="color:#0000FF">catch</span>
+                {
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.resolver.GetService(serviceType);
+                }
+          }
+                    <span style="color:#0000FF">public</span> IEnumerable&lt;<span style="color:#0000FF">object</span>&gt; GetServices(Type serviceType)
+          {
+                    <span style="color:#0000FF">try</span>
+                {
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.container.ResolveAll(serviceType);
+                }
+                    <span style="color:#0000FF">catch</span>
+                {
+                    <span style="color:#0000FF">return</span> <span style="color:#0000FF">this</span>.resolver.GetServices(serviceType);
+                }
+          }
+     }
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> <strong>UnityDependencyResolver</strong> class is a custom DependencyResolver for Unity. When a service cannot be found inside the Unity container, the base resolver is invocated.  </p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p>In the following task both implementations will be registered to let the model know the location of the services and the views.</p>
+
+            <p><a name="Ex2Task3"></a></p>
+
+            <h4 id="Task_3_-_Registering_for_Dependency_Injection_within_Unity_container">Task 3 - Registering for Dependency Injection within Unity container</h4>
+
+            <p>In this task, you will put all the previous things together to make Dependency Injection work.</p>
+
+            <p>Up to now your solution has the following elements:</p>
+
+            <ul>
+                <li><p>A <strong>Browse</strong> View that inherits from <strong>MyBaseClass</strong> and consumes <strong>MessageService</strong>.</p></li>
+                <li><p>An intermediate class -<strong>MyBaseClass</strong>- that has dependency injection declared for the service interface.</p></li>
+                <li><p>A service - <strong>MessageService</strong> - and its interface <strong>IMessageService</strong>.</p></li>
+                <li><p>A custom dependency resolver for Unity - <strong>UnityDependencyResolver</strong> - that deals with service retrieval.</p></li>
+                <li><p>A View Page activator - **CustomViewPageActivator ** that creates the page.</p></li>
+            </ul>
+
+            <p>To inject <strong>Browse</strong> View, you will now register the custom dependency resolver in the Unity container.</p>
+
+            <ol>
+                <li><p>Open <strong>Bootstrapper.cs</strong> file.</p></li>
+                <li>
+                    <p>Register an instance of <strong>MessageService</strong> into the Unity container to initialize the service:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex02 - Register Message Service</em>)</p>
+
+                    <!-- mark: 8-12    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">private</span> <span style="color:#0000FF">static</span> IUnityContainer BuildUnityContainer()
+    {
+                    <span style="color:#0000FF">var</span> container = <span style="color:#0000FF">new</span> UnityContainer();
+        container.RegisterType&lt;IStoreService, StoreService&gt;();
+        container.RegisterType&lt;IController, StoreController&gt;(<span style="color:#8B0000">&quot;Store&quot;</span>);
+<strong class="markLine">        container.RegisterInstance&lt;IMessageService&gt;(<span style="color:#0000FF">new</span> MessageService</strong>
+<strong class="markLine">        {</strong>
+<strong class="markLine">            Message = <span style="color:#8B0000">&quot;You are welcome to our Web Camps Training Kit!&quot;</span>,</strong>
+<strong class="markLine">            ImageUrl = <span style="color:#8B0000">&quot;/Content/Images/webcamps.png&quot;</span></strong>
+<strong class="markLine">        });</strong>
+    ...
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Add a reference to <strong>MvcMusicStore.Factories</strong> namespace.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex02 - Factories Namespace</em>)</p>
+
+                    <!-- mark: 6    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System.Web.Mvc; 
+<span style="color:#0000FF">using</span> Microsoft.Practices.Unity; 
+<span style="color:#0000FF">using</span> Unity.Mvc3; 
+<span style="color:#0000FF">using</span> MvcMusicStore.Services; 
+<span style="color:#0000FF">using</span> MvcMusicStore.Controllers; 
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Factories; </strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Register <strong>CustomViewPageActivator</strong> as a View Page activator into the Unity container:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex02 - Register CustomViewPageActivator</em>)</p>
+
+                    <!-- mark: 14    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">private</span> <span style="color:#0000FF">static</span> IUnityContainer BuildUnityContainer()
+  {
+                    <span style="color:#0000FF">var</span> container = <span style="color:#0000FF">new</span> UnityContainer();
+        container.RegisterType&lt;IStoreService, StoreService&gt;();
+        container.RegisterType&lt;IController, StoreController&gt;(<span style="color:#8B0000">&quot;Store&quot;</span>);
+        container.RegisterInstance&lt;IMessageService&gt;(<span style="color:#0000FF">new</span> MessageService
+        {
+             Message = <span style="color:#8B0000">&quot;You are welcome to our Web Camps Training Kit!&quot;</span>,
+             ImageUrl = <span style="color:#8B0000">&quot;/Content/Images/webcamps.png&quot;</span>
+        });
+<strong class="markLine">        container.RegisterType&lt;IViewPageActivator, CustomViewPageActivator&gt;(<span style="color:#0000FF">new</span> InjectionConstructor(container));</strong>
+                    <span style="color:#0000FF">return</span> container;
+  }
+</code></pre>
+                </li>
+                <li>
+                    <p>Replace ASP.NET MVC 4 default dependency resolver with an instance of <strong>UnityDependencyResolver</strong>. To do this, replace <strong>Initialise</strong> method content with the following code:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex02 - Update Dependency Resolver</em>)</p>
+
+                    <!-- mark: 3-11    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">static</span> <span style="color:#0000FF">void</span> Initialise()
+  {
+<strong class="markLine">        <span style="color:#0000FF">var</span> container = BuildUnityContainer();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        DependencyResolver.SetResolver(<span style="color:#0000FF">new</span> Unity.Mvc3.UnityDependencyResolver(container));</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        IDependencyResolver resolver = DependencyResolver.Current;</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        IDependencyResolver newResolver = <span style="color:#0000FF">new</span> Factories.UnityDependencyResolver(container, resolver);</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        DependencyResolver.SetResolver(newResolver);</strong>
+  }
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> ASP.NET MVC provides a default dependency resolver class. To work with custom dependency resolvers as the one we have created for unity, this resolver has to be replaced.</p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task4"></a></p>
+
+            <h4 id="Task_4_-_Running_the_Application">Task 4 - Running the Application</h4>
+
+            <p>In this task, you will run the application to verify that the Store Browser consumes the service and shows the image and the message retrieved:</p>
+
+            <ol>
+                <li><p>Press <strong>F5</strong> to run the application.</p></li>
+                <li>
+                    <p>Click <strong>Rock</strong> within the Genres Menu and see how the <strong>MessageService</strong> was injected to the view and loaded the welcome message and the image. In this example, we are entering to &quot;<strong>Rock</strong>&quot;:</p>
+
+                    <p>
+                        <img src="./images/Music_Store.png?raw=true" alt="MVC Music Store - View Injection" title="MVC Music Store - View Injection" />
+                    </p>
+
+                    <p><em>MVC Music Store - View Injection</em></p>
+                </li>
+                <li><p>Close the browser.</p></li>
+            </ol>
+
+            <p><a name="Exercise3"></a></p>
+
+            <h3 id="Exercise_3_Injecting_Action_Filters">Exercise 3: Injecting Action Filters</h3>
+
+            <p>In the previous Hands-On lab <strong>Custom Action Filters</strong> you have worked with filters customization and injection. In this exercise, you will learn how to inject filters with Dependency Injection by using the Unity container. To do that, you will add to the Music Store solution a custom action filter that will trace the activity of the site.</p>
+
+            <p><a name="Ex3Task1"></a></p>
+
+            <h4 id="Task_1_-_Including_the_Tracking_Filter_in_the_Solution">Task 1 - Including the Tracking Filter in the Solution</h4>
+
+            <p>In this task, you will include in the Music Store a custom action filter to trace events. As custom action filter concepts are already treated in the previous Lab &quot;Custom Action Filters&quot;, you will just include the filter class from the Assets folder of this lab, and then create a Filter Provider for Unity:</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located in the <strong>Source\Ex03 - Injecting Action Filter\Begin</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>. </li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages. </li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>. </li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+
+                        <p>For more information, see this article: <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages</a>.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>Include <strong>TraceActionFilter.cs</strong> file from <strong>/Sources/Assets</strong> to <strong>/Filters</strong> folder.</p>
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Filters
+{
+                    <span style="color:#0000FF">using</span> System;
+                    <span style="color:#0000FF">using</span> System.Collections.Generic;
+                    <span style="color:#0000FF">using</span> System.Linq;
+                    <span style="color:#0000FF">using</span> System.Web;
+                    <span style="color:#0000FF">using</span> System.Web.Mvc;
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> TraceActionFilter : IActionFilter
+     {
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">void</span> OnActionExecuted(ActionExecutedContext filterContext)
+          {
+                filterContext.HttpContext.Trace.Write(<span style="color:#8B0000">&quot;OnActionExecuted&quot;</span>);
+                filterContext.HttpContext.Trace.Write(<span style="color:#8B0000">&quot;Action &quot;</span> + filterContext.ActionDescriptor.ActionName);
+                filterContext.HttpContext.Trace.Write(<span style="color:#8B0000">&quot;Controller &quot;</span> + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName);
+          }
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">void</span> OnActionExecuting(ActionExecutingContext filterContext)
+          {
+                filterContext.HttpContext.Trace.Write(<span style="color:#8B0000">&quot;OnActionExecuting&quot;</span>);
+                filterContext.HttpContext.Trace.Write(<span style="color:#8B0000">&quot;Action &quot;</span> + filterContext.ActionDescriptor.ActionName);
+                filterContext.HttpContext.Trace.Write(<span style="color:#8B0000">&quot;Controller &quot;</span> + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName);
+          }
+     }
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> This custom action filter performs ASP.NET tracing. You can check &quot;ASP.NET MVC 4 local and Dynamic Action Filters&quot; Lab for more reference.</p>
+                    </blockquote>
+                </li>
+                <li><p>Add the empty class <strong>FilterProvider.cs</strong> to the project in the folder <strong>/Filters.</strong></p></li>
+                <li>
+                    <p>Add the <strong>System.Web.Mvc</strong> and <strong>Microsoft.Practices.Unity</strong> namespaces in <strong>FilterProvider.cs</strong>.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex03 - Filter Provider Adding Namespaces</em>)</p>
+
+                    <!-- mark: 5-6    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<strong class="markLine"><span style="color:#0000FF">using</span> System.Web.Mvc;</strong>
+<strong class="markLine"><span style="color:#0000FF">using</span> Microsoft.Practices.Unity;</strong>
+<span style="color:#0000FF">namespace</span> MvcMusicStore.Filters
+{
+                    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> FilterProvider
+     {
+     }
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Make the class inherit from <strong>IFilterProvider</strong> Interface.</p>
+
+                    <!-- mark: 3    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">namespace</span> MvcMusicStore.Filters
+{
+<strong class="markLine">     <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> FilterProvider : IFilterProvider</strong>
+     {
+     }
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Add a <strong>IUnityContainer</strong> property in the <strong>FilterProvider</strong> class, and then create a class constructor to assign the container.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex03 - Filter Provider Constructor</em>)</p>
+
+                    <!-- mark: 3-8    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> FilterProvider : IFilterProvider
+{
+<strong class="markLine">    <span style="color:#0000FF">private</span> IUnityContainer container;</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">    <span style="color:#0000FF">public</span> FilterProvider(IUnityContainer container)</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        <span style="color:#0000FF">this</span>.container = container;</strong>
+<strong class="markLine">    }</strong>
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> The filter provider class constructor is not creating a <strong>new</strong> object inside. The container is passed as a parameter, and the dependency is solved by Unity.</p>
+                    </blockquote>
+                </li>
+                <li>
+                    <p>In the <strong>FilterProvider</strong> class, implement the method <strong>GetFilters</strong> from <strong>IFilterProvider</strong> interface.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex03 - Filter Provider GetFilters</em>)</p>
+
+                    <!-- mark: 9-16    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> FilterProvider : IFilterProvider
+ {
+                    <span style="color:#0000FF">private</span> IUnityContainer container;
+                    <span style="color:#0000FF">public</span> FilterProvider(IUnityContainer container)
+      {
+                    <span style="color:#0000FF">this</span>.container = container;
+      }
+<strong class="markLine"></strong>
+<strong class="markLine">      <span style="color:#0000FF">public</span> IEnumerable&lt;Filter&gt; GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)</strong>
+<strong class="markLine">      {</strong>
+<strong class="markLine">            <span style="color:#0000FF">foreach</span> (IActionFilter actionFilter <span style="color:#0000FF">in</span> <span style="color:#0000FF">this</span>.container.ResolveAll&lt;IActionFilter&gt;())</strong>
+<strong class="markLine">            {</strong>
+<strong class="markLine">                 yield <span style="color:#0000FF">return</span> <span style="color:#0000FF">new</span> Filter(actionFilter, FilterScope.First, <span style="color:#0000FF">null</span>);</strong>
+<strong class="markLine">            }</strong>
+<strong class="markLine">      }</strong>
+ }
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task2"></a></p>
+
+            <h4 id="Task_2_-_Registering_and_Enabling_the_Filter">Task 2 - Registering and Enabling the Filter</h4>
+
+            <p>In this task, you will enable site tracking. To do that, you will register the filter in <strong>Bootstrapper.cs BuildUnityContainer</strong> method to start tracing:</p>
+
+            <ol>
+                <li>
+                    <p>Open <strong>Web.config</strong> located in the project root and enable trace tracking at System.Web group.</p>
+
+                    <!-- mark: 2    -->
+
+                    <span class="codelanguage">XML</span><pre><code class="XML">  <span style="color:#0000FF">&lt;</span><span style="color:#800000">system.web</span><span style="color:#0000FF">&gt;</span>
+<strong class="markLine">    <span style="color:#0000FF">&lt;</span><span style="color:#800000">trace</span> <span style="color:#FF0000">enabled</span>=<span style="color:#0000FF">&quot;true&quot;</span><span style="color:#0000FF">/&gt;</span></strong>
+                    <span style="color:#0000FF">&lt;</span><span style="color:#800000">compilation</span> <span style="color:#FF0000">debug</span>=<span style="color:#0000FF">&quot;true&quot;</span> <span style="color:#FF0000">targetFramework</span>=<span style="color:#0000FF">&quot;4.5&quot;</span><span style="color:#0000FF">&gt;</span>
+</code></pre>
+                </li>
+                <li><p>Open <strong>Bootstrapper.cs</strong> at project root.</p></li>
+                <li>
+                    <p>Add a reference to the Filters namespace.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex03 - Bootstrapper Adding Namespaces</em>)</p>
+
+                    <!-- mark: 7    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System.Web.Mvc;
+<span style="color:#0000FF">using</span> Microsoft.Practices.Unity;
+<span style="color:#0000FF">using</span> Unity.Mvc3;
+<span style="color:#0000FF">using</span> MvcMusicStore.Services;
+<span style="color:#0000FF">using</span> MvcMusicStore.Controllers;
+<span style="color:#0000FF">using</span> MvcMusicStore.Factories;
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Filters;</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Select the <strong>BuildUnityContainer</strong> method and register the filter in the Unity Container. You will have to register the filter provider as well as the action filter.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET Dependency Injection Lab - Ex03 - Register FilterProvider and ActionFilter</em>)</p>
+
+                    <!-- mark: 7-8    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">private</span> <span style="color:#0000FF">static</span> IUnityContainer BuildUnityContainer()
+  {
+                    <span style="color:#0000FF">var</span> container = <span style="color:#0000FF">new</span> UnityContainer();
+        ...
+<strong class="markLine">        container.RegisterInstance&lt;IFilterProvider&gt;(<span style="color:#8B0000">&quot;FilterProvider&quot;</span>, <span style="color:#0000FF">new</span> FilterProvider(container));</strong>
+<strong class="markLine">        container.RegisterInstance&lt;IActionFilter&gt;(<span style="color:#8B0000">&quot;LogActionFilter&quot;</span>, <span style="color:#0000FF">new</span> TraceActionFilter());</strong>
+                    <span style="color:#0000FF">return</span> container;
+  }
+</code></pre>
+                </li>
+            </ol>
+
+            <p><a name="Ex3Task3"></a></p>
+
+            <h4 id="Task_3_-_Running_the_Application">Task 3 - Running the Application</h4>
+
+            <p>In this task, you will run the application and test that the custom action filter is tracing the activity:</p>
+
+            <ol>
+                <li><p>Press <strong>F5</strong> to run the application.</p></li>
+                <li>
+                    <p>Click <strong>Rock</strong> within the Genres Menu. You can browse to more genres if you want to.</p>
+
+                    <p>
+                        <img src="./images/Music_Store2.png?raw=true" alt="Music Store" title="Music Store" />
+                    </p>
+
+                    <p><em>Music Store</em></p>
+                </li>
+                <li>
+                    <p>Browse to <strong>/Trace.axd</strong> to see the Application Trace page, and then click <strong>View Details</strong>.</p>
+
+                    <p>
+                        <img src="./images/Application_Trace_Log.png?raw=true" alt="Application Trace Log" title="Application Trace Log" />
+                    </p>
+
+                    <p><em>Application Trace Log</em></p>
+
+                    <p>
+                        <img src="./images/Application_Trace_Request_Details.png?raw=true" alt="Application Trace - Request Details" title="Application Trace - Request Details" />
+                    </p>
+
+                    <p><em>Application Trace - Request Details</em></p>
+                </li>
+                <li><p>Close the browser.</p></li>
+            </ol>
+            <blockquote>
+                <p><strong>Note:</strong> Additionally, you can deploy this application to Windows Azure Web Sites following <a href="#AppendixB">Appendix B: Publishing an ASP.NET MVC 4 Application using Web Deploy</a>.</p>
+            </blockquote>
+            <hr />
+
+            <p><a name="Summary"></a></p>
+
+            <h2 id="Summary">Summary</h2>
+
+            <p>By completing this Hands-On Lab you have learned how to use Dependency Injection in ASP.NET MVC 4 by integrating Unity using a NuGet Package. To achieve that, you have used Dependency Injection inside controllers, views and action filters.</p>
+
+            <p>The following concepts were covered:</p>
+
+            <ul>
+                <li><p>ASP.NET MVC 4 Dependency Injection features</p></li>
+                <li><p>Unity integration using Unity.Mvc3 NuGet Package</p></li>
+                <li><p>Dependency Injection in Controllers</p></li>
+                <li><p>Dependency Injection in Views</p></li>
+                <li><p>Dependency injection of Action Filters</p></li>
+            </ul>
+
+            
+        </div>
+        <br />
+        <p><a href="#top">top of page</a></p>
+    </div> 
+<div class="clearBoth"></div>
+
+        
+</body>
+</html>
+

@@ -1,0 +1,121 @@
+﻿@using ASPNETCourse.Models
+@model ASPNETCourse.Models.AnsweredQuestion
+@{
+    ViewBag.Title = Model.QuizName;
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="text-right text-warning text-uppercase" style="margin-top: -3em;">
+    Time left:
+    <div id="clock" style="margin-top: -1.5em;"></div>
+</div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr/>
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.HiddenFor(m => m.QuestionId)
+            @Html.HiddenFor(m => m.QuizId)
+            @Html.HiddenFor(m => m.UserName)
+            @Html.HiddenFor(m => m.TheType)
+            @Html.HiddenFor(m => m.StartTime)
+            @Html.HiddenFor(m => m.TimeLength)
+
+            <div class="form-group" onmousedown=" return false; " onselectstart="return false;" onselect=" return false; " oncut="return false;" id="bodyDiv">
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Description))
+            </div>
+            <div style="margin-left: 3em;">
+                @if (Model.TheType == QuestionType.Multy)
+                {
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Answers)
+                    </div>
+                }
+
+                @if (Model.TheType == QuestionType.Value)
+                {
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.ValueAnswer, new {htmlAttributes = new {@class = "form-control"}})
+                    </div>
+                }
+
+                @if (Model.TheType == QuestionType.Radio)
+                {
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.RadioAnswers)
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-5">
+                    <input type="submit" value="Submit" class="btn btn-default"/>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+<style>
+    .bodyDiv {
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+</style>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script src="~/Scripts/jquery.countdown.js"></script>
+<script src="~/Scripts/jquery.countdown.min.js"></script>
+<script type="text/javascript">
+    $(document).unbind('keydown').bind('keydown', function(event) {
+        var doPrevent = false;
+        if (event.keyCode === 8) {
+            var d = event.srcElement || event.target;
+            if ((d.tagName.toUpperCase() === 'INPUT' &&
+                    (
+                        d.type.toUpperCase() === 'TEXT' ||
+                            d.type.toUpperCase() === 'PASSWORD' ||
+                            d.type.toUpperCase() === 'FILE' ||
+                            d.type.toUpperCase() === 'EMAIL' ||
+                            d.type.toUpperCase() === 'SEARCH' ||
+                            d.type.toUpperCase() === 'DATE')
+                ) ||
+                d.tagName.toUpperCase() === 'TEXTAREA') {
+                doPrevent = d.readOnly || d.disabled;
+            } else {
+                doPrevent = true;
+            }
+        }
+
+        if (doPrevent) {
+            event.preventDefault();
+        }
+    });
+    $('#clock').countdown('@Model.StartTime', function(event) {
+        var $this = $(this).html(event.strftime('<h2>%H:%M:%S</h2>'));
+    }).on('finish.countdown', function(event) {
+        var url = "http://localhost:18552/Answers/ExamIndex";
+        $(location).attr('href', url);
+        //document.location.href = "http://localhost:18552/Answers/ExamIndex";
+    });
+</script>
+<script>
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+
+    window.onbeforeunload = function() { return "Test"; };
+    //$(document).on("load", function noBack() {
+    //    window.history.forward();
+    //});
+</script>

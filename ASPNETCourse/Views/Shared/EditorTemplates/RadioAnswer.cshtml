@@ -1,0 +1,14 @@
+﻿@model ASPNETCourse.Models.RadioAnswer
+
+<div class="form-group">
+    <div class="col-md-5">
+        <div class="radio">
+            @Html.RadioButtonFor(m => m.Id, Model.Value, new { Name = "Radio" })
+            @*<input type="radio" name="@Model.GroupName" value="@Model.Value" />*@
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Value))
+            @Html.HiddenFor(m => m.GroupName)
+            @Html.HiddenFor(m => m.Value)
+            @Html.HiddenFor(m => m.Id)
+        </div>
+    </div>
+</div> 

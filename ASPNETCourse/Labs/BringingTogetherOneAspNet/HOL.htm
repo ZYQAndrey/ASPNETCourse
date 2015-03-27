@@ -1,0 +1,596 @@
+<p><a name="HOLTop" /></p>
+
+<h1>Bringing Together One ASP.NET</h1>
+
+<hr>
+
+<p><a name="Overview" /></p>
+
+<h2>Overview</h2>
+
+<p>ASP.NET is a framework for building Web sites, apps and services using specialized technologies such as MVC, Web API and others. With the expansion ASP.NET has seen since its creation and the expressed need to have these technologies integrated, there have been recent efforts in working towards <strong>One ASP.NET</strong>.</p>
+
+<p>Visual Studio 2013 introduces a new unified project system which lets you build an application and use all the ASP.NET technologies in one project. This feature eliminates the need to pick one technology at the start of a project and stick with it, and instead encourages the use of multiple ASP.NET frameworks within one project.</p>
+
+<p><a name="Objectives" /></p>
+
+<h3>Objectives</h3>
+
+<p>In this hands-on lab, you will learn how to:</p>
+
+<ul>
+<li>Create a Web site based on the <strong>One ASP.NET</strong> project type</li>
+<li>Use different <strong>ASP.NET</strong> frameworks like <strong>MVC</strong> and <strong>Web API</strong> in the same project</li>
+<li>Identify the main components of an <strong>ASP.NET</strong> application</li>
+<li>Take advantage of the <strong>ASP.NET Scaffolding</strong> framework to automatically create Controllers and Views to perform CRUD operations based on your model classes</li>
+<li>Expose the same set of information in machine- and human-readable formats using the right tool for each job</li>
+</ul>
+
+<p><a name="Prerequisites"></a></p>
+
+<h3>Prerequisites</h3>
+
+<p>The following is required to complete this hands-on lab:</p>
+
+<ul>
+<li><a href="http://www.microsoft.com/visualstudio/">Visual Studio Express 2013 for Web</a> or greater</li>
+<li><a href="http://go.microsoft.com/fwlink/?LinkId=301714">Visual Studio 2013 Update 1</a></li>
+</ul>
+
+<p><a name="Setup" /></p>
+
+<h3>Setup</h3>
+
+<p>In order to run the exercises in this hands-on lab, you will need to set up your environment first.</p>
+
+<ol>
+<li>Open Windows Explorer and browse to the lab's <strong>Source</strong> folder.</li>
+<li>Right-click on <strong>Setup.cmd</strong> and select <strong>Run as administrator</strong> to launch the setup process that will configure your environment and install the Visual Studio code snippets for this lab.</li>
+<li>If the User Account Control dialog box is shown, confirm the action to proceed.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Make sure you have checked all the dependencies for this lab before running the setup.</p>
+</blockquote>
+<p><a name="CodeSnippets" /></p>
+
+<h3>Using the Code Snippets</h3>
+
+<p>Throughout the lab document, you will be instructed to insert code blocks. For your convenience, most of this code is provided as Visual Studio Code Snippets, which you can access from within Visual Studio 2013 to avoid having to add it manually. </p>
+<blockquote>
+<p><strong>Note</strong>: Each exercise is accompanied by a starting solution located in the <strong>Begin</strong> folder of the exercise that allows you to follow each exercise independently of the others. Please be aware that the code snippets that are added during an exercise are missing from these starting solutions and may not work until you have completed the exercise. Inside the source code for an exercise, you will also find an <strong>End</strong> folder containing a Visual Studio solution with the code that results from completing the steps in the corresponding exercise. You can use these solutions as guidance if you need additional help as you work through this hands-on lab.</p>
+</blockquote>
+<hr>
+
+<p><a name="Exercises" /></p>
+
+<h2>Exercises</h2>
+
+<p>This hands-on lab includes the following exercises:</p>
+
+<ol>
+<li><a href="#Exercise1">Creating a New Web Forms Project</a></li>
+<li><a href="#Exercise2">Creating an MVC Controller Using Scaffolding</a></li>
+<li><a href="#Exercise3">Creating a Web API Controller Using Scaffolding</a></li>
+</ol>
+
+<p>Estimated time to complete this lab: <strong>60 minutes</strong></p>
+<blockquote>
+<p><strong>Note:</strong> When you first start Visual Studio, you must select one of the predefined settings collections. Each predefined collection is designed to match a particular development style and determines window layouts, editor behavior, IntelliSense code snippets, and dialog box options. The procedures in this lab describe the actions necessary to accomplish a given task in Visual Studio when using the <strong>General Development Settings</strong> collection. If you choose a different settings collection for your development environment, there may be differences in the steps that you should take into account.</p>
+</blockquote>
+<p><a name="Exercise1" /></p>
+
+<h3>Exercise 1: Creating a New Web Forms Project</h3>
+
+<p>In this exercise you will create a new Web Forms site in Visual Studio 2013 using the <strong>One ASP.NET</strong> unified project experience, which will allow you to easily integrate Web Forms, MVC and Web API components in the same application. You will then explore the generated solution and identify its parts, and finally you will see the Web site in action.</p>
+
+<p><a name="Ex1Task1" /></p>
+
+<h4>Task 1 – Creating a New Site Using the One ASP.NET Experience</h4>
+
+<p>In this task you will start creating a new Web site in Visual Studio based on the <strong>One ASP.NET</strong> project type. <strong>One ASP.NET</strong> unifies all ASP.NET technologies and gives you the option to mix and match them as desired. You will then recognize the different components of Web Forms, MVC and Web API that live side by side within your application.</p>
+
+<ol>
+<li><p>Open <strong>Visual Studio Express 2013 for Web</strong> and select <strong>File | New Project...</strong> to start a new solution.</p>
+
+<p><img src="Images/creating-a-new-project.png?raw=true" alt="Creating a New Project">
+</p>
+
+<p><em>Creating a New Project</em></p></li>
+<li><p>In the <strong>New Project</strong> dialog box, select <strong>ASP.NET Web Application</strong> under the <strong>Visual C# | Web</strong> tab, and make sure <strong>.NET Framework 4.5</strong> is selected. Name the project <em>MyHybridSite</em>, choose a <strong>Location</strong> and click <strong>OK</strong>.</p>
+
+<p><img src="Images/creating-new-aspnet-web-application-project.png?raw=true" alt="New ASP.NET Web Application project">
+</p>
+
+<p><em>Creating a new ASP.NET Web Application project</em></p></li>
+<li><p>In the <strong>New ASP.NET Project</strong> dialog box, select the <strong>Web Forms</strong> template and select the <strong>MVC</strong> and <strong>Web API</strong> options. Also, make sure that the <strong>Authentication</strong> option is set to <strong>Individual User Accounts</strong>. Click <strong>OK</strong> to continue.</p>
+
+<p><img src="Images/creating-a-new-project-with-webforms.png?raw=true" alt="Creating a new project with the Web Forms template, including Web API and MVC components">
+</p>
+
+<p><em>Creating a new project with the Web Forms template, including Web API and MVC components</em></p></li>
+<li><p>You can now explore the structure of the generated solution.</p>
+
+<p><img src="Images/exploring-the-generated-solution.png?raw=true" alt="Exploring the generated solution">
+</p>
+
+<p><em>Exploring the generated solution</em></p>
+
+<ol>
+<li><strong>Account:</strong> This folder contains the Web Form pages to register, log in to and manage the application's user accounts. This folder is added when the <strong>Individual User Accounts</strong> authentication option is selected during the configuration of the Web Forms project template.</li>
+<li><strong>Models:</strong> This folder will contain the classes that represent your application data.</li>
+<li><strong>Controllers</strong> and <strong>Views</strong>: These folders are required for the <strong>ASP.NET MVC</strong> and <strong>ASP.NET Web API</strong> components. You will explore the MVC and Web API technologies in the next exercises.</li>
+<li>The <strong>Default.aspx</strong>, <strong>Contact.aspx</strong> and <strong>About.aspx</strong> files are pre-defined Web Form pages that you can use as starting points to build the pages specific to your application. The programming logic of those files resides in a separate file referred to as the &quot;code-behind&quot; file, which has an &quot;.aspx.vb&quot; or &quot;.aspx.cs&quot; extension (depending on the language used). The code-behind logic runs on the server and dynamically produces the HTML output for your page.</li>
+<li>The <strong>Site.Master</strong> and <strong>Site.Mobile.Master</strong> pages define the look and feel and the standard behavior of all the pages in the application.</li>
+</ol></li>
+<li><p>Double-click the <strong>Default.aspx</strong> file to explore the content of the page.</p>
+
+<p><img src="Images/defaultaspx-page.png?raw=true" alt="Exploring the Default.aspx page">
+</p>
+
+<p><em>Exploring the Default.aspx page</em></p>
+<blockquote>
+<p><strong>Note:</strong> The <strong>Page</strong> directive at the top of the file defines the attributes of the Web Forms page. For example, the <strong>MasterPageFile</strong> attribute specifies the path to the master page -in this case, the <em>Site.Master</em> page- and the <strong>Inherits</strong> attribute defines the code-behind class for the page to inherit. This class is located in the file determined by the <strong>CodeBehind</strong> attribute.</p>
+
+<p>The <strong>asp:Content</strong> control holds the actual content of the page (text, markup and controls) and is mapped to a <strong>asp:ContentPlaceHolder</strong> control on the master page. In this case, the page content will be rendered inside the <em>MainContent</em> control defined in the <em>Site.Master</em> page.</p>
+</blockquote></li>
+<li><p>Expand the <strong>App_Start</strong> folder and notice the <strong>WebApiConfig.cs</strong> file. Visual Studio included that file in the generated solution because you included Web API when configuring your project with the One ASP.NET template.</p></li>
+<li><p>Open the <strong>WebApiConfig.cs</strong> file. In the <em>WebApiConfig</em> class you will find the configuration associated with Web API, which maps HTTP routes to <strong>Web API controllers</strong>.</p>
+
+<!-- mark:6-12 -->
+
+<pre><code class="C#">public static void Register(HttpConfiguration config)
+{
+    // Web API configuration and services
+
+    // Web API routes
+    config.MapHttpAttributeRoutes();
+
+    config.Routes.MapHttpRoute(
+            name: &quot;DefaultApi&quot;,
+            routeTemplate: &quot;api/{controller}/{id}&quot;,
+            defaults: new { id = RouteParameter.Optional }
+        );
+}
+</code></pre></li>
+<li><p>Open the <strong>RouteConfig.cs</strong> file. Inside the <em>RegisterRoutes</em> method you will find the configuration associated with MVC, which maps HTTP routes to <strong>MVC controllers</strong>.</p>
+
+<!-- mark:7-13 -->
+
+<pre><code class="C#">public static void RegisterRoutes(RouteCollection routes)
+{
+    var settings = new FriendlyUrlSettings();
+    settings.AutoRedirectMode = RedirectMode.Permanent;
+    routes.EnableFriendlyUrls(settings);
+
+    routes.IgnoreRoute(&quot;{resource}.axd/{*pathInfo}&quot;);
+
+    routes.MapRoute(
+            name: &quot;Default&quot;,
+            url: &quot;{controller}/{action}/{id}&quot;,
+            defaults: new { action = &quot;Index&quot;, id = UrlParameter.Optional }
+        );
+}
+</code></pre></li>
+</ol>
+
+<p><a name="Ex1Task2" /></p>
+
+<h4>Task 2 – Running the Solution</h4>
+
+<p>In this task you will run the generated solution, explore the app and some of its features, like URL rewriting and built-in authentication.</p>
+
+<ol>
+<li><p>To run the solution, press <strong>F5</strong> or click the <strong>Start</strong> button located on the toolbar. The application home page should open in the browser.</p>
+
+<p><img src="Images/running-the-solution.png?raw=true" alt="Running the solution">
+</p></li>
+<li><p>Verify that the Web Forms pages are being invoked. To do this, append <strong>/contact.aspx</strong> to the URL in the address bar and press <strong>Enter</strong>.</p>
+
+<p><img src="Images/friendly-urls.png?raw=true" alt="Friendly URLs">
+</p>
+
+<p><em>Friendly URLs</em></p>
+<blockquote>
+<p><strong>Note:</strong> As you can see, the URL changes to <strong>/contact</strong>. Starting from <strong>ASP.NET 4</strong>, URL routing capabilities were added to Web Forms, so you can write URLs like <em><a href="http://www.mysite.com/products/software">http://www.mysite.com/products/software</a></em> instead of <em><a href="http://www.mysite.com/products.aspx?category=software">http://www.mysite.com/products.aspx?category=software</a></em>. For more information refer to <a href="http://www.asp.net/web-forms/tutorials/aspnet-45/getting-started-with-aspnet-45-web-forms/url-routing">URL Routing</a>.</p>
+</blockquote></li>
+<li><p>You will now explore the authentication flow integrated into the application. To do this, click <strong>Register</strong> in the upper-right corner of the page.</p>
+
+<p><img src="Images/registering-a-new-account.png?raw=true" alt="Registering a new user">
+</p>
+
+<p><em>Registering a new user</em></p></li>
+<li><p>In the <strong>Register</strong> page, enter a <strong>User name</strong> and <strong>Password</strong>, and then click <strong>Register</strong>.</p>
+
+<p><img src="Images/register-page.png?raw=true" alt="Register page">
+</p>
+
+<p><em>Register page</em></p></li>
+<li><p>The application registers the new account, and the user is authenticated.</p>
+
+<p><img src="Images/user-authenticated.png?raw=true" alt="User authenticated">
+</p>
+
+<p><em>User authenticated</em></p></li>
+<li><p>Go back to Visual Studio and press <strong>SHIFT + F5</strong> to stop debugging.</p></li>
+</ol>
+
+<p><a name="Exercise2" /></p>
+
+<h3>Exercise 2: Creating an MVC Controller Using Scaffolding</h3>
+
+<p>In this exercise you will take advantage of the ASP.NET Scaffolding framework provided by Visual Studio to create an ASP.NET MVC 5 controller with actions and Razor views to perform CRUD operations, without writing a single line of code. The scaffolding process will use Entity Framework Code First to generate the data context and the database schema in the SQL database.</p>
+
+<p><strong>About Entity Framework Code First</strong></p>
+
+<p>Entity Framework (EF) is an object-relational mapper (ORM) that enables you to create data access applications by programming with a conceptual application model instead of programming directly using a relational storage schema.</p>
+
+<p>The Entity Framework Code First modeling workflow allows you to use your own domain classes to represent the model that EF relies on when performing querying, change-tracking and updating functions. Using the Code First development workflow, you do not need to begin your application by creating a database or specifying a schema. Instead, you can write standard .NET classes that define the most appropriate domain model objects for your application, and Entity Framework will create the database for you.</p>
+<blockquote>
+<p><strong>Note:</strong> You can learn more about Entity Framework <a href="http://www.asp.net/entity-framework">here</a>.</p>
+</blockquote>
+<p><a name="Ex2Task1" /></p>
+
+<h4>Task 1 – Creating a New Model</h4>
+
+<p>You will now define a <strong>Person</strong> class, which will be the model used by the scaffolding process to create the MVC controller and the views. You will start by creating a <strong>Person</strong> model class, and the CRUD operations in the controller will be automatically created using scaffolding features.</p>
+
+<ol>
+<li><p>Open <strong>Visual Studio Express 2013 for Web</strong> and the <strong>MyHybridSite.sln</strong> solution located in the <strong>Source/Ex2-MvcScaffolding/Begin</strong> folder. Alternatively, you can continue with the solution that you obtained in the previous exercise.</p></li>
+<li><p>In <strong>Solution Explorer</strong>, right-click the <strong>Models</strong> folder of the <strong>MyHybridSite</strong> project and select <strong>Add | Class...</strong>.</p>
+
+<p><img src="Images/adding-the-person-model-class.png?raw=true" alt="Adding the Person model class">
+</p>
+
+<p><em>Adding the Person model class</em></p></li>
+<li><p>In the <strong>Add New Item</strong> dialog box, name the file <em>Person.cs</em> and click <strong>Add</strong>.</p>
+
+<p><img src="Images/creating-the-person-model-class.png?raw=true" alt="Creating the Person model class">
+</p>
+
+<p><em>Creating the Person model class</em></p></li>
+<li><p>Replace the content of the <strong>Person.cs</strong> file with the following code. Press <strong>CTRL + S</strong> to save the changes.</p>
+
+<p>(Code Snippet - <em>BringingTogetherOneAspNet - Ex2 - PersonClass</em>)</p>
+
+<!-- mark:1-11 -->
+
+<pre><code class="C#">namespace MyHybridSite.Models
+{
+     public class Person
+     {
+          public int Id { get; set; }
+
+          public string Name { get; set; }
+
+          public int Age { get; set; }
+     }
+}
+</code></pre></li>
+<li><p>In <strong>Solution Explorer</strong>, right-click the <strong>MyHybridSite</strong> project and select <strong>Build</strong>, or press <strong>CTRL + SHIFT + B</strong> to build the project.</p></li>
+</ol>
+
+<p><a name="Ex2Task2" /></p>
+
+<h4>Task 2 – Creating an MVC Controller</h4>
+
+<p>Now that the <strong>Person</strong> model is created, you will use ASP.NET MVC scaffolding with Entity Framework to create the CRUD controller actions and views for <strong>Person</strong>.</p>
+
+<ol>
+<li><p>In <strong>Solution Explorer</strong>, right-click the <strong>Controllers</strong> folder of the <strong>MyHybridSite</strong> project and select <strong>Add | New Scaffolded Item...</strong>.</p>
+
+<p><img src="Images/creating-a-new-scaffolded-controller.png?raw=true" alt="Creating a new scaffolded Controller">
+</p>
+
+<p><em>Creating a new Scaffolded Controller</em></p></li>
+<li><p>In the <strong>Add Scaffold</strong> dialog box, select <strong>MVC 5 Controller with views, using Entity Framework</strong> and then click <strong>Add.</strong></p>
+
+<p><img src="Images/selecting-mvc-5-controller.png?raw=true" alt="Selecting MVC 5 Controller with views and Entity Framework">
+</p>
+
+<p><em>Selecting MVC 5 Controller with views and Entity Framework</em></p></li>
+<li><p>Set <em>MvcPersonController</em> as the <strong>Controller name</strong>, select the <strong>Use async controller actions</strong> option and select <strong>Person (MyHybridSite.Models)</strong> as the <strong>Model class</strong>.</p>
+
+<p><img src="Images/adding-an-mvc-controller-with-scaffolding.png?raw=true" alt="Adding an MVC controller with scaffolding">
+</p>
+
+<p><em>Adding an MVC controller with scaffolding</em></p></li>
+<li><p>Under <strong>Data context class</strong>, click <strong>New data context...</strong>. </p>
+
+<p><img src="Images/creating-a-new-data-context.png?raw=true" alt="Creating a new data context">
+</p>
+
+<p><em>Creating a new data context</em></p></li>
+<li><p>In the <strong>New Data Context</strong> dialog box, name the new data context <em>PersonContext</em> and click <strong>Add</strong>.</p>
+
+<p><img src="Images/creating-the-new-personcontext.png?raw=true" alt="Creating the new PersonContext">
+</p>
+
+<p><em>Creating the new PersonContext type</em></p></li>
+<li><p>Click <strong>Add</strong> to create the new controller for <strong>Person</strong> with scaffolding. Visual Studio will then generate the controller actions, the Person data context and the Razor views.</p>
+
+<p><img src="Images/after-creating-the-mvc-controller-with-scaffo.png?raw=true" alt="After creating the MVC controller with scaffolding">
+</p>
+
+<p><em>After creating the MVC controller with scaffolding</em></p></li>
+<li><p>Open the <strong>MvcPersonController.cs</strong> file in the <strong>Controllers</strong> folder. Notice that the CRUD action methods have been generated automatically. </p>
+
+<pre><code class="C#">...
+
+// POST: /MvcPerson/Create
+// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task&lt;ActionResult&gt; Create([Bind(Include=&quot;Id,Name,Age&quot;)] Person person)
+{
+     if (ModelState.IsValid)
+     {
+          db.People.Add(person);
+          await db.SaveChangesAsync();
+          return RedirectToAction(&quot;Index&quot;);
+     }
+
+     return View(person);
+}
+
+// GET: /MvcPerson/Edit/5
+public async Task&lt;ActionResult&gt; Edit(int? id)
+{
+     if (id == null)
+     {
+          return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+     }
+     Person person = await db.People.FindAsync(id);
+     if (person == null)
+     {
+          return HttpNotFound();
+     }
+     return View(person);
+}
+
+...
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> By selecting the <strong>Use async controller actions</strong> check box from the scaffolding options in the previous steps, Visual Studio generates asynchronous action methods for all actions that involve access to the Person data context. It is recommended that you use asynchronous action methods for long-running, non-CPU bound requests to avoid blocking the Web server from performing work while the request is being processed.</p>
+</blockquote></li>
+</ol>
+
+<p><a name="Ex2Task3" /></p>
+
+<h4>Task 3 – Running the Solution</h4>
+
+<p>In this task, you will run the solution again to verify that the views for <strong>Person</strong> are working as expected. You will add a new person to verify that it is successfully saved to the database. </p>
+
+<ol>
+<li><p>Press <strong>F5</strong> to run the solution.</p></li>
+<li><p>Navigate to <strong>/MvcPerson</strong>. The scaffolded view that shows the list of people should appear.</p></li>
+<li><p>Click <strong>Create New</strong> to add a new person.</p>
+
+<p><img src="Images/navigating-to-the-scaffolded-mvc-views.png?raw=true" alt="Navigating to the scaffolded MVC views">
+</p>
+
+<p><em>Navigating to the scaffolded MVC views</em></p></li>
+<li><p>In the <strong>Create</strong> view, provide a <strong>Name</strong> and an <strong>Age</strong> for the person, and click <strong>Create</strong>.</p>
+
+<p><img src="Images/adding-a-new-person.png?raw=true" alt="Adding a new person">
+</p>
+
+<p><em>Adding a new person</em></p></li>
+<li><p>The new person is added to the list. In the element list, click <strong>Details</strong> to display the person's details view. Then, in the <strong>Details</strong> view, click <strong>Back to List</strong> to go back to the list view.</p>
+
+<p><img src="Images/person-details-view.png?raw=true" alt="Person's details view">
+</p>
+
+<p><em>Person's details view</em></p></li>
+<li><p>Click the <strong>Delete</strong> link to delete the person. In the <strong>Delete</strong> view, click <strong>Delete</strong> to confirm the operation.</p>
+
+<p><img src="Images/deleting-a-person.png?raw=true" alt="Deleting a person">
+</p>
+
+<p><em>Deleting a person</em></p></li>
+<li><p>Go back to Visual Studio and press <strong>SHIFT + F5</strong> to stop debugging.</p></li>
+</ol>
+
+<p><a name="Exercise3" /></p>
+
+<h3>Exercise 3: Creating a Web API Controller Using Scaffolding</h3>
+
+<p>The Web API framework is part of the ASP.NET Stack and designed to make implementing HTTP services easier, generally sending and receiving JSON- or XML-formatted data through a RESTful API.</p>
+
+<p>In this exercise, you will use ASP.NET Scaffolding again to generate a Web API controller. You will use the same <strong>Person</strong> and <strong>PersonContext</strong> classes from the previous exercise to provide the same person data in JSON format. You will see how you can expose the same resources in different ways within the same ASP.NET application.</p>
+
+<p><a name="Ex3Task1" /></p>
+
+<h4>Task 1 – Creating a Web API Controller</h4>
+
+<p>In this task you will create a new <strong>Web API Controller</strong> that will expose the person data in a machine-consumable format like JSON.</p>
+
+<ol>
+<li><p>If not already opened, open <strong>Visual Studio Express 2013 for Web</strong> and open the <strong>MyHybridSite.sln</strong> solution located in the <strong>Source/Ex3-WebAPI/Begin</strong> folder. Alternatively, you can continue with the solution that you obtained in the previous exercise.</p>
+<blockquote>
+<p><strong>Note:</strong> If you start with the Begin solution from Exercise 3, press <strong>CTRL + SHIFT + B</strong> to build the solution.</p>
+</blockquote></li>
+<li><p>In <strong>Solution Explorer</strong>, right-click the <strong>Controllers</strong> folder of the <strong>MyHybridSite</strong> project and select <strong>Add | New Scaffolded Item...</strong>.</p>
+
+<p><img src="Images/creating-a-new-scaffolded-controller.png?raw=true" alt="Creating a new scaffolded Controller">
+</p>
+
+<p><em>Creating a new scaffolded Controller</em></p></li>
+<li><p>In the <strong>Add Scaffold</strong> dialog box, select <strong>Web API</strong> in the left pane, then <strong>Web API 2 Controller with actions, using Entity Framework</strong> in the middle pane and then click <strong>Add.</strong></p>
+
+<p><img src="Images/selecting-web-api-2-controller.png?raw=true" alt="Selecting Web API 2 Controller with actions and Entity Framework" title="Selecting Web API 2 Controller with actions and Entity Framework">
+</p>
+
+<p><em>Selecting Web API 2 Controller with actions and Entity Framework</em></p></li>
+<li><p>Set <em>ApiPersonController</em> as the <strong>Controller name</strong>, select the <strong>Use async controller actions</strong> option and select <strong>Person (MyHybridSite.Models)</strong> and <strong>PersonContext (MyHybridSite.Models)</strong> as the <strong>Model</strong> and <strong>Data context</strong> classes respectively. Then click <strong>Add</strong>.</p>
+
+<p><img src="Images/adding-a-web-api-controller-with-scaffolding.png?raw=true" alt="Adding a Web API Controller with scaffolding" title="Adding a Web API controller with scaffolding">
+</p>
+
+<p><em>Adding a Web API controller with scaffolding</em></p></li>
+<li><p>Visual Studio will then generate the <strong>ApiPersonController</strong> class with the four CRUD actions to work with your data.</p>
+
+<p><img src="Images/after-creating-the-web-api-controller.png?raw=true" alt="After creating the Web API controller with scaffolding" title="After creating the Web API controller with scaffolding">
+</p>
+
+<p><em>After creating the Web API controller with scaffolding</em></p></li>
+<li><p>Open the <strong>ApiPersonController.cs</strong> file and inspect the <em>GetPeople</em> action method. This method queries the db field of <strong>PersonContext</strong> type in order to get the people data.</p>
+
+<!--mark: 4-->
+
+<pre><code class="C#">// GET api/ApiPerson
+public IQueryable&lt;Person&gt; GetPeople()
+{
+    return db.People;
+}
+</code></pre></li>
+<li><p>Now notice the comment above the method definition. It provides the URI that exposes this action which you will use in the next task.</p>
+
+<!--mark: 1-->
+
+<pre><code class="C#">// GET api/ApiPerson
+public IQueryable&lt;Person&gt; GetPeople()
+{
+    return db.People;
+}
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> By default, Web API is configured to catch the queries to the <em>/api</em> path to avoid collisions with MVC controllers. If you need to change this setting, refer to <a href="http://www.asp.net/web-api/overview/web-api-routing-and-actions/routing-in-aspnet-web-api">Routing in ASP.NET Web API</a>. </p>
+</blockquote></li>
+</ol>
+
+<p><a name="Ex3Task2" /></p>
+
+<h4>Task 2 – Running the Solution</h4>
+
+<p>In this task you will use the Internet Explorer <strong>F12 developer tools</strong> to inspect the full response from the Web API controller. You will see how you can capture network traffic to get more insight into your application data.</p>
+<blockquote>
+<p><strong>Note:</strong> Make sure that <strong>Internet Explorer</strong> is selected in the <strong>Start</strong> button located on the Visual Studio toolbar.</p>
+
+<p><img src="Images/internet-explorer-option.png?raw=true" alt="Internet Explorer option">
+</p>
+
+<p>The <strong>F12 developer tools</strong> have a wide set of functionality that is not covered in this hands-on-lab. If you want to learn more about it, refer to <a href="http://msdn.microsoft.com/library/ie/bg182326(v=vs.85)">Using the F12 developer tools</a>.</p>
+</blockquote>
+<ol>
+<li><p>Press <strong>F5</strong> to run the solution.</p>
+<blockquote>
+<p><strong>Note:</strong> In order to follow this task correctly, your application needs to have data. If your database is empty, you can go back to Task 3 in Exercise 2 and follow the steps on how to create a new person using the MVC views. </p>
+</blockquote></li>
+<li><p>In the browser, press <strong>F12</strong> to open the <strong>Developer Tools</strong> panel. Press <strong>CTRL</strong> + <strong>4</strong> or click the <strong>Network</strong> icon, and then click the green arrow button to begin capturing network traffic.</p>
+
+<p><img src="Images/initiating-web-api-network-capture.png?raw=true" alt="Initiating Web API network capture" title="Initiating Web API network capture">
+</p>
+
+<p><em>Initiating Web API network capture</em></p></li>
+<li><p>Append <strong>api/ApiPerson</strong> to the URL in the browser's address bar. You will now inspect the details of the response from the <strong>ApiPersonController</strong>.</p>
+
+<p><img src="Images/retrieving-person-data-through-web-api.png?raw=true" alt="Retrieving person data through Web API" title="Retrieving person data through Web API">
+</p>
+
+<p><em>Retrieving person data through Web API</em></p>
+<blockquote>
+<p><strong>Note:</strong> Once the download finishes, you will be prompted to make an action with the downloaded file. Leave the dialog box open in order to be able to watch the response content through the Developers Tool window.</p>
+</blockquote></li>
+<li><p>Now you will inspect the body of the response. To do this, click the <strong>Details</strong> tab and then click <strong>Response body</strong>. You can check that the downloaded data is a list of objects with the properties <strong>Id</strong>, <strong>Name</strong> and <strong>Age</strong> that correspond to the <strong>Person</strong> class.</p>
+
+<p><img src="Images/viewing-web-api-response-body.png?raw=true" alt="Viewing Web API Response Body" title="Viewing Web API Response Body">
+</p>
+
+<p><em>Viewing Web API Response Body</em></p></li>
+</ol>
+
+<p><a name="Ex3Task3" /></p>
+
+<h4>Task 3 – Adding Web API Help Pages</h4>
+
+<p>When you create a Web API, it is useful to create a help page so that other developers will know how to call your API. You could create and update the documentation pages manually, but it is better to auto-generate them to avoid having to do maintenance work. In this task you will use a Nuget package to automatically generate Web API help pages to the solution.</p>
+
+<ol>
+<li><p>From the <strong>Tools</strong> menu in Visual Studio, select <strong>Library Package Manager</strong>, and then click <strong>Package Manager Console</strong>. </p></li>
+<li><p>In the <strong>Package Manager Console</strong> window, execute the following command:</p>
+
+<pre><code class="NuGet">Install-Package Microsoft.AspNet.WebApi.HelpPage
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> The <strong>Microsoft.AspNet.WebApi.HelpPage</strong> package installs the necessary assemblies and adds MVC Views for the help pages under the <strong>Areas/HelpPage</strong> folder.</p>
+</blockquote>
+<p><img src="Images/helppage-area.png?raw=true" alt="HelpPage Area" title="HelpPage Area">
+</p>
+
+<p><em>HelpPage Area</em></p></li>
+<li><p>By default, the help pages have placeholder strings for documentation. You can use XML documentation comments to create the documentation. To enable this feature, open the <strong>HelpPageConfig.cs</strong> file located in the <strong>Areas/HelpPage/App_Start</strong> folder and uncomment the following line:</p>
+
+<pre><code class="C#">config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath(&quot;~/App_Data/XmlDocument.xml&quot;)));
+</code></pre></li>
+<li><p>In <strong>Solution Explorer</strong>, right-click the project <strong>MyHybridSite</strong>, select <strong>Properties</strong> and click the <strong>Build</strong> tab.</p>
+
+<p><img src="Images/build-section.png?raw=true" alt="Build tab" title="Build section">
+</p>
+
+<p><em>Build tab</em></p></li>
+<li><p>Under <strong>Output</strong>, select <strong>XML documentation file</strong>. In the edit box, type <strong>App_Data/XmlDocument.xml</strong>.</p>
+
+<p><img src="Images/output-section-in-build-tab.png?raw=true" alt="Output section in Build tab" title="Output section in build tab">
+</p>
+
+<p><em>Output section in Build tab</em></p></li>
+<li><p>Press <strong>CTRL</strong> + <strong>S</strong> to save the changes.</p></li>
+<li><p>Open the <strong>ApiPersonController.cs</strong> file from the <strong>Controllers</strong> folder.</p></li>
+<li><p>Enter a new line between the <em>GetPeople</em> method signature and the <em>// GET api/ApiPerson</em> comment, and then type three forward slashes.</p>
+<blockquote>
+<p><strong>Note:</strong> Visual Studio automatically inserts the XML elements which define the method documentation.</p>
+</blockquote></li>
+<li><p>Add a summary text and the return value for the <em>GetPeople</em> method. It should look like the following.</p>
+
+<pre><code class="C#">// GET api/ApiPerson
+/// &lt;summary&gt;
+/// Documentation for 'GET' method
+/// &lt;/summary&gt;
+/// &lt;returns&gt;Returns a list of people in the requested format&lt;/returns&gt;
+public IQueryable&lt;Person&gt; GetPeople()
+{
+    return db.People;
+}
+</code></pre></li>
+<li><p>Press <strong>F5</strong> to run the solution.</p></li>
+<li><p>Append <strong>/help</strong> to the URL in the address bar to browse to the help page.</p>
+
+<p><img src="Images/aspnet-web-api-help-page.png?raw=true" alt="ASP.NET Web API Help Page" title="ASP.NET Web API Help Page">
+</p>
+
+<p><em>ASP.NET Web API Help Page</em></p>
+<blockquote>
+<p><strong>Note:</strong> The main content of the page is a table of APIs, grouped by controller. The table entries are generated dynamically, using the <strong>IApiExplorer</strong> interface. If you add or update an API controller, the table will be automatically updated the next time you build the application.</p>
+
+<p>The <strong>API</strong> column lists the HTTP method and relative URI. The <strong>Description</strong> column contains information that has been extracted from the method's documentation.</p>
+</blockquote></li>
+<li><p>Note that the description you added above the method definition is displayed in the description column.</p>
+
+<p><img src="Images/api-method-description.png?raw=true" alt="API method description" title="API method description">
+</p>
+
+<p><em>API method description</em></p></li>
+<li><p>Click one of the API methods to navigate to a page with more detailed information, including sample response bodies.</p>
+
+<p><img src="Images/detail-information-page.png?raw=true" alt="Detail Information page" title="Detail Information page">
+</p>
+
+<p><em>Detailed information page</em></p></li>
+</ol>
+
+<hr>
+
+<p><a name="Summary" /></p>
+
+<h2>Summary</h2>
+
+<p>By completing this hands-on lab you have learned how to:</p>
+
+<ul>
+<li>Create a new Web application using the One ASP.NET Experience in Visual Studio 2013</li>
+<li>Integrate multiple ASP.NET technologies into one single project</li>
+<li>Generate MVC controllers and views from your model classes using ASP.NET Scaffolding</li>
+<li>Generate Web API controllers, which use features such as Async Programming and data access through Entity Framework</li>
+<li>Automatically generate Web API Help Pages for your controllers</li>
+</ul>

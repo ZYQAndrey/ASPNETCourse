@@ -1,0 +1,11 @@
+﻿@model ASPNETCourse.Models.GroupToAdd
+
+<div class="form-group">
+    <div class="col-md-10">
+        <div class="checkbox">
+            @Html.EditorFor(m => m.Selected)
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Name))
+            @Html.HiddenFor(m => m.GroupId)
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+﻿@model ASPNETCourse.Models.Question
+
+<div class="form-group">
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.Id)
+        <span>. &nbsp;</span>
+        @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Description))
+    </div>
+</div>
+

@@ -1,0 +1,79 @@
+﻿@model ASPNETCourse.Models.Quiz
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Quiz</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BeginDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BeginDateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FinishDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FinishDateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Length)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Length)
+        </dd>
+
+        <hr/>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionsList)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionsList)
+        </dd>
+
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionsToCheckList)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionsToCheckList)
+        </dd>
+
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.GroupsList)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GroupsList)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {id = Model.Id}) |
+    @Html.ActionLink("Add/Remove Questions", "AddQuestions", new { id = Model.Id }) |
+    @Html.ActionLink("Add/Remove QuestionsToCheck", "AddQuestionsToCheck", new {id = Model.Id}) |
+    @Html.ActionLink("Assign to groups", "AssignToGroup", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

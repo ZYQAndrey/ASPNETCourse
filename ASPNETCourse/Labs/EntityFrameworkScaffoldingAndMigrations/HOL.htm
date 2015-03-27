@@ -1,0 +1,607 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Web Camps Training Kit - Home</title>
+    <link rel="Stylesheet" type="text/css" media="all" href="styles/master.css" />
+</head>
+<body>
+    <div id="outerWrapper">
+        <div id="wrapper" class="landingPage getStartedPage">
+            
+
+<h1 id="ASPNET_MVC_4_Entity_Framework_Scaffolding_and_Migrations">ASP.NET MVC 4 Entity Framework Scaffolding and Migrations</h1>
+
+<hr />
+
+<p><a name="Overview"></a></p>
+
+<h2 id="Overview">Overview</h2>
+
+<p>If you are familiar with ASP.NET MVC 4 controller methods, or have completed the &quot;Helpers, Forms and Validation&quot; Hands-On lab, you should be aware that many of the logic to create, update, list and remove any data entity it is repeated among the application. Not to mention that, if your model has several classes to manipulate, you will be likely to spend a considerable time writing the POST and GET action methods for each entity operation, as well as each of the views.</p>
+
+<p>In this lab you will learn how to use the ASP.NET MVC 4 scaffolding to automatically generate the baseline of your application's CRUD (Create, Read, Update and Delete). Starting from a simple model class, and, without writing a single line of code, you will create a controller that will contain all the CRUD operations, as well as the all the necessary views. After building and running the simple solution, you will have the application database generated, together with the MVC logic and views for data manipulation.</p>
+
+<p>In addition, you will learn how easy it is to use Entity Framework Migrations to perform model updates throughout your entire application. Entity Framework Migrations will let you modify your database after the model has changed with simple steps. With all these in mind, you will be able to build and maintain web applications more efficiently, taking advantage of the latest features of ASP.NET MVC 4.</p>
+
+<p><a name="Objectives"></a></p>
+
+<h3 id="Objectives">Objectives</h3>
+
+<p>In this Hands-On Lab, you will learn how to:</p>
+
+<ul>
+<li>Use ASP.NET scaffolding for CRUD operations in controllers.</li>
+<li>Change the database model using Entity Framework Migrations.</li>
+</ul>
+
+<p><a name="Prerequisites"></a></p>
+
+<h3 id="Prerequisites">Prerequisites</h3>
+
+<p>You must have the following items to complete this lab:</p>
+
+<ul>
+<li><a href="http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-for-web">Microsoft Visual Studio Express 2012 for Web</a> or superior (read <a href="#AppendixA">Appendix A</a> for instructions on how to install it).</li>
+</ul>
+
+<p><a name="Setup"></a> </p>
+
+<h3 id="Setup">Setup</h3>
+
+<p><strong>Installing Code Snippets</strong></p>
+
+<p>For convenience, much of the code you will be managing along this lab is available as Visual Studio code snippets. To install the code snippets run <strong>.\Source\Setup\CodeSnippets.vsi</strong> file.</p>
+
+<p>If you are not familiar with the Visual Studio Code Snippets, and want to learn how to use them, you can refer to the appendix from this document &quot;<a href="#AppendixC">Appendix C: Using Code Snippets</a>&quot;.</p>
+
+<hr />
+
+<p><a name="Exercises"></a></p>
+
+<h2 id="Exercises">Exercises</h2>
+
+<p>The following exercise make up this Hands-On Lab:</p>
+
+<ol>
+<li><a href="#Exercise1">Using ASP.NET MVC 4 Scaffolding with Entity Framework Migrations</a></li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> This exercise is accompanied by an <strong>End</strong> folder containing the resulting solution you should obtain after completing the exercise. You can use this solution as a guide if you need additional help working through the exercise.</p>
+</blockquote>
+<p>Estimated time to complete this lab: <strong>30 minutes</strong></p>
+
+<p><a name="Exercise1"></a></p>
+
+<h3 id="Exercise_1_Using_ASPNET_MVC_4_Scaffolding_with_Entity_Framework_Migrations">Exercise 1: Using ASP.NET MVC 4 Scaffolding with Entity Framework Migrations</h3>
+
+<p>ASP.NET MVC scaffolding provides a quick way to generate the CRUD operations in a standardized way, creating the necessary logic that lets your application interact with the database layer.</p>
+
+<p>In this exercise, you will learn how to use ASP.NET MVC 4 scaffolding with code first to create the CRUD methods. 
+Then, you will learn how to update your model applying the changes in the database by using Entity Framework Migrations.</p>
+
+<p><a name="Ex1Task1"></a></p>
+
+<h4 id="Task_1-_Creating_a_new_ASPNET_MVC_4_project_using_Scaffolding">Task 1- Creating a new ASP.NET MVC 4 project using Scaffolding</h4>
+
+<ol>
+<li><p>If not already open, start <strong>Visual Studio 2012</strong>.</p></li>
+<li><p>Select <strong>File | New Project</strong>. In the New Project dialog, under the <strong>Visual C# | Web</strong> section, select <strong>ASP.NET MVC 4 Web Application</strong>. Name the project to <strong>MVC4andEFMigrations</strong> and set the location to <strong>Source\Ex1-UsingMVC4ScaffoldingEFMigrations</strong> folder of this lab. Set the <strong>Solution name</strong> to <strong>Begin</strong> and ensure <strong>Create directory for solution</strong> is checked. Click <strong>OK</strong>.</p>
+
+<p><img src="./images/add-new-mvc-project.png?raw=true" alt="New ASP.NET MVC 4 Project Dialog Box" title="New ASP.NET MVC 4 Project Dialog Box" />
+</p>
+
+<p><em>New ASP.NET MVC 4 Project Dialog Box</em></p></li>
+<li><p>In the <strong>New ASP.NET MVC 4 Project</strong> dialog box select the <strong>Internet Application</strong> template, and make sure that <strong>Razor</strong> is the selected <strong>View engine</strong>. Click <strong>OK</strong> to create the project.</p>
+
+<p><img src="./images/add-new-mvc-project-internet-app.png?raw=true" alt="New ASP.NET MVC 4 Internet Application" title="New ASP.NET MVC 4 Internet Application" />
+</p>
+
+<p><em>New ASP.NET MVC 4 Internet Application</em></p></li>
+<li><p>In the Solution Explorer, right-click <strong>Models</strong> and select <strong>Add | Class</strong> to create a simple class person (POCO). Name it <strong>Person</strong> and click <strong>OK</strong>.</p></li>
+<li><p>Open the Person class and insert the following properties.</p>
+
+<p>(Code Snippet - <em>ASP.NET MVC 4 and Entity Framework Migrations - Ex1 Person Properties</em>)</p>
+
+<!-- mark:10-14    -->
+
+<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+
+<span style="color:#0000FF">namespace</span> MVC4EF.Models
+{
+    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Person
+    {
+<strong class="markLine">        <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> PersonID { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> FirstName { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> LastName { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }        </strong>
+    }
+}
+</code></pre></li>
+<li><p>Click <strong>Build | Build Solution</strong> to save the changes and build the project.</p>
+
+<p><img src="images/visual-studio-build-application.png?raw=true" alt="Building the application" title="Building the application" />
+</p>
+
+<p><em>Building the Application</em></p></li>
+<li><p>In the Solution Explorer, right-click the controllers folder and select <strong>Add | Controller</strong>. </p></li>
+<li><p>Name the controller <em>PersonController</em> and complete the <strong>Scaffolding options</strong> with the following values.   </p>
+
+<ol>
+<li>In the <strong>Template</strong> drop-down list, select the <strong>MVC controller with read/write actions and views, using Entity Framework</strong> option.</li>
+<li>In the <strong>Model class</strong> drop-down list, select the <strong>Person</strong> class.</li>
+<li>In the <strong>Data Context class</strong> list, select <strong>&lt;New data context...&gt;</strong>. Choose any name and click <strong>OK</strong>.</li>
+<li>In the <strong>Views</strong> drop-down list, make sure that <strong>Razor</strong> is selected.</li>
+</ol>
+
+<p><img src="images/add-person-controller.png?raw=true" alt="Adding the Person controller with scaffolding" title="Adding the Person controller with scaffolding" />
+</p>
+
+<p><em>Adding the Person controller with scaffolding</em></p></li>
+<li><p>Click <strong>Add</strong> to create the new controller for Person with scaffolding. You have now generated the controller actions as well as the views. </p>
+
+<p><img src="images/person-scaffolding.png?raw=true" alt="After creating the Person controller with scaffolding " title="After creating the Person controller with scaffolding" />
+</p>
+
+<p><em>After creating the Person controller with scaffolding</em></p></li>
+<li><p>Open <strong>PersonController</strong> class. Notice that the full CRUD action methods have been generated automatically. </p>
+
+<p><img src="images/person-controller-code.png?raw=true" alt="Inside the Person controller" title="Inside the Person controller" />
+</p>
+
+<p><em>Inside the Person controller</em></p></li>
+</ol>
+
+<p><a name="Ex1Task2"></a></p>
+
+<h4 id="Task_2-_Running_the_application">Task 2- Running the application</h4>
+
+<p>At this point, the database is not yet created. In this task, you will run the application for the first time and test the CRUD operations. The database will be created on the fly with Code First.</p>
+
+<ol>
+<li><p>Press <strong>F5</strong> to run the application.</p></li>
+<li><p>In the browser, add <strong>/Person</strong> to the URL to open the Person page. </p>
+
+<p><img src="images/application-first-run.png?raw=true" alt="Application first run" title="Application first run" />
+</p>
+
+<p><em>Application: first run</em></p></li>
+<li><p>You will now explore the Person pages and test the CRUD operations.</p>
+
+<ol>
+<li><p>Click <strong>Create New</strong> to add a new person. Enter a first name and a last name and click <strong>Create</strong>.</p>
+
+<p><img src="images/adding-a-new-person.png?raw=true" alt="Adding a new person" title="Adding a new person" />
+</p>
+
+<p><em>Adding a new person</em></p></li>
+<li><p>In the person's list, you can delete, edit or add items.</p>
+
+<p><img src="images/person-list.png?raw=true" alt="person list" title="person list" />
+</p>
+
+<p><em>Person list</em></p></li>
+<li><p>Click <strong>Details</strong> to open the person's details.</p>
+
+<p><img src="images/person-details.png?raw=true" alt="Person's details" title="Person's details" />
+</p>
+
+<p><em>Person's details</em></p></li>
+</ol></li>
+<li><p>Close the browser and return to Visual Studio.
+Notice that you have created the whole CRUD for the person entity throughout your application -from the model to the views- without having to write a single line of code!</p></li>
+</ol>
+
+<p><a name="Ex1Task3"></a></p>
+
+<h4 id="Task_3-_Updating_the_database_using_Entity_Framework_Migrations">Task 3- Updating the database using Entity Framework Migrations</h4>
+
+<p>In this task you will update the database using Entity Framework Migrations. You will discover how easy it is to change the model and reflect the changes in your databases by using the Entity Framework Migrations feature.</p>
+
+<ol>
+<li><p>Open the Package Manager Console. Select <strong>Tools | Library Package Manager | Package Manager Console</strong>.</p></li>
+<li><p>In the Package Manager Console, enter the following command:</p>
+
+<!-- mark:1    -->
+
+<span class="codelanguage">PMC</span><pre><code class="PMC"><strong class="markLine">Enable-Migrations -ContextTypeName [ContextClassName]</strong>
+</code></pre>
+
+<p><img src="images/PMC-enable-migrations.png?raw=true" alt="Enabling Migrations" title="Enabling Migrations" />
+</p>
+
+<p><em>Enabling migrations</em></p>
+
+<p>The Enable-Migration command creates the <strong>Migrations</strong> folder, which contains a script to initialize the database.</p>
+
+<p><img src="images/migrations-folder.png?raw=true" alt="Migrations folder" title="Migrations folder" />
+</p>
+
+<p><em>Migrations folder</em></p></li>
+<li><p>Open the <strong>Configuration.cs</strong> file in the Migrations folder. Locate the class constructor and change the <strong>AutomaticMigrationsEnabled</strong> value to <em>true</em>.</p>
+
+<!-- mark:3    -->
+
+<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> Configuration()
+{
+<strong class="markLine">    AutomaticMigrationsEnabled = <span style="color:#0000FF">true</span>;</strong>
+}
+</code></pre></li>
+<li><p>Open the Person class and add an attribute for the person's middle name. With this new attribute, you are changing the model.</p>
+
+<!-- mark:9    -->
+
+<span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> Person
+{
+    <span style="color:#0000FF">public</span> <span style="color:#0000FF">int</span> PersonID { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+
+    <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> FirstName { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+
+    <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> LastName { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }
+
+<strong class="markLine">    <span style="color:#0000FF">public</span> <span style="color:#0000FF">string</span> MiddleName { <span style="color:#0000FF">get</span>; <span style="color:#0000FF">set</span>; }</strong>
+}
+</code></pre></li>
+<li><p>Select <strong>Build | Build Solution</strong> on the menu to build the application.</p>
+
+<p><img src="images/visual-studio-build-application2.png?raw=true" alt="Building the application" title="Building the application" />
+</p>
+
+<p><em>Building the application</em></p></li>
+<li><p>In the Package Manager Console, enter the following command:</p>
+
+<!-- mark:1    -->
+
+<span class="codelanguage">PMC</span><pre><code class="PMC"><strong class="markLine">Add-Migration AddMiddleName</strong>
+</code></pre>
+
+<p>This command will look for changes in the data objects, and then, it will add the necessary commands to modify the database accordingly.</p>
+
+<p><img src="images/PMC-adding-middle-name.png?raw=true" alt="Adding a middle name" title="Adding a middle name" />
+</p>
+
+<p><em>Adding a middle name</em></p></li>
+<li><p>(Optional) You can run the following command to generate a SQL script with the differential update. This will let you update the database manually (In this case it's not necessary), or apply the changes in other databases:</p>
+
+<!-- mark:1    -->
+
+<span class="codelanguage">PMC</span><pre><code class="PMC"><strong class="markLine">Update-Database -Script -SourceMigration:$InitialDatabase</strong>
+</code></pre>
+
+<p><img src="images/PMC-generating-a-sql-script.png?raw=true" alt="Generating a SQL script" title="Generating a SQL script" />
+</p>
+
+<p><em>Generating a SQL script</em></p>
+
+<p><img src="images/sql-script-update.png?raw=true" alt="SQL Script update" title="SQL Script update" />
+</p>
+
+<p><em>SQL Script update</em></p></li>
+<li><p>In the Package Manager Console, enter the following command to update the database:</p>
+
+<!-- mark:1    -->
+
+<span class="codelanguage">PMC</span><pre><code class="PMC"><strong class="markLine">Update-Database -Verbose</strong>
+</code></pre>
+
+<p><img src="images/PMC-updating-the-database.png?raw=true" alt="Updating the Database" title="Updating the Database" />
+</p>
+
+<p><em>Updating the Database</em></p>
+
+<p>This will add the <strong>MiddleName</strong> column in the <strong>People</strong> table to match the current definition of the <strong>Person</strong> class.</p></li>
+<li><p>Once the database is updated, right-click the Controller folder and select <strong>Add | Controller</strong> to add the Person controller again (Complete with the same values). This will update the existing methods and views adding the new attribute.</p>
+
+<p><img src="images/adding-a-controller-update.png?raw=true" alt="Adding a controller update" title="Adding a controller update" />
+</p>
+
+<p><em>Updating the controller</em></p></li>
+<li><p>Click <strong>Add</strong>. Then, select the values <strong>Overwrite PersonController.cs</strong> and the <strong>Overwrite associated views</strong> and click <strong>OK</strong>.</p>
+
+<p><img src="images/adding-a-controller-overwrite.png?raw=true" alt="Adding a controller overwrite" />
+</p>
+
+<p><em>Updating the controller</em></p></li>
+</ol>
+
+<p><a name="Ex1Task4"></a></p>
+
+<h4 id="Task4-_Running_the_application">Task4- Running the application</h4>
+
+<ol>
+<li><p>Press <strong>F5</strong> to run the application.</p></li>
+<li><p>Open <strong>/Person</strong>. Notice that the data was preserved, while the middle name column was added.</p>
+
+<p><img src="images/middle-name-added.png?raw=true" alt="Middle Name added" title="Middle Name added" />
+</p>
+
+<p><em>Middle Name added</em></p></li>
+<li><p>If you click <strong>Edit</strong>, you will be able to add a middle name to the current person.</p>
+
+<p><img src="images/middle-name-edition.png?raw=true" alt="Middle Name edition" title="Middle Name edition" />
+</p></li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Additionally, you can deploy this application to Windows Azure Web Sites following <a href="#AppendixB">Appendix B: Publishing an ASP.NET MVC 4 Application using Web Deploy</a>.</p>
+</blockquote>
+<hr />
+
+<p><a name="Summary"></a></p>
+
+<h2 id="Summary">Summary</h2>
+
+<p>In this Hands-On lab, you have learned simple steps to create CRUD operations with ASP.NET MVC 4 Scaffolding using any model class. Then, you have learned how to perform an end to end update in your application -from the database to the views- by using Entity Framework Migrations.</p>
+
+<p><a name="AppendixA"></a></p>
+
+<h2 id="Appendix_A_Installing_Visual_Studio_Express_2012_for_Web">Appendix A: Installing Visual Studio Express 2012 for Web</h2>
+
+<p>You can install <strong>Microsoft Visual Studio Express 2012 for Web</strong> or another &quot;Express&quot; version using the <strong><a href="http://www.microsoft.com/web/downloads/platform.aspx">Microsoft Web Platform Installer</a></strong>. The following instructions guide you through the steps required to install <em>Visual studio Express 2012 for Web</em> using <em>Microsoft Web Platform Installer</em>.</p>
+
+<ol>
+<li><p>Go to <a href="http://go.microsoft.com/?linkid=9810169"><a href="http://go.microsoft.com/?linkid=9810169">http://go.microsoft.com/?linkid=9810169</a></a>. Alternatively, if you already have installed Web Platform Installer, you can open it and search for the product &quot;<em>Visual Studio Express 2012 for Web with Windows Azure SDK</em>&quot;.</p></li>
+<li><p>Click on <strong>Install Now</strong>. If you do not have <strong>Web Platform Installer</strong> you will be redirected to download and install it first.</p></li>
+<li><p>Once <strong>Web Platform Installer</strong> is open, click <strong>Install</strong> to start the setup.</p>
+
+<p><img src="images/install-visual-studio-express.png?raw=true" alt="Install Visual Studio Express" title="Install Visual Studio Express" />
+</p>
+
+<p><em>Install Visual Studio Express</em></p></li>
+<li><p>Read all the products' licenses and terms and click <strong>I Accept</strong> to continue.</p>
+
+<p><img src="images/accepting-the-license-terms.png?raw=true" alt="Accepting the license terms" />
+</p>
+
+<p><em>Accepting the license terms</em></p></li>
+<li><p>Wait until the downloading and installation process completes.</p>
+
+<p><img src="images/installation-progress.png?raw=true" alt="Installation progress" />
+</p>
+
+<p><em>Installation progress</em></p></li>
+<li><p>When the installation completes, click <strong>Finish</strong>.</p>
+
+<p><img src="images/installation-completed.png?raw=true" alt="Installation completed" />
+</p>
+
+<p><em>Installation completed</em></p></li>
+<li><p>Click <strong>Exit</strong> to close Web Platform Installer.</p></li>
+<li><p>To open Visual Studio Express for Web, go to the <strong>Start</strong> screen and start writing &quot;<strong>VS Express</strong>&quot;, then click on the <strong>VS Express for Web</strong> tile.</p>
+
+<p><img src="images/vs-express-for-web-tile.png?raw=true" alt="VS Express for Web tile" />
+</p>
+
+<p><em>VS Express for Web tile</em></p></li>
+</ol>
+
+<p><a name="AppendixB"></a></p>
+
+<h2 id="Appendix_B_Publishing_an_ASPNET_MVC_4_Application_using_Web_Deploy">Appendix B: Publishing an ASP.NET MVC 4 Application using Web Deploy</h2>
+
+<p>This appendix will show you how to create a new web site from the Windows Azure Management Portal and publish the application you obtained by following the lab, taking advantage of the Web Deploy publishing feature provided by Windows Azure.</p>
+
+<p><a name="ApxBTask1"></a></p>
+
+<h4 id="Task_1_-_Creating_a_New_Web_Site_from_the_Windows_Azure_Portal">Task 1 - Creating a New Web Site from the Windows Azure Portal</h4>
+
+<ol>
+<li><p>Go to the <a href="https://manage.windowsazure.com/">Windows Azure Management Portal</a> and sign in using the Microsoft credentials associated with your subscription.</p>
+<blockquote>
+<p><strong>Note:</strong> With Windows Azure you can host 10 ASP.NET Web Sites for free and then scale as your traffic grows. You can sign up <a href="http://aka.ms/aspnet-hol-azure">here</a>.</p>
+</blockquote>
+<p><img src="images/login.png?raw=true" alt="Log on to Windows Azure portal" title="Log on to Windows Azure portal" />
+</p>
+
+<p><em>Log on to Windows Azure Management Portal</em></p></li>
+<li><p>Click <strong>New</strong> on the command bar.</p>
+
+<p><img src="images/new-website.png?raw=true" alt="Creating a new Web Site" title="Creating a new Web Site" />
+</p>
+
+<p><em>Creating a new Web Site</em></p></li>
+<li><p>Click <strong>Compute</strong> | <strong>Web Site</strong>. Then select <strong>Quick Create</strong> option. Provide an available URL for the new web site and click <strong>Create Web Site</strong>.</p>
+<blockquote>
+<p><strong>Note:</strong> A Windows Azure Web Site is the host for a web application running in the cloud that you can control and manage. The Quick Create option allows you to deploy a completed web application to the Windows Azure Web Site from outside the portal. It does not include steps for setting up a database.</p>
+</blockquote>
+<p><img src="images/quick-create.png?raw=true" alt="Creating a new Web Site using Quick Create" title="Creating a new Web Site using Quick Create" />
+</p>
+
+<p><em>Creating a new Web Site using Quick Create</em></p></li>
+<li><p>Wait until the new <strong>Web Site</strong> is created.</p></li>
+<li><p>Once the Web Site is created click the link under the <strong>URL</strong> column. Check that the new Web Site is working.</p>
+
+<p><img src="images/navigate-website.png?raw=true" alt="Browsing to the new web site" title="Browsing to the new web site" />
+</p>
+
+<p><em>Browsing to the new web site</em></p>
+
+<p><img src="images/website-working.png?raw=true" alt="Web site running" title="Web site running" />
+</p>
+
+<p><em>Web site running</em></p></li>
+<li><p>Go back to the portal and click the name of the web site under the <strong>Name</strong> column to display the management pages.</p>
+
+<p><img src="images/go-to-the-dashboard.png?raw=true" alt="Opening the web site management pages" title="Opening the web site management pages" />
+</p>
+
+<p><em>Opening the Web Site management pages</em></p></li>
+<li><p>In the <strong>Dashboard</strong> page, under the <strong>quick glance</strong> section, click the <strong>Download publish profile</strong> link.</p>
+<blockquote>
+<p><strong>Note:</strong> The <em>publish profile</em> contains all of the information required to publish a web application to a Windows Azure website for each enabled publication method. The publish profile contains the URLs, user credentials and database strings required to connect to and authenticate against each of the endpoints for which a publication method is enabled. <strong>Microsoft WebMatrix 2</strong>, <strong>Microsoft Visual Studio Express for Web</strong> and <strong>Microsoft Visual Studio 2012</strong> support reading publish profiles to automate configuration of these programs for publishing web applications to Windows Azure websites. </p>
+</blockquote>
+<p><img src="images/download-publish-profile.png?raw=true" alt="Downloading the web site publish profile" title="Downloading the web site publish profile" />
+</p>
+
+<p><em>Downloading the Web Site publish profile</em></p></li>
+<li><p>Download the publish profile file to a known location. Further in this exercise you will see how to use this file to publish a web application to a Windows Azure Web Sites from Visual Studio.</p>
+
+<p><img src="images/save-link.png?raw=true" alt="Saving the publish profile file" title="Saving the publish profile" />
+</p>
+
+<p><em>Saving the publish profile file</em></p></li>
+</ol>
+
+<p><a name="ApxBTask2"></a></p>
+
+<h4 id="Task_2_-_Configuring_the_Database_Server">Task 2 - Configuring the Database Server</h4>
+
+<p>If your application makes use of SQL Server databases you will need to create a SQL Database server. If you want to deploy a simple application that does not use SQL Server you might skip this task.</p>
+
+<ol>
+<li><p>You will need a SQL Database server for storing the application database. You can view the SQL Database servers from your subscription in the Windows Azure Management portal at <strong>Sql Databases</strong> | <strong>Servers</strong> | <strong>Server's Dashboard</strong>. If you do not have a server created, you can create one using the <strong>Add</strong> button on the command bar. Take note of the <strong>server name and URL, administrator login name and password</strong>, as you will use them in the next tasks. Do not create the database yet, as it will be created in a later stage.</p>
+
+<p><img src="images/sql-database-server-dashboard.png?raw=true" alt="SQL Database Server Dashboard" title="SQL Database Server Dashboard" />
+</p>
+
+<p><em>SQL Database Server Dashboard</em></p></li>
+<li><p>In the next task you will test the database connection from Visual Studio, for that reason you need to include your local IP address in the server's list of <strong>Allowed IP Addresses</strong>. To do that, click <strong>Configure</strong>, select the IP address from <strong>Current Client IP Address</strong> and paste it on the <strong>Start IP Address</strong> and <strong>End IP Address</strong> text boxes and click the <img src="images/add-client-ip-address-ok-button.png?raw=true" alt="add-client-ip-address-ok-button" />
+ button.</p>
+
+<p><img src="images/add-client-ip-address.png?raw=true" alt="Adding Client IP Address" />
+</p>
+
+<p><em>Adding Client IP Address</em></p></li>
+<li><p>Once the <strong>Client IP Address</strong> is added to the allowed IP addresses list, click on <strong>Save</strong> to confirm the changes.</p>
+
+<p><img src="images/add-client-ip-address-confirm.png?raw=true" alt="Confirm Changes" />
+</p>
+
+<p><em>Confirm Changes</em></p></li>
+</ol>
+
+<p><a name="ApxBTask3"></a></p>
+
+<h4 id="Task_3_-_Publishing_an_ASPNET_MVC_4_Application_using_Web_Deploy">Task 3 - Publishing an ASP.NET MVC 4 Application using Web Deploy</h4>
+
+<ol>
+<li><p>Go back to the ASP.NET MVC 4 solution. In the <strong>Solution Explorer</strong>,  right-click the web site project and select <strong>Publish</strong>.</p>
+
+<p><img src="images/publishing-the-application.png?raw=true" alt="Publishing the Application" title="Publishing the Application" />
+</p>
+
+<p><em>Publishing the web site</em></p></li>
+<li><p>Import the publish profile you saved in the first task.</p>
+
+<p><img src="images/importing-the-publish-profile.png?raw=true" alt="Importing the publish profile" title="Importing the publish profile" />
+</p>
+
+<p><em>Importing publish profile</em></p></li>
+<li><p>Click <strong>Validate Connection</strong>. Once Validation is complete click <strong>Next</strong>.</p>
+<blockquote>
+<p><strong>Note:</strong> Validation is complete once you see a green checkmark appear next to the Validate Connection button.</p>
+</blockquote>
+<p><img src="images/validating-connection.png?raw=true" alt="Validating connection" title="Validating connection" />
+</p>
+
+<p><em>Validating connection</em></p></li>
+<li><p>In the <strong>Settings</strong> page, under the <strong>Databases</strong> section, click the button next to your database connection's textbox (i.e. <strong>DefaultConnection</strong>).</p>
+
+<p><img src="images/web-deploy-configuration.png?raw=true" alt="Web deploy configuration" title="Web deploy configuration" />
+</p>
+
+<p><em>Web deploy configuration</em></p></li>
+<li><p>Configure the database connection as follows:</p>
+
+<ul>
+<li>In the <strong>Server name</strong> type your SQL Database server URL using the <em>tcp:</em> prefix.</li>
+<li>In <strong>User name</strong> type your server administrator login name.</li>
+<li>In <strong>Password</strong> type your server administrator login password.</li>
+<li>Type a new database name.</li>
+</ul>
+
+<p><img src="images/configuring-destination-connection-string.png?raw=true" alt="Configuring destination connection string" title="Configuring destination connection string" />
+</p>
+
+<p><em>Configuring destination connection string</em></p></li>
+<li><p>Then click <strong>OK</strong>. When prompted to create the database click <strong>Yes</strong>.</p>
+
+<p><img src="images/creating-the-database.png?raw=true" alt="Creating the database" title="Creating the database string" />
+</p>
+
+<p><em>Creating the database</em></p></li>
+<li><p>The connection string you will use to connect to SQL Database in Windows Azure is shown within Default Connection textbox. Then click <strong>Next</strong>.</p>
+
+<p><img src="images/sql-database-connection-string.png?raw=true" alt="Connection string pointing to SQL Database" title="Connection string pointing to SQL Database" />
+</p>
+
+<p><em>Connection string pointing to SQL Database</em></p></li>
+<li><p>In the <strong>Preview</strong> page, click <strong>Publish</strong>.</p>
+
+<p><img src="images/publishing-the-web-application.png?raw=true" alt="Publishing the web application" title="Publishing the web application" />
+</p>
+
+<p><em>Publishing the web application</em></p></li>
+<li><p>Once the publishing process finishes, your default browser will open the published web site.</p></li>
+</ol>
+
+<p><a name="AppendixC"></a></p>
+
+<h2 id="Appendix_C_Using_Code_Snippets">Appendix C: Using Code Snippets</h2>
+
+<p>With code snippets, you have all the code you need at your fingertips. The lab document will tell you exactly when you can use them, as shown in the following figure.</p>
+
+<p><img src="./images/Using-Visual-Studio-code-snippets-to-insert-code-into-your-project.png?raw=true" alt="Using Visual Studio code snippets to insert code into your project" title="Using Visual Studio code snippets to insert code into your project" />
+</p>
+
+<p><em>Using Visual Studio code snippets to insert code into your project</em></p>
+
+<p><em><strong>To add a code snippet using the keyboard (C# only)</strong></em></p>
+
+<ol>
+<li><p>Place the cursor where you would like to insert the code.</p></li>
+<li><p>Start typing the snippet name (without spaces or hyphens).</p></li>
+<li><p>Watch as IntelliSense displays matching snippets' names.</p></li>
+<li><p>Select the correct snippet (or keep typing until the entire snippet's name is selected).</p></li>
+<li><p>Press the Tab key twice to insert the snippet at the cursor location.</p></li>
+</ol>
+
+<p><img src="./images/Start-typing-the-snippet-name.png?raw=true" alt="Start typing the snippet name" title="Start typing the snippet name" />
+</p>
+
+<p><em>Start typing the snippet name</em></p>
+
+<p><img src="./images/Press-Tab-to-select-the-highlighted-snippet.png?raw=true" alt="Press Tab to select the highlighted snippet" title="Press Tab to select the highlighted snippet" />
+</p>
+
+<p><em>Press Tab to select the highlighted snippet</em></p>
+
+<p><img src="./images/Press-Tab-again-and-the-snippet-will-expand.png?raw=true" alt="Press Tab again and the snippet will expand" title="Press Tab again and the snippet will expand" />
+</p>
+
+<p><em>Press Tab again and the snippet will expand</em></p>
+
+<p><em><strong>To add a code snippet using the mouse (C#, Visual Basic and XML)</strong></em>
+1. Right-click where you want to insert the code snippet.</p>
+
+<ol>
+<li><p>Select <strong>Insert Snippet</strong> followed by <strong>My Code Snippets</strong>.</p></li>
+<li><p>Pick the relevant snippet from the list, by clicking on it.</p></li>
+</ol>
+
+<p><img src="./images/Right-click-where-you-want-to-insert-the-code-snippet-and-select-Insert-Snippet.png?raw=true" alt="Right-click where you want to insert the code snippet and select Insert Snippet" title="Right-click where you want to insert the code snippet and select Insert Snippet" />
+</p>
+
+<p><em>Right-click where you want to insert the code snippet and select Insert Snippet</em></p>
+
+<p><img src="./images/Pick-the-relevant-snippet-from-the-list,-by-clicking-on-it.png?raw=true" alt="Pick the relevant snippet from the list, by clicking on it" title="Pick the relevant snippet from the list, by clicking on it" />
+</p>
+
+<p><em>Pick the relevant snippet from the list, by clicking on it</em></p>
+
+</span>
+        </div>
+	<br />
+	<p><a href="#top">top of page</a></p>
+</div> 
+<div class="clearBoth"></div>
+
+</div>
+</div>
+    
+</body>
+</html>
+

@@ -1,0 +1,78 @@
+﻿<link href="~/Content/kendoui/kendo.common-bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/kendoui/kendo.bootstrap.min.css" rel="stylesheet" />
+@using ASPNETCourse.Models
+@model ASPNETCourse.Models.AnsweredToCheckQuestion
+@{
+    ViewBag.Title = Model.QuizName;
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="text-right text-warning text-uppercase" style="margin-top: -3em;">
+    Time left:
+    <div id="clock" style="margin-top: -1.5em;"></div>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Answer</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.QuestionId)
+        @Html.HiddenFor(m => m.QuizId)
+        @Html.HiddenFor(m => m.UserName)
+        @Html.HiddenFor(m => m.StartTime)
+        @Html.HiddenFor(m => m.TimeLength)
+
+        <div class="form-group" onmousedown=" return false; " onselectstart="return false;" onselect=" return false; " oncut="return false;" id="bodyDiv">
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Description))
+        </div>
+
+        <div class="form-group">
+            @Html.TextAreaFor(model => model.Answer, new {htmlAttributes = new {@class = "form-control"}})
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@*</div>*@
+
+@section Scripts {
+    <script src="~/Scripts/kendoui/kendo.web.min.js"></script>
+    <script src="~/Scripts/kendoui/kendo.core.min.js"></script>
+    <script src="~/Scripts/kendoui/kendo.editor.min.js"></script>
+    @*<script src="~/Scripts/kendoui/kendo.datetimepicker.min.js"></script>*@
+    <style>
+        .bodyDiv {
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $("#Answer").kendoEditor();
+        });
+    </script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script src="~/Scripts/jquery.countdown.js"></script>
+    <script src="~/Scripts/jquery.countdown.min.js"></script>
+    <script type="text/javascript">
+        $('#clock').countdown('@Model.StartTime', function (event) {
+            var $this = $(this).html(event.strftime('<h2>%H:%M:%S</h2>'));
+        });
+    </script>
+}

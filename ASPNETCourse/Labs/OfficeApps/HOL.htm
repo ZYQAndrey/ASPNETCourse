@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+<h2>Developing apps for Office 2013</h2>
+<hr/>
+<h3>Exercise 1. Creating Apps for Office</h3>
+<p>
+    As well as the SharePoint app model, you can also use the Office 2013 app model. Apps for Office enable support for most Office applications such as Excel, Word, Project, and Outlook.
+    The app model provides the apps you create with access to contextual information, such as a document being edited or an email being viewed.
+    This enables your app to manipulate the document or read its contents, and use it to fetch related data from the Internet, for example, and display it alongside the document in your app.
+    It is also possible for an Office app to access data from a SharePoint app (such as lists, libraries, or BCS connections) using the OAuth protocol implemented across the app model.
+    In this demo I’m going to show you how to build an app for Office 2013.
+    I’m going to build a mail app that is hosted in Outlook Web.
+</p>
+<p>
+    <ol>
+        <li>
+            Open Visual Studio as administrator.
+        </li>
+        <li>
+            Click File > New > Project…
+        </li>
+        <li>
+            Under Templates > Visual C# > Office/SharePoint select Apps and choose App for Office 2013.
+        </li>
+        <li>
+            Enter OfficeAppDemo in the Name field and click OK.
+        </li>
+    </ol>
+    <p>
+        Now I’m asked what Office applications I want to target.
+        You can see that the full suite is supported: Excel, Word, Project, and more.
+        Since I want to host my app in Outlook, I will select the third option, Mail app, to create my app.
+        I will specify that I want my app to activate on mail items, instead of appointments.
+    </p>
+<ol start="5">
+    <li>
+        Select option Mail app in:
+    </li>
+    <li>
+        Select Email Message and ensure that Appointment is not checked.
+    </li>
+</ol>
+<p>
+    Apps for Office share the same application architecture as the apps for SharePoint that you’ve already seen. Remember that apps consist of two primary components—a web server that hosts and provides the app experience, and the app definition or manifest including SharePoint-deployed features such as lists, site columns, and content types.
+    Apps for Office are no different, but instead of offering only a browser-hosting option, apps can be hosted in Office client applications as well.
+</p>
+<ol start="7">
+    <li>
+        In Solution Explorer, under the OfficeAppDemo project double-click the OfficeAppDemoManifest file to open it.
+    </li>
+</ol>
+<p>
+    I can define rules that provide the ability to ‘match’ the email items with the rules I define.
+</p>
+<ol start="8">
+    <li>
+        Go to Activation Rules.
+    </li>
+</ol>
+<p>
+    You must provide valid O365 Outlook credentials.
+    Use the global administrator user of the O365 dev portal.
+</p>
+<ol start="9">
+    <li>
+        Run the application (F5).
+    </li>
+</ol>
+<p>
+    You’ll see a new “Action Item” above the email content.
+    If I click here, I can see the default information that Visual Studio creates.
+</p>
+<ol start="10">
+    <li>
+        Choose any email on your Inbox.
+    </li>
+    <li>
+        Click “OfficeAppDemo”.
+    </li>
+</ol>
+<p>
+    I can create more features in this app using various web technologies. By default, the template has HTML and JavaScript files, but I can also create aspx files for work with .NET in the backend.
+</p>
+<ol start="12">
+    <li>
+        Open the home.html page inside the OfficeAppDemoWeb Project.
+    </li>
+</ol>
+
+</body>
+</html>

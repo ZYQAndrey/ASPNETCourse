@@ -1,0 +1,583 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="Stylesheet" type="text/css" media="all" href="styles/master.css" />
+</head>
+<body>
+    <div id="outerWrapper">
+        <div id="wrapper" class="landingPage getStartedPage">
+
+
+            <h1 id="ASPNET_MVC_4_Custom_Action_Filters">ASP.NET MVC 4 Custom Action Filters</h1>
+
+            <hr />
+
+            <p><a name="Overview"></a></p>
+
+            <h2 id="Overview">Overview</h2>
+
+            <p>ASP.NET MVC provides Action Filters for executing filtering logic either before or after an action method is called. Action Filters are custom attributes that provide declarative means to add pre-action and post-action behavior to the controller's action methods.</p>
+
+            <p>In this Hands-on Lab you will create a custom action filter attribute into MvcMusicStore solution to catch controller's requests and log the activity of a site into a database table. You will be able to add your logging filter by injection to any controller or action.  Finally, you will see the log view that shows the list of visitors.</p>
+            <blockquote>
+                <p><strong>Note:</strong> This Hands-on Lab assumes you have basic knowledge of <strong>ASP.NET MVC</strong>. If you have not used <strong>ASP.NET MVC</strong> before, we recommend you to go over <strong>ASP.NET MVC 4 Fundamentals</strong> Hands-on Lab.</p>
+            </blockquote>
+            <p><a name="Objectives"></a></p>
+
+            <h3 id="Objectives">Objectives</h3>
+
+            <p>In this Hands-On Lab, you will learn how to:</p>
+
+            <ul>
+                <li><p>Create a custom action filter attribute to extend filtering capabilities</p></li>
+                <li><p>Apply a custom filter attribute by injection to a specific level</p></li>
+                <li><p>Register a custom action filters globally</p></li>
+            </ul>
+
+            
+            <hr />
+
+            <p><a name="Exercises"></a> </p>
+
+            <h2 id="Exercises">Exercises</h2>
+
+            <p>This Hands-On Lab is comprised by the following exercises:</p>
+
+            <ol>
+                <li><a href="#Exercise1">Exercise 1: Logging actions</a></li>
+                <li><a href="#Exercise2">Exercise 2: Managing Multiple Action Filters</a></li>
+            </ol>
+
+            <p>Estimated time to complete this lab: <strong>30 minutes</strong>.</p>
+            <blockquote>
+                <p><strong>Note:</strong> Each exercise is accompanied by an <strong>End</strong> folder containing the resulting solution you should obtain after completing the exercises. You can use this solution as a guide if you need additional help working through the exercises.</p>
+            </blockquote>
+            <p><a name="Exercise1"></a> </p>
+
+            <h3 id="Exercise_1_Logging_Actions">Exercise 1: Logging Actions</h3>
+
+            <p>In this exercise, you will learn how to create a custom action log filter by using ASP.NET MVC 4 Filter Providers.  For that purpose you will apply a logging filter to the MusicStore site that will record all the activities in the selected controllers.</p>
+
+            <p>The filter will extend <strong>ActionFilterAttributeClass</strong> and override <strong>OnActionExecuting</strong> method to catch each request and then perform the logging actions. The context information about HTTP requests, executing methods, results and parameters will be provided by ASP.NET MVC <strong>ActionExecutingContext</strong> class<strong>.</strong></p>
+            <blockquote>
+                <p><strong>Note:</strong> ASP.NET MVC 4 also has default filters providers you can use without creating a custom filter. ASP.NET MVC 4 provides the following types of filters:</p>
+
+                <ul>
+                    <li><strong>Authorization</strong> filter, which makes security decisions about whether to execute an action method, such as performing authentication or validating properties of the request. </li>
+                    <li><strong>Action</strong> filter, which wraps the action method execution. This filter can perform additional processing, such as providing extra data to the action method, inspecting the return value, or canceling execution of the action method</li>
+                    <li><strong>Result</strong> filter, which wraps execution of the ActionResult object. This filter can perform additional processing of the result, such as modifying the HTTP response. </li>
+                    <li><strong>Exception</strong> filter, which executes if there is an unhandled exception thrown somewhere in action method, starting with the authorization filters and ending with the execution of the result. Exception filters can be used for tasks such as logging or displaying an error page.</li>
+                </ul>
+
+                <p>For more information about Filters Providers please visit this MSDN link: (<a href="http://msdn.microsoft.com/en-us/library/dd410209.aspx">http://msdn.microsoft.com/en-us/library/dd410209.aspx</a>) .</p>
+            </blockquote>
+            <p><a name="AboutLoggingFeature"></a> </p>
+
+            <h4 id="About_MVC_Music_Store_Application_logging_feature">About MVC Music Store Application logging feature</h4>
+
+            <p>This Music Store solution has a new data model table for site logging, <strong>ActionLog</strong>, with the following fields: Name of the controller that received a request, Called action, Client IP and Time stamp.</p>
+
+            <p>
+                <img src="./images/Data-model.-ActionLog-table..png?raw=true" alt="Data model. ActionLog table." title="Data model. ActionLog table." />
+            </p>
+
+            <p><em>Data model - ActionLog table</em></p>
+
+            <p>The solution provides an ASP.NET MVC View for the Action log that can be found at <strong>MvcMusicStores/Views/ActionLog</strong>:</p>
+
+            <p>
+                <img src="./images/Action-Log-view.png?raw=true" alt="Action Log view" title="Action Log view" />
+            </p>
+
+            <p><em>Action Log view</em></p>
+
+            <p>With this given structure, all the work will be focused on interrupting controller's request and performing the logging by using custom filtering.</p>
+
+            <p><a name="Ex1Task1"></a></p>
+
+            <h4 id="Task_1_-_Creating_a_Custom_Filter_to_Catch_a_Controllers_Request">Task 1 - Creating a Custom Filter to Catch a Controller's Request</h4>
+
+            <p>In this task you will create a custom filter attribute class that will contain the logging logic. For that purpose you will extend ASP.NET MVC <strong>ActionFilterAttribute</strong> Class and implement the interface <strong>IActionFilter</strong>.</p>
+            <blockquote>
+                <p><strong>Note:</strong> The <strong>ActionFilterAttribute</strong> is the base class for all the attribute filters. It provides the following methods to execute a specific logic after and before controller action's execution:</p>
+
+                <ul>
+                    <li><strong>OnActionExecuting</strong>(ActionExecutedContext filterContext): Just before the action method is called.</li>
+                    <li><strong>OnActionExecuted</strong>(ActionExecutingContext filterContext): After the action method is called and before the result is executed (before view render).</li>
+                    <li><strong>OnResultExecuting</strong>(ResultExecutingContext filterContext): Just before the result is executed (before view render).</li>
+                    <li><strong>OnResultExecuted</strong>(ResultExecutedContext filterContext): After the result is executed (after the view is rendered).</li>
+                </ul>
+
+                <p>By overriding any of these methods into a derived class, you can execute your own filtering code.</p>
+            </blockquote>
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>\Source\Ex01-LoggingActions\Begin</strong> folder.</p>
+
+                    <ol>
+                        <li>You will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</li>
+                    </ol>
+                    <blockquote>
+                        <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+
+                        <p>For more information, see this article: <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages</a>.</p>
+                    </blockquote>
+                </li>
+                <li><p>Add a new C# class into the <strong>Filters</strong> folder and name it <em>CustomActionFilter.cs</em>. This folder will store all the custom filters.</p></li>
+                <li>
+                    <p>Open <strong>CustomActionFilter.cs</strong> and add a reference to <strong>System.Web.Mvc</strong> and  <strong>MvcMusicStore.Models</strong> namespaces:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Custom Action Filters - Ex1-CustomActionFilterNamespaces</em>)</p>
+
+                    <!-- mark:5-6    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<strong class="markLine"><span style="color:#0000FF">using</span> System.Web.Mvc;</strong>
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Models;</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Inherit the <strong>CustomActionFilter</strong> class from <strong>ActionFilterAttribute</strong> and then make <strong>CustomActionFilter</strong> class implement <strong>IActionFilter</strong> interface.</p>
+
+                    <!-- mark:4    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#">...
+<span style="color:#0000FF">namespace</span> MvcMusicStore.Filters
+{
+<strong class="markLine">    <span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> CustomActionFilter : ActionFilterAttribute, IActionFilter</strong>
+    {
+        ...
+</code></pre>
+                </li>
+                <li>
+                    <p>Make <strong>CustomActionFilter</strong> class override the method <strong>OnActionExecuting</strong> and add the necessary logic to log the filter's execution. To do this, add the following highlighted code within <strong>CustomActionFilter</strong> class.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Custom Action Filters - Ex1-LoggingActions</em>)</p>
+
+                    <!-- mark:3-22    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> CustomActionFilter : ActionFilterAttribute, IActionFilter
+{
+<strong class="markLine">    <span style="color:#0000FF">void</span> IActionFilter.OnActionExecuting(ActionExecutingContext filterContext)</strong>
+<strong class="markLine">    {</strong>
+<strong class="markLine">        <span style="color:#008000">// TODO: Add your acction filter&#39;s tasks here</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#008000">// Log Action Filter Call</span></strong>
+<strong class="markLine">        MusicStoreEntities storeDB = <span style="color:#0000FF">new</span> MusicStoreEntities();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        ActionLog log = <span style="color:#0000FF">new</span> ActionLog()</strong>
+<strong class="markLine">        {</strong>
+<strong class="markLine">            Controller = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,</strong>
+<strong class="markLine">            Action = filterContext.ActionDescriptor.ActionName + <span style="color:#8B0000">&quot; (Logged By: Custom Action Filter)&quot;</span>,</strong>
+<strong class="markLine">            IP = filterContext.HttpContext.Request.UserHostAddress,</strong>
+<strong class="markLine">            DateTime = filterContext.HttpContext.Timestamp</strong>
+<strong class="markLine">        };</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        storeDB.ActionLogs.Add(log);</strong>
+<strong class="markLine">        storeDB.SaveChanges();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">this</span>.OnActionExecuting(filterContext);</strong>
+<strong class="markLine">    }</strong>
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong>  <strong>OnActionExecuting</strong> method is using <strong>Entity Framework</strong> to add a new ActionLog register.  It creates and fills a new entity instance with the context information from <strong>filterContext</strong>. </p>
+
+                        <p>You can read more about <strong>ControllerContext</strong> class at <a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.controllercontext.aspx">msdn</a>.</p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task2"></a></p>
+
+            <h4 id="Task_2_-_Injecting_a_Code_Interceptor_into_the_Store_Controller_Class">Task 2 - Injecting a Code Interceptor into the Store Controller Class</h4>
+
+            <p>In this task you will add the custom filter by injecting it to all controller classes and controller actions that will be logged. For the purpose of this exercise, the Store Controller class will have a log.</p>
+
+            <p>The method <strong>OnActionExecuting</strong> from <strong>ActionLogFilterAttribute</strong> custom filter runs when an injected element is called.</p>
+
+            <p>It is also possible to intercept a specific controller method.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>StoreController</strong> at <strong>MvcMusicStore\Controllers</strong> and add a reference to the <strong>Filters</strong> namespace:</p>
+
+                    <!-- mark:4    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web.Mvc;
+<span style="color:#0000FF">using</span> MvcMusicStore.Models;
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Filters;</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Inject the custom filter <strong>CustomActionFilter</strong> into <strong>StoreController</strong> class by adding <strong>[CustomActionFilter]</strong> attribute before the class declaration. </p>
+
+                    <!-- mark:2    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#">...
+<strong class="markLine">[CustomActionFilter]</strong>
+<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+{
+    ...
+}
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> When a filter is injected into a controller class, all its actions are also injected. If you would like to apply the filter only for a set of actions, you would have to inject <strong>[CustomActionFilter]</strong> to each one of them:</p>
+
+                        <span class="codelanguage">C#</span><pre><code class="C#">[CustomActionFilter]
+<span style="color:#0000FF">public</span> ActionResult Index()
+{
+  ...
+}
+[CustomActionFilter]
+<span style="color:#0000FF">public</span> ActionResult Browse(<span style="color:#0000FF">string</span> genre)
+{
+  ...
+}
+</code></pre>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex1Task3"></a></p>
+
+            <h4 id="Task_3_-_Running_the_Application">Task 3 - Running the Application</h4>
+
+            <p>In this task, you will test that the logging filter is working. You will start the application and visit the store, and then you will check logged activities.</p>
+
+            <ol>
+                <li><p>Press <strong>F5</strong> to run the application.</p></li>
+                <li>
+                    <p>Browse to <strong>/ActionLog</strong> to see log view initial state:</p>
+
+                    <p>
+                        <img src="./images/Log-tracker-status-before-page-activity.png?raw=true" alt="Log tracker status before page activity" title="Log tracker status before page activity" />
+                    </p>
+
+                    <p><em>Log tracker status before page activity</em></p>
+                    <blockquote>
+                        <p><strong>Note:</strong> By default, it will always show one item that is generated when retrieving the existing genres for the menu.</p>
+
+                        <p>For simplicity purposes we're cleaning up the <strong>ActionLog</strong> table each time the application runs so it will only show the logs of each particular task's verification.</p>
+
+                        <p>You might need to remove the following code from the <strong>Session_Start</strong> method (in the <strong>Global.asax</strong> class), in order to save an historical log for all the actions executed within the Store Controller.</p>
+
+                        <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#008000">// Clean up Logs Table</span>
+MusicStoreEntities storeDB = <span style="color:#0000FF">new</span> MusicStoreEntities();
+<span style="color:#0000FF">foreach</span> (<span style="color:#0000FF">var</span> log <span style="color:#0000FF">in</span> storeDB.ActionLogs.ToList())
+{
+   storeDB.ActionLogs.Remove(log);
+}
+storeDB.SaveChanges();
+</code></pre>
+                    </blockquote>
+                </li>
+                <li><p>Click one of the <strong>Genres</strong> from the menu and perform some actions there, like browsing an available album.</p></li>
+                <li>
+                    <p>Browse to <strong>/ActionLog</strong> and if the log is empty press <strong>F5</strong> to refresh the page. Check that your visits were tracked:</p>
+
+                    <p>
+                        <img src="./images/Action-log-with-activity-logged.png?raw=true" alt="Action log with activity logged" title="Action log with activity logged" />
+                    </p>
+
+                    <p><em>Action log with activity logged</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Exercise2"></a></p>
+
+            <h3 id="Exercise_2_Managing_Multiple_Action_Filters">Exercise 2: Managing Multiple Action Filters</h3>
+
+            <p>In this exercise you will add a second Custom Action Filter to the StoreController class and define the specific order in which both filters will be executed. Then you will update the code to register the filter Globally.</p>
+
+            <p>There are different options to take into account when defining the Filters' execution order. For example, the Order property and the Filters' scope:</p>
+
+            <p>You can define a <strong>Scope</strong> for each of the Filters, for example, you could scope all the Action Filters to run within the <strong>Controller Scope</strong>, and all Authorization Filters to run in <strong>Global scope</strong>. The scopes have a defined execution order.</p>
+
+            <p>Additionally, each action filter has an Order property which is used to determine the execution order in the scope of the filter.</p>
+
+            <p>For more information about Custom Action Filters execution order, please visit this MSDN article: (<a href="http://msdn.microsoft.com/en-us/library/dd381609%28v=vs.98%29.aspx">http://msdn.microsoft.com/en-us/library/dd381609%28v=vs.98%29.aspx</a>).</p>
+
+            <p><a name="Ex2Task1"></a></p>
+
+            <h4 id="Task_1_Creating_a_new_Custom_Action_Filter">Task 1: Creating a new Custom Action Filter</h4>
+
+            <p>In this task, you will create a new Custom Action Filter to inject into the StoreController class, learning how to manage the execution order of the filters.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>Begin</strong> solution located at <strong>\Source\Ex02-ManagingMultipleActionFilters\Begin</strong> folder. Otherwise, you might continue using the <strong>End</strong> solution obtained by completing the previous exercise.</p>
+
+                    <ol>
+                        <li>If you opened the provided <strong>Begin</strong> solution, you will need to download some missing NuGet packages before continue. To do this, click the <strong>Project</strong> menu and select <strong>Manage NuGet Packages</strong>.</li>
+                        <li>In the <strong>Manage NuGet Packages</strong> dialog, click <strong>Restore</strong> in order to download missing packages.</li>
+                        <li>
+                            <p>Finally, build the solution by clicking <strong>Build</strong> | <strong>Build Solution</strong>.</p>
+                            <blockquote>
+                                <p><strong>Note:</strong> One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.</p>
+
+                                <p>For more information, see this article: <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages</a>.</p>
+                            </blockquote>
+                        </li>
+                    </ol>
+                </li>
+                <li><p>Add a new C# class into the <strong>Filters</strong> folder and name it  <em>MyNewCustomActionFilter.cs</em></p></li>
+                <li>
+                    <p>Open <strong>MyNewCustomActionFilter.cs</strong> and add a reference to <strong>System.Web.Mvc</strong> and the <strong>MvcMusicStore.Models</strong> namespace:</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Custom Action Filters - Ex2-MyNewCustomActionFilterNamespaces</em>)</p>
+
+                    <!-- mark:5-6    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System;
+<span style="color:#0000FF">using</span> System.Collections.Generic;
+<span style="color:#0000FF">using</span> System.Linq;
+<span style="color:#0000FF">using</span> System.Web;
+<strong class="markLine"><span style="color:#0000FF">using</span> System.Web.Mvc;</strong>
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Models;</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Replace the default class declaration with the following code.</p>
+
+                    <p>(Code Snippet - <em>ASP.NET MVC 4 Custom Action Filters - Ex2-MyNewCustomActionFilterClass</em>)</p>
+
+                    <!-- mark:1-23    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine"><span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> MyNewCustomActionFilter : ActionFilterAttribute, IActionFilter</strong>
+<strong class="markLine">{</strong>
+<strong class="markLine">  <span style="color:#0000FF">void</span> IActionFilter.OnActionExecuting(ActionExecutingContext filterContext)</strong>
+<strong class="markLine">  {</strong>
+<strong class="markLine">        <span style="color:#008000">// TODO: Add your acction filter&#39;s tasks here</span></strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#008000">// Log Action Filter Call</span></strong>
+<strong class="markLine">        MusicStoreEntities storeDB = <span style="color:#0000FF">new</span> MusicStoreEntities();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        ActionLog log = <span style="color:#0000FF">new</span> ActionLog()</strong>
+<strong class="markLine">        {</strong>
+<strong class="markLine">             Controller = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,</strong>
+<strong class="markLine">             Action = filterContext.ActionDescriptor.ActionName + <span style="color:#8B0000">&quot; (Logged By: MyNewCustomActionFilter)&quot;</span>,</strong>
+<strong class="markLine">             IP = filterContext.HttpContext.Request.UserHostAddress,</strong>
+<strong class="markLine">             DateTime = filterContext.HttpContext.Timestamp</strong>
+<strong class="markLine">        };</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        storeDB.ActionLogs.Add(log);</strong>
+<strong class="markLine">        storeDB.SaveChanges();</strong>
+<strong class="markLine"></strong>
+<strong class="markLine">        <span style="color:#0000FF">this</span>.OnActionExecuting(filterContext);</strong>
+<strong class="markLine">  }</strong>
+<strong class="markLine">}</strong>
+</code></pre>
+                    <blockquote>
+                        <p><strong>Note:</strong> This Custom Action Filter is almost the same than the one you created in the previous exercise. The main difference is that it has the <em>&quot;Logged By&quot;</em> attribute updated with this new class' name to identify wich filter registered the log.</p>
+                    </blockquote>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task2"></a></p>
+
+            <h4 id="Task_2_Injecting_a_new_Code_Interceptor_into_the_StoreController_Class">Task 2: Injecting a new Code Interceptor into the StoreController Class</h4>
+
+            <p>In this task, you will add a new custom filter into the StoreController Class and run the solution to verify how both filters work together.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>StoreController</strong> class located at <strong>MvcMusicStore\Controllers</strong> and inject the new custom filter <strong>MyNewCustomActionFilter</strong> into <strong>StoreController</strong> class like is shown in the following code.</p>
+
+                    <!-- mark:1    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine">[MyNewCustomActionFilter]</strong>
+[CustomActionFilter]
+<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+{
+...
+}
+</code></pre>
+                </li>
+                <li><p>Now, run the application in order to see how these two Custom Action Filters work. To do this, press <strong>F5</strong> and wait until the application starts.</p></li>
+                <li>
+                    <p>Browse to <strong>/ActionLog</strong> to see log view initial state.</p>
+
+                    <p>
+                        <img src="./images/Log-tracker-status-before-page-activity2.png?raw=true" alt="Log tracker status before page activity" title="Log tracker status before page activity" />
+                    </p>
+
+                    <p><em>Log tracker status before page activity</em></p>
+                </li>
+                <li><p>Click one of the <strong>Genres</strong> from the menu and perform some actions there, like browsing an available album.</p></li>
+                <li>
+                    <p>Check that this time; your visits were tracked twice: once for each of the Custom Action Filters you added in the <strong>StorageController</strong> class.</p>
+
+                    <p>
+                        <img src="./images/Action-log-with-activity-logged2.png?raw=true" alt="Action log with activity logged" title="Action log with activity logged" />
+                    </p>
+
+                    <p><em>Action log with activity logged</em></p>
+                </li>
+                <li><p>Close the browser.</p></li>
+            </ol>
+
+            <p><a name="Ex2Task3"></a></p>
+
+            <h4 id="Task_3_Managing_Filter_Ordering">Task 3: Managing Filter Ordering</h4>
+
+            <p>In this task, you will learn how to manage the filters' execution order by using the Order propery.</p>
+
+            <ol>
+                <li>
+                    <p>Open the <strong>StoreController</strong> class located at <strong>MvcMusicStore\Controllers</strong> and specify the <strong>Order</strong> property in both filters like shown below.</p>
+
+                    <!-- mark:1-2    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine">[MyNewCustomActionFilter(Order = 2)]</strong>
+<strong class="markLine">[CustomActionFilter(Order = 1)]</strong>
+<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+{
+...
+}
+</code></pre>
+                </li>
+                <li><p>Now, verify how the filters are executed depending on its Order property's value. You will find that the filter with the smallest Order value (<strong>CustomActionFilter</strong>) is the first one that is executed. Press <strong>F5</strong> and wait until the application starts.</p></li>
+                <li>
+                    <p>Browse to <strong>/ActionLog</strong> to see log view initial state.</p>
+
+                    <p>
+                        <img src="./images/Log-tracker-status-before-page-activity2.png?raw=true" alt="Log tracker status before page activity" title="Log tracker status before page activity" />
+                    </p>
+
+                    <p><em>Log tracker status before page activity</em></p>
+                </li>
+                <li><p>Click one of the <strong>Genres</strong> from the menu and perform some actions there, like browsing an available album.</p></li>
+                <li>
+                    <p>Check that this time, your visits were tracked ordered by the filters' Order value: <strong>CustomActionFilter</strong> logs' first.</p>
+
+                    <p>
+                        <img src="./images/Action-log-with-activity-logged3.png?raw=true" alt="Action log with activity logged" title="Action log with activity logged" />
+                    </p>
+
+                    <p><em>Action log with activity logged</em></p>
+                </li>
+                <li>
+                    <p>Now, you will update the Filters' order value and verify how the logging order changes. In the <strong>StoreController</strong> class, update the Filters' Order value like shown below.</p>
+
+                    <!-- mark:1-2    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><strong class="markLine">[MyNewCustomActionFilter(Order = 1)]</strong>
+<strong class="markLine">[CustomActionFilter(Order = 2)]</strong>
+<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+{
+...
+}
+</code></pre>
+                </li>
+                <li><p>Run the application again by pressing <strong>F5</strong>.</p></li>
+                <li><p>Click one of the <strong>Genres</strong> from the menu and perform some actions there, like browsing an available album.</p></li>
+                <li>
+                    <p>Check that this time, the logs created by <strong>MyNewCustomActionFilter</strong> filter appears first.</p>
+
+                    <p>
+                        <img src="./images/Action-log-with-activity-logged4.png?raw=true" alt="Action log with activity logged" title="Action log with activity logged" />
+                    </p>
+
+                    <p><em>Action log with activity logged</em></p>
+                </li>
+            </ol>
+
+            <p><a name="Ex2Task4"></a></p>
+
+            <h4 id="Task_4_Registering_Filters_Globally">Task 4: Registering Filters Globally</h4>
+
+            <p>In this task, you will update the solution to register the new filter (<strong>MyNewCustomActionFilter</strong>) as a global filter. By doing this, it will be triggered by all the actions perfomed in the application and not only in the StoreController ones as in the previous task.</p>
+
+            <ol>
+                <li>
+                    <p>In <strong>StoreController</strong> class, remove <strong>[MyNewCustomActionFilter]</strong> attribute and the order property from <strong>[CustomActionFilter]</strong>. It should look like the following:</p>
+
+                    <span class="codelanguage">C#</span><pre><code class="C#">[CustomActionFilter]
+<span style="color:#0000FF">public</span> <span style="color:#0000FF">class</span> StoreController : Controller
+{
+...
+}
+</code></pre>
+                </li>
+                <li>
+                    <p>Open <strong>Global.asax</strong> file and locate the <strong>Application_Start</strong> method. Notice that each thime the application starts it is registering the global filters by calling <strong>RegisterGlobalFilters</strong> method within <strong>FilterConfig</strong> class.</p>
+
+                    <p>
+                        <img src="images/registering-global-filters-in-globalasax.png?raw=true" alt="Registering Global Filters in Global.asax" title="Registering Global Filters in Global.asax" />
+                    </p>
+
+                    <p><em>Registering Global Filters in Global.asax</em></p>
+                </li>
+                <li><p>Open <strong>FilterConfig.cs</strong> file within <strong>App_Start</strong> folder.</p></li>
+                <li>
+                    <p>
+                        Add a reference to using System.Web.Mvc;
+                        using MvcMusicStore.Filters; namespace.
+                    </p>
+
+                    <!-- mark: 2    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">using</span> System.Web.Mvc;
+<strong class="markLine"><span style="color:#0000FF">using</span> MvcMusicStore.Filters;</strong>
+</code></pre>
+                </li>
+                <li>
+                    <p>Update <strong>RegisterGlobalFilters</strong> method adding your custom filter. To do this, add the highlighted code:</p>
+
+                    <!-- mark: 4    -->
+
+                    <span class="codelanguage">C#</span><pre><code class="C#"><span style="color:#0000FF">public</span> <span style="color:#0000FF">static</span> <span style="color:#0000FF">void</span> RegisterGlobalFilters(GlobalFilterCollection filters)
+{
+    filters.Add(<span style="color:#0000FF">new</span> HandleErrorAttribute());
+<strong class="markLine">    filters.Add(<span style="color:#0000FF">new</span> MyNewCustomActionFilter());</strong>
+}
+</code></pre>
+                </li>
+                <li><p>Run the application by pressing <strong>F5</strong>.</p></li>
+                <li><p>Click one of the <strong>Genres</strong> from the menu and perform some actions there, like browsing an available album.</p></li>
+                <li>
+                    <p>Check that now <strong>[MyNewCustomActionFilter]</strong> is being injected in HomeController and ActionLogController too.</p>
+
+                    <p>
+                        <img src="./images/Action-log-with-activity-logged5.png?raw=true" alt="Action log with activity logged" title="Action log with activity logged" />
+                    </p>
+
+                    <p><em>Action log with global activity logged</em></p>
+                </li>
+            </ol>
+            <blockquote>
+                <p><strong>Note:</strong> Additionally, you can deploy this application to Windows Azure Web Sites following <a href="#AppendixB">Appendix B: Publishing an ASP.NET MVC 4 Application using Web Deploy</a>.</p>
+            </blockquote>
+            <hr />
+
+            <p><a name="Summary"></a></p>
+
+            <h2 id="Summary">Summary</h2>
+
+            <p>By completing this Hands-On Lab you have learned how to extend an action filter to execute custom actions. You have also learned how to inject any filter to your page controllers. The following concepts were used:</p>
+
+            <ul>
+                <li><p>How to create Custom Action filters with the ASP.NET MVC ActionFilterAttribute class</p></li>
+                <li><p>How to inject filters into ASP.NET MVC controllers</p></li>
+                <li><p>How to manage filter ordering using the Order property</p></li>
+                <li><p>How to register filters globally</p></li>
+            </ul>
+        </div>
+        <br />
+        <p><a href="#top">top of page</a></p>
+    </div> 
+<div class="clearBoth"></div>
+
+        
+</body>
+</html>
+
