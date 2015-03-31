@@ -52,5 +52,12 @@ namespace ASPNETCourse.Controllers
 
             return View();
         }
+
+        public ActionResult Books()
+        {
+            ViewBag.Message = "Books";
+
+            return View();
+        }
     }
 }

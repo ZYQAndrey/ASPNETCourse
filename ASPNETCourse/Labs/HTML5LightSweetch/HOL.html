@@ -1,0 +1,589 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-US" lang="en-US" xmlns="http://www.w3.org/1999/xhtml"><head id="Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>
+		An End-To-End Visual Studio LightSwitch 2013 HTML5 Application
+	</title><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="text/css" http-equiv="Content-Style-Type"><meta id="MetaDescription" name="DESCRIPTION" content="Microsoft Visual Studio LightSwitch Help Website Community Custom Silverlight Controls"><meta id="MetaKeywords" name="KEYWORDS" content="Microsoft Visual Studio LightSwitch Help Website Community Custom Silverlight Controls,DotNetNuke,DNN"><meta id="MetaCopyright" name="COPYRIGHT" content="Copyright 2013 by Michael Washington"><meta id="MetaGenerator" name="GENERATOR" content="DotNetNuke "><meta id="MetaAuthor" name="AUTHOR" content="LightSwitch Help Website"><meta name="RESOURCE-TYPE" content="DOCUMENT"><meta name="DISTRIBUTION" content="GLOBAL"><meta id="MetaRobots" name="ROBOTS" content="INDEX, FOLLOW"><meta name="REVISIT-AFTER" content="1 DAYS"><meta name="RATING" content="GENERAL"><meta http-equiv="PAGE-ENTER" content="RevealTrans(Duration=0,Transition=1)"><style id="StylePlaceholder" type="text/css"></style><link href="/Img/default.css" type="text/css" rel="stylesheet"><link href="/Img/module.css" type="text/css" rel="stylesheet"><link href="/Img/module(1).css" type="text/css" rel="stylesheet"><link href="/Img/skin.css" type="text/css" rel="stylesheet"><link href="/Img/index.css" type="text/css" rel="stylesheet"><link href="/Img/container.css" type="text/css" rel="stylesheet"><link href="/Img/Title_Grey.css" type="text/css" rel="stylesheet"><link href="/Img/portal.css" type="text/css" rel="stylesheet"><link href="/Img/ShareBadge.css" type="text/css" rel="stylesheet"><script type="text/javascript" async="" src="Img/ga.js"></script><script src="Img/jquery.min.js" type="text/javascript"></script><script src="Img/jquery-ui.min.js" type="text/javascript"></script><!--[if LT IE 7]><link id="IE6Minus" rel="stylesheet" type="text/css" href="/Portals/_default/Skins/MinimalExtropy/css/ie6skin.css" /><![endif]--><link rel="SHORTCUT ICON" href="http://lightswitchhelpwebsite.com/Portals/0/favicon.ico" type="image/x-icon">     
+	<link rel="alternate stylesheet" type="text/css" title="SizeWidget_width1024" href="/Img/width1024.css">
+	<link rel="alternate stylesheet" type="text/css" title="SizeWidget_width1280" href="/Img/width1280.css" disabled="">
+	<link rel="alternate stylesheet" type="text/css" title="SizeWidget_widthfull" href="/Img/widthfull.css" disabled="">
+	<link rel="alternate stylesheet" type="text/css" title="TextSizeWidget_smalltext" href="/Img/smalltext.css" disabled="">
+	<link rel="alternate stylesheet" type="text/css" title="TextSizeWidget_mediumtext" href="/Img/mediumtext.css">
+<link rel="alternate stylesheet" type="text/css" title="TextSizeWidget_largetext" href="/Img/largetext.css" disabled="">
+</head>
+<body id="Body">
+   <h1>The Scenario</h1>  
+   <p>In this Hand-on-Lab, we will be tasked with producing an application that meets the following requirements for a order tracking system:</p>  
+   <ul>   <li>Products      <ul>       <li>Add Products </li>        <li>Edit Products&nbsp; </li>     </ul>   </li>    <li>Orders      <ul>       <li>Add Orders </li>        <li>Edit Orders          <ul>           <li>Add Order Details </li>            <li>Edit Order Details </li>            <li>Delete Order Details </li>         </ul>       </li>        <li>Delete Orders </li>     </ul>   </li>    <li>Business Rules      <ul>       <li>Allow the current user to only see their orders </li>     </ul>   </li>    <li>Features      <ul>       <li>Display the number of orders for a User </li>        <li>Display the number of order details for an order </li>     </ul>   </li> </ul>  <p>&nbsp;</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_d4509b13-f223-43fc-baec-1e3b95f56645.png" width="400" height="424"></p>  <p>The application allows you to create a list of <strong>Products</strong>.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_7eeca049-1658-4a51-a60e-99baa97aeb69.png" width="402" height="456"></p>  <p>&nbsp;<strong>Products</strong> can be edited.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_6f0f7814-9583-4038-8098-6dd7312916d6.png" width="396" height="455"></p>  <p><strong>Orders</strong> can be created.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_44611437-e00b-40f2-bd85-d52d68388a93.png" width="409" height="450"></p>  <p>An <strong>Order</strong> consists of multiple <strong>Order Details</strong>.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_035f8027-0170-42f4-86dc-5a78d08be19e.png" width="408" height="452"></p>  <p>An <strong>Order Detail</strong> consists of a <strong>Product</strong>, selected from the list of available <strong>Products</strong> and a <strong>quantity</strong>.</p>  <h1>Creating The Application</h1>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_3f3cccbc-b5c0-473f-a53c-d990dda1b488.png" width="172" height="74"></p>  <p>Open <strong>Visual Studio</strong> and select <strong>File</strong>, then <strong>New Project</strong>.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_f3003595-2f0e-4eab-a9d3-deec939af331.png" width="797" height="447"></p>  <p>Create a new <strong>LightSwitch HTML Application</strong>.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_11830ab7-9657-4406-9a4d-265f92e37094.png" width="490" height="162"></p>  <p>The application will be created.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_45c8e072-1eb8-4edd-b514-65647d825fa4.png" width="267" height="394"></p>  <p>The application will display in the <strong>Solution Explorer</strong>.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_e7628b05-6807-441f-85f4-f24a8cb36bef.png" width="283" height="377"></p>  <p><em>Right-Click</em> on the <strong>Data Sources</strong> folder in the <strong>Server </strong>project and select <strong>Add Table</strong>.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_9f554359-14e5-420d-b13f-a71b3a239da3.png" width="510" height="135"></p>  <p>Click on the table name to edit it.</p>  <p>Change the table name to <strong>Product</strong>.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_47d10d51-8ea6-49b2-af9c-d387d32dfbf5.png" width="526" height="367"></p>  <p>Also, add <strong>ProductName</strong> and <strong>ProductPrice</strong> fields to the table.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_dc032f83-0b4a-4c3e-b29e-fc633e6a894d.png" width="234" height="100"></p>  <p>Click the <strong>Save</strong> button to save the table.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_4fe6f7f1-439e-4a75-8e94-87ea06320aef.png" width="530" height="144"></p>  <p>Create an <strong>Order</strong> table (with the fields in the image above).</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_964c507d-9731-4c15-ae1b-fd4b0975d462.png" width="527" height="113"></p>  <p>Create an <strong>OrderDetail</strong> table (with the fields in the image above).</p>  <p>&nbsp;</p>  <h1>Create Relationships</h1>  <p>You will always want to make relationships when tables are related. This allows for optimal <strong>LightSwitch</strong> application construction. When creating queries, having relationships defined allows you to simply type a period (“.”) and traverse from one entity to another. This saves a lot of coding work and reduces coding errors.&nbsp; </p>  <p>When creating user interfaces, defining relationships allows you to save a lot of coding work because <strong>LightSwitch</strong> will be able to automatically associate, for example, <strong>Order Details</strong> with their associated <strong>Order</strong>.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_ecc95d18-6410-4345-9215-a26030702693.png" width="456" height="175"></p>  <p>Click on the <strong>Relationship</strong> button to create a <em>relationship</em> between the <strong>Order Detail</strong> and the <strong>Product</strong> table.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_212d3f13-2cc3-44ca-be63-7f32a8fb7a63.png" width="497" height="488"></p>  <p>A box will appear. Select <strong>Product</strong> for the <em>To</em> table and click <strong>OK</strong> (ensure the other fields match the image above).</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_7f33aa43-f678-4902-a690-af0f0fe26427.png" width="445" height="290"></p>  <p>You will see that a relationship has been created. you can <em>double-click</em> on the line to edit the relationship.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_7955d755-3beb-4452-a8ac-51d7bcd5ee61.png" width="495" height="487"></p>  <p>Click on the <strong>Relationship</strong> button again and make a relationship to the <strong>Order</strong> table.</p>  <h1>Create a Filter</h1>  <p>One feature we are required to implement is to only show a user their own orders (and allow an administrator to see all orders). We must keep in mind that all <strong>LightSwitch</strong> applications <a href="http://lightswitchhelpwebsite.com/Blog/tabid/61/tagid/34/OData.aspx">expose all data via OData</a> so we must always set security in the server-side code not only in the client-side code (such as the <strong>HTML</strong> or <strong>Silverlight LightSwitch</strong> clients).</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_1eca1b6d-4982-493b-9066-4bea997f437f.png" width="851" height="370"></p>  <p>The first thing we need to do is turn on security.</p>  <p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_bf89ef5d-19bb-49f8-a46e-f5bb62aad54d.png" width="474" height="493"></p>  <p>Next, we open the <strong>Orders</strong> table and select <strong>Write Code</strong>, then <strong>Orders_Filter</strong>.</p>  <p>Use the following code for the method:</p>  <pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        partial <span style="color: #0000ff">void</span> Orders_Filter(<span style="color: #0000ff">ref</span> Expression&lt;Func&lt;Order, <span style="color: #0000ff">bool</span>&gt;&gt; filter)
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #008000">// Only show the Orders for the current user</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            filter = (x =&gt; x.UserName == <span style="color: #0000ff">this</span>.Application.User.Name);</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        }</pre></pre>
+
+<p>All data that accesses this table will pass through this filter.</p>
+
+<p>&nbsp;</p>
+
+<h1>Set Defaults</h1>
+
+<p>Keeping in mind that we must set everything that relates to security in server-side code, we realize that marking orders with the <strong>UserName</strong> of the current user must be set using server-side code so that the <strong>UserName</strong> cannot be set improperly. </p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_72fe64d0-c36c-492b-a86c-933187248e4c.png" width="527" height="252"></p>
+
+<p>Open the <strong>Orders</strong> table and select <strong>Write Code</strong>, then <strong>Orders_Inserting</strong>. Use the following code for the method:</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        partial <span style="color: #0000ff">void</span> Orders_Inserting(Order entity)
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #008000">// Set the Username </span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            entity.UserName = <span style="color: #0000ff">this</span>.Application.User.Name;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        }</pre></pre>
+
+<p>Do the same for the <strong>Orders_Updating</strong> event.</p>
+
+<p>Later, we will also set the <strong>UserName</strong> using client-side code, however, the server side code will always run and overwrite any value set client-side.</p>
+
+<h4></h4>
+
+<h1>Create a Query</h1>
+
+<p>Another feature we are required to implement is to show the number of orders for the current user. We will make a query that we can later consume from the client-side.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_bba62b42-7a37-4650-b0b8-a5a4f260b907.png" width="286" height="199"></p>
+
+<p><em>Right-click</em> on the <strong>Orders</strong> table and select <strong>Add Query</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_d3590218-6f14-4d2a-8537-23ab6e0d8f9f.png" width="639" height="214"></p>
+
+<p>Name the query <strong>OrdersForUser</strong> by clicking on the title and editing it. Save it first, then select the <strong>OrdersForUser PreprocessQuery</strong>.</p>
+
+<p>use the following code for the method:</p>
+
+<p>&nbsp;</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        partial <span style="color: #0000ff">void</span> OrdersForUser_PreprocessQuery(<span style="color: #0000ff">ref</span> IQueryable&lt;Order&gt; query)
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #008000">// Only show the Orders for the current user</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            query = query.Where(x =&gt; x.UserName == <span style="color: #0000ff">this</span>.Application.User.Name);</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        }</pre></pre>
+
+<p>&nbsp;</p>
+
+<h1>Create The User Interface For Products</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_8e6f3db1-32fc-4031-9b77-755add5e307b.png" width="267" height="243"></p>
+
+<p>We will first create a screen that will allow us to see <strong>Products</strong>.</p>
+
+<p><em>Right-click</em> on the <strong>Client</strong> node in the <strong>Solution Explorer</strong> and select <strong>Add Screen</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_763714fa-2243-46cf-b7c3-9dd674e02ec0.png" width="757" height="491"></p>
+
+<p>Create a <strong>Common Screen Set</strong> using the <strong>Products</strong> table.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_443f171f-2bda-45b5-8e94-0eb22bc4637f.png" width="722" height="319"></p>
+
+<p>The screens will be created.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_b88ef05f-22ed-4028-b685-4a20b43af57d.png" width="158" height="132"></p>
+
+<p>Hit <strong>F5 </strong>to run the application.</p>
+
+<p><em>Note: You will be automatically logged in as <strong>TestUser</strong> when debugging.</em></p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_af81eb71-4970-4abb-a4ee-e56e381c85f3.png" width="445" height="322"></p>
+
+<p>Click the <strong>Add </strong>button to add a <strong>Product</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_6b6bdee2-5de9-4076-84d9-11fbbef278dc.png" width="513" height="426"></p>
+
+<p>Add a product and click the <strong>Save</strong> button to save it.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_132b02dc-aec5-4fad-93f4-e15c31ff5742.png" width="507" height="224"></p>
+
+<p>The <strong>Product</strong> will show in a list.</p>
+
+<p>Click on the <strong>Product</strong> to display it in the <strong>view detail</strong> screen.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_c1d44a74-61df-4c30-b559-adaac5c2ff29.png" width="497" height="427"></p>
+
+<p>Click the <strong>Edit</strong> button to edit the record.</p>
+
+<p>Click the web browser <em>back button</em> to return to the previous page.</p>
+
+<h1>Create The Main Page</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_7652f75e-8578-46db-ae3d-38e8593901b0.png" width="260" height="234"></p>
+
+<p>We will now create the <strong>Main</strong> screen.</p>
+
+<p><em>Right-click</em> on the <strong>Screens</strong> folder and select <strong>Add Screen…</strong></p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_3b009317-7ca8-4232-b1c1-5e0692805004.png" width="714" height="494"></p>
+
+<p>Create a new screen called <strong>Main</strong> using the <strong>Orders</strong> table for <strong>Screen Data</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_5228a8fa-2783-452e-b6b3-8853a2f9e46a.png" width="691" height="277"></p>
+
+<p>The first thing we want to do is open a new screen when the user clicks on a <strong>Order</strong> in the list.</p>
+
+<p>Click on the the <strong>Tile List</strong> control, and select the <strong>Item Tap</strong> action in the <strong>Properties</strong> for the control.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_46fbe8b7-6569-4a56-b445-b8b8fa2bf99d.png" width="519" height="241"></p>
+
+<p>When the <strong>Edit ItemTap Action</strong> dialog opens,&nbsp; connect the screen to a <em>new</em> <strong>Edit</strong> screen.</p>
+
+<p>Select <strong>Choose an existing method</strong>.</p>
+
+<p>Select <strong>Orders.editSelected</strong>.</p>
+
+<p>For <strong>Navigate To</strong>, select <strong>(New Screen…)</strong> and click <strong>OK</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_f8679a47-9098-40a9-8802-378f1748652a.png" width="750" height="560"></p>
+
+<p>The <strong>Add New Screen</strong> box will show. Select the <strong>Order Details</strong> and <strong>Order OrderDetails</strong> and click <strong>OK</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_4c76bed1-46a9-4a80-8d56-880facb10349.png" width="606" height="497"></p>
+
+<p>On the <strong>Main</strong> page, we need to add a button to create a new <strong>Order</strong>.</p>
+
+<p>Open the <strong>Command Bar</strong> on the <strong>Main</strong> page and click the add button to create a link to the <strong>AddEditOrder</strong> page (in the <em>Add</em> mode).</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_0aba022f-c465-419a-bf79-94d61e210185.png" width="199" height="89"></p>
+
+<p><em>Right-click</em> on the <strong>Main</strong> screen and select <strong>Set as Home Screen</strong>, so that it will be the first screen that comes up when we run the application.</p>
+
+<h1>Looking At The Application So Far…</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_1b7398ca-8add-4738-90e6-37d45ce73c86.png" width="121" height="98"></p>
+
+<p>Run the application.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_62700303-6764-46fa-a676-05cd9db1fedf.png" width="269" height="187"></p>
+
+<p>We see that we can navigate to the <strong>Products</strong> page using the dropdown.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_086ebab2-67ea-4c29-9ff1-9f474f27de28.png" width="496" height="393"></p>
+
+<p>When we click the <strong>Add Order</strong> button to open the the<strong> Add Edit Order</strong> dialog, the <strong>User Name</strong> is not filled in for us (also it should be read only).</p>
+
+<p>The <strong>Order Date</strong> should also be set to the current date as its default value. </p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_cf7654d8-73df-4102-8df7-09a21a897f0e.png" width="494" height="400"></p>
+
+<p>When we switch to the <strong>Order Details</strong> tab, we do not have a button to add an <strong>Order Detail</strong>.</p>
+
+<p>Close the web browser and return to <strong>Visual Studio</strong>.</p>
+
+<h1>Create The Order Detail Edit Screen</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_13551a32-1d52-4428-9511-94697a503444.png" width="567" height="624"></p>
+
+<p>To allow us to create and edit a <strong>Order Detail</strong> record, open the <strong>AddEditOrder</strong> screen and under <strong>Order Details (Tab)</strong>, select <strong>Add</strong> under the <strong>Command Bar</strong>.</p>
+
+<p>Select the <strong>addAndEditNew</strong> method of the <strong>OrderDetails</strong> collection and <strong>(New Screen)</strong> for <strong>Navigate To</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_0799c0f0-f96c-49d6-9276-d6596d28bb76.png" width="714" height="496"></p>
+
+<p>When the <strong>Add New Screen</strong> dialog shows, select <strong>OrderDetail Details</strong> as <strong>Additional Data to Include</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_0112c919-208f-4f68-9912-dff834fc8b0d.png" width="614" height="373"></p>
+
+<p>When the <strong>AddEditOrderDetail</strong> screen opens, r<em>ight-click</em> on the <strong>Rows Layout</strong> that contains the <strong>Order</strong> dropdown and <strong><em>delete</em> </strong>it.</p>
+
+<p>We don’t need to show the <strong>Order</strong> (and allow it to be changed) because it will be set by the time the user gets to this screen.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_a7f14ca5-b7a8-403a-858a-6a581ef98742.png" width="689" height="662"></p>
+
+<p>We will create a button to allow the user to edit a <strong>Order Detail</strong>.</p>
+
+<p>Return to the <strong>AddEditOrder</strong> screen.</p>
+
+<p>Click on the <strong>OrderDetails</strong> <strong>Tile List</strong>, and in the <strong>Properties</strong>, select the <strong>Item Tap</strong> event.</p>
+
+<p>In the <strong>Edit ItemTap Action</strong> dialog, select <strong>OrderDetails.editSelected</strong> and <strong>Navigate To: Add Edit Order Detail</strong> (the screen you created in the previous step).</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_e843f08f-043f-4178-a62a-c53b668f812c.png" width="618" height="370"></p>
+
+<p>When we run the application, we now have a button to <strong>Add Order Detail</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_f226191b-6847-41ab-8700-dd797ca7bba6.png" width="635" height="370"></p>
+
+<p>We can click on the <em>plus in a circle icon</em> in the <strong>Product</strong> box to see a list so we can select a <strong>Product</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_d2ea555b-462a-4f6c-be8e-6f2bed3339bb.png" width="623" height="370"></p>
+
+<p>However, when we create a <strong>Order Detail</strong>, we see that the display can be improved.</p>
+
+<p>Close the web browser and return to <strong>Visual Studio</strong>.</p>
+
+<h1>Formatting Order Details</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_8352bc0e-8d00-4fa6-b91f-5d6682f900ad.png" width="496" height="332"></p>
+
+<p>We return to the <strong>Add Edit Order</strong> screen and change the <strong>Order Details Tile List </strong>control to a <strong>List</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_05e25953-144f-4fcc-a693-4a8bc7766be9.png" width="286" height="190"></p>
+
+<p>Next, we change the <strong>Rows Layout</strong> control under the <strong>List c</strong>ontrol to a <strong>Custom Control</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_690f706e-64b9-4004-82b9-6336b6027e55.png" width="330" height="327"></p>
+
+<p>In the <strong>Properties</strong> for the <strong>Custom Control </strong>we select <strong>Edit Render Code</strong>.</p>
+
+<p>We use the following code:</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #008000">// We need to wait until the Products for the Order Detail are loaded</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #008000">// so we create a binding to "value.Product.ProductName"</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #008000">// When the data is loaded the binding will be raised</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #008000">// We will then have all the data required for our display</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    contentItem.dataBind("<span style="color: #8b0000">value.Product.ProductName</span>", <span style="color: #0000ff">function</span> (newValue) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// clear the element</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        element.innerHTML = "<span style="color: #8b0000"></span>";
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// Create a template</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">var</span> itemTemplate = $("<span style="color: #8b0000">&lt;div&gt;&lt;/div&gt;</span>");
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// Get the Product name and quantity</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">var</span> ProductName = contentItem.value.Product.ProductName;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">var</span> ProductQuantity = "<span style="color: #8b0000"></span>";
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">if</span> (contentItem.value.Quantity !== undefined) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            ProductQuantity = ' [' + contentItem.value.Quantity + ']';
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// Create the final display</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">var</span> FinalName = $("<span style="color: #8b0000">&lt;h2&gt;</span>").text(ProductName + ProductQuantity);
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// Complete the template</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        FinalName.appendTo($(itemTemplate));
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        itemTemplate.appendTo($(element));
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    });</pre></pre>
+
+<p>&nbsp;</p>
+
+<p>(<strong>note:</strong> this codes uses <strong>Promises</strong>, for more information about <strong>Promises</strong> see: <a href="http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/170/Using-Promises-In-Visual-Studio-LightSwitch.aspx">Using Promises In Visual Studio LightSwitch</a>. 
+
+  <br>Also see: <a href="http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/168/Writing-JavaScript-That-Implements-The-Binding-Pattern-In-Visual-Studio-LightSwitch.aspx">Writing JavaScript That Implements The Binding Pattern In Visual Studio LightSwitch</a>)</p>
+
+<p>&nbsp;</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_1fee83ea-9ed9-4258-8e31-0d5bc4de3626.png" width="495" height="237"></p>
+
+<p>When we run the application, the output is formatted as we desire.</p>
+
+<p>&nbsp;</p>
+
+<h1>Setting default Values</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_5733a886-d69e-4808-98b6-e3e3fcc1f388.png" width="88" height="65"></p>
+
+<p>If we run the application, and click the <strong>Add Order</strong> button… </p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_7bec8ac1-2171-4b9c-bb83-44b613aacda5.png" width="504" height="367"></p>
+
+<p>…and try to create an <strong>Order</strong> it wont save.</p>
+
+<p>We are missing the <strong>User Name</strong>. We have already added code to overwrite the <strong>User Name</strong> with the current user, but since we made it a required field, it must still be supplied. We could just make the <strong>User Name</strong> field a text box and allow the user to type it in, but we can use <a href="http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/174/Full-Control-LightSwitch-ServerApplicationContext-And-Generic-File-Handlers-And-Ajax-Calls.aspx">ServerApplicationContext</a> to insert it client side automatically.</p>
+
+<p>See the following article for a step by step tutorial: <a href="http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/169/Retrieving-The-Current-User-In-The-LightSwitch-HTML-Client.aspx">Retrieving The Current User In The LightSwitch HTML Client</a>.</p>
+
+<h1>Using Server Application Context</h1>
+
+<p>We will now create a file handler that will use the <a href="http://blogs.msdn.com/b/lightswitch/archive/2012/11/19/a-new-api-for-lightswitch-server-interaction-the-serverapplicationcontext.aspx">Server Application Context API</a> to retrieve the currently logged in user’s <strong>User Name</strong>. We will then call that handler from <strong>JavaScript</strong> code on the client-side, to fill in the value on the screen.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_a4b2b0ca-c4f6-401a-94b0-f53eae82b49d.png" width="521" height="586"></p>
+
+<p><em>Right-click</em> on the <strong>Server</strong> project and select <strong>Add</strong> then <strong>New Folder</strong>.</p>
+
+<p>Create a folder named <strong>Web</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_6058b86f-ae54-404e-a60c-65ca4430c471.png" width="441" height="304"></p>
+
+<p><em>Right-click</em> on the <strong>Web </strong>folder and select <strong>Add</strong> then <strong>New Item</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_64d99ed9-271a-44c2-965a-ecc3376dd65a.png" width="701" height="444"></p>
+
+<p>Create a new <strong>Generic Handler</strong> named <strong>GetUserName.ashx</strong>.</p>
+
+<p><em>(<strong>note:</strong> you must create the file from scratch so that the proper references are added to the project. If you simply copy and paste, or drag and drop the file into the project, it will not work.)</em></p>
+
+<p>Use the following code for the file:</p>
+
+<p>&nbsp;</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"><span style="color: #0000ff">using</span> System;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"><span style="color: #0000ff">using</span> System.Collections.Generic;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"><span style="color: #0000ff">using</span> System.Linq;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"><span style="color: #0000ff">using</span> System.Web;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"></pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"><span style="color: #0000ff">namespace</span> LightSwitchApplication.Web
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">{
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #0000ff">public</span> <span style="color: #0000ff">class</span> GetUserName : IHttpHandler
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">public</span> <span style="color: #0000ff">void</span> ProcessRequest(HttpContext context)
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #0000ff">using</span> (var serverContext = ServerApplicationContext.CreateContext())
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                context.Response.ContentType = "<span style="color: #8b0000">text/plain</span>";
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                context.Response.Write(serverContext.Application.User.Name);
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">public</span> <span style="color: #0000ff">bool</span> IsReusable
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #0000ff">get</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                <span style="color: #0000ff">return</span> <span style="color: #0000ff">false</span>;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">}</pre></pre>
+
+<p>&nbsp;</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_be54ab12-3835-4092-9a63-2d837a056f26.png" width="758" height="415"></p>
+
+<p>Open the <strong>Order</strong> table, select the <strong>HTML</strong> <strong>Client</strong> (tab), <strong>Write Code</strong>, and then the <strong><em>created</em></strong> method.</p>
+
+<p>Use the following code for the method:</p>
+
+<p>&nbsp;</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">myapp.Order.created = <span style="color: #0000ff">function</span> (entity) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #008000">// Set the default date for the Order</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    entity.OrderDate = <span style="color: #0000ff">new</span> <span style="color: #0000ff">Date</span>();
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"></pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #008000">// Using a Promise object we can call the CallGetUserName function</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    msls.promiseOperation(CallGetUserName).then(<span style="color: #0000ff">function</span> PromiseSuccess(PromiseResult) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// Set the result of the CallGetUserName function to the </span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// UserName of the entity</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        entity.UserName = PromiseResult;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    });
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">};
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"></pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"><span style="color: #008000">// This function will be wrapped in a Promise object</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"><span style="color: #0000ff">function</span> CallGetUserName(operation) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    $.ajax({
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        type: 'post',
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        data: {},
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        url: '../web/GetUserName.ashx',
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        success: operation.code(<span style="color: #0000ff">function</span> AjaxSuccess(AjaxResult) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            operation.complete(AjaxResult);
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        })
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    });
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">}</pre></pre>
+
+<p>(<strong>note:</strong> see <a href="http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/170/Using-Promises-In-Visual-Studio-LightSwitch.aspx">Using Promises In Visual Studio LightSwitch</a> for more information on using the <strong>msls.promiseOperation</strong>) </p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_427a216f-5ceb-401d-aeab-0eec243a31a8.png" width="529" height="314"></p>
+
+<p>Lastly, we open the <strong>AddEditOrder</strong> screen and change the <strong>User Name</strong> control from a <strong>Text Box</strong> to a <strong>Text</strong> label.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_139c5ab8-cae0-4ffa-b7a5-df2108ee4a1a.png" width="545" height="235"></p>
+
+<p>When we run the application, the <strong>User Name</strong> and <strong>Date</strong> are now set when a new record is created.</p>
+
+<p>You will now be able to create and save records.</p>
+
+<h1>Calling A Custom Query</h1>
+
+<p>Next, we will call the query we created earlier so that we can display the number of <strong>Orders</strong> for the current user.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_05fcf86f-867f-40c1-a9be-42160efc0fb7.png" width="629" height="584"></p>
+
+<p>Open the <strong>Main</strong> screen, select <strong>Add Data Item</strong>, and create a <strong>Integer</strong> property.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_9ef76b9f-112f-4aac-a9be-67ff6422e888.png" width="535" height="300"></p>
+
+<p>Drag and drop the property from the <strong>View Model</strong> to the screen layout.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_f2b2caca-140b-495c-8792-f39079c499cd.png" width="350" height="408"></p>
+
+<p>In the <strong>Properties</strong>, make the label <strong>Left-aligned</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_95cc5c37-2dc1-416e-be93-31fa07595192.png" width="561" height="284"></p>
+
+<p>To set the value for the property, select <strong>Write Code</strong>, then the <strong>created</strong> method.</p>
+
+<p>Use the following code:</p>
+
+<p>&nbsp;</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">myapp.Main.created = <span style="color: #0000ff">function</span> (screen) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    myapp.activeDataWorkspace.ApplicationData.OrdersForUser().execute().then(<span style="color: #0000ff">function</span> (results) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">var</span> TotalCountOfOrders = CountOrders(results);
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        screen.TotalOrdersForCurrentUser = TotalCountOfOrders.<span style="color: #0000ff">toString</span>();
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    });
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">};
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"></pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff"><span style="color: #0000ff">function</span> CountOrders(Orders) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #0000ff">var</span> TotalOrders = 0;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #0000ff">var</span> orders = Orders.results;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    orders.forEach(<span style="color: #0000ff">function</span> (order) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        TotalOrders = TotalOrders + 1;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    });
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #0000ff">return</span> TotalOrders;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">}</pre></pre>
+
+<p>&nbsp;</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_2192bcd3-26de-478a-97ff-bd00b23936df.png" width="327" height="222"></p>
+
+<p>When we run the application we see a count of the <strong>Orders</strong>.</p>
+
+<h1>Calling A Custom JavaScript Query</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_70f941db-7520-4dd3-a399-ae9e55e69404.png" width="678" height="305"></p>
+
+<p>Now, we desire to show the number of associated <strong>Order Details</strong> when displaying an <strong>Order</strong> on the main page.</p>
+
+<p>First, we open the <strong>Main</strong> page and delete the <strong>User Name</strong> and <strong>Created By</strong> fields in the <strong>Tile List</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_95cf6ece-c325-419f-a107-e594b9e62de3.png" width="299" height="236"></p>
+
+<p>Add the <strong>Id</strong> field to the list.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_c2663f32-6efe-49ec-9653-60e027f78ea4.png" width="306" height="308"></p>
+
+<p>Change the control to a <strong>Custom Control</strong>.</p>
+
+<p>Use the following code for the <strong><em>Render</em></strong> method of the control:</p>
+
+<p>&nbsp;</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #008000">// Get the current OrderId</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #0000ff">var</span> OrderId = contentItem.value;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #0000ff">var</span> Int32 = ':Int32';
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #008000">// Get all the OrderDetails associated with the current Order</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #0000ff">var</span> filter = '(Order/Id eq ' + msls._toODataString(OrderId, Int32) + ')';
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    msls.showProgress(myapp.activeDataWorkspace.ApplicationData.OrderDetails
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    .filter(filter)
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    .execute()
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    .then(<span style="color: #0000ff">function</span> (result) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// Loop through each record in the result</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">var</span> index = 0;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">var</span> Entities = result.results;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        Entities.forEach(<span style="color: #0000ff">function</span> (entity) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #008000">// Count the Order Details</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            index = index + 1;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        })
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #008000">// Set the final output</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">var</span> NumberOfOrderDetails = $('&lt;label <span style="color: #0000ff">class</span>=msls-label-text&gt; <span style="color: #0000ff">Number</span> of Order Details: ' + index + '&lt;/label&gt;');
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        NumberOfOrderDetails.appendTo($(element));
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    }))</pre></pre>
+
+<p>&nbsp;</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_74fe8c68-10d7-4b3e-b1e0-c3aa6fdcdf21.png" width="315" height="198"></p>
+
+<p>When we run the application, we see the number of <strong>Order Detail</strong> records for the <strong>Order</strong>.</p>
+
+<p>However, we now notice that the totals on the <strong>Main</strong> page do not show the correct amounts until the page is refreshed. We can automatically refresh the page…</p>
+
+<h1>Automatically Refreshing the Page By Using A Custom Button</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_64018897-266d-44aa-9390-93623966671d.png" width="517" height="458"></p>
+
+<p>We can create a custom button by selecting the <strong>Item Tap</strong> event for the <strong>Tile List</strong> on the <strong>Main</strong> Page and selecting <strong>Write my own method</strong>.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_0a5ed1e4-3c97-4cb5-91a7-443a4fa9f84f.png" width="547" height="391"></p>
+
+<p>The method will show up in the <strong>View Model</strong> on the left side of the screen designer.</p>
+
+<p><em>Right-click</em> on it and select <strong>Edit Execute Code</strong>.</p>
+
+<p>Use the following code for the method:</p>
+
+<p>&nbsp;</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    myapp.showAddEditOrder(<span style="color: #0000ff">null</span>, {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        beforeShown: <span style="color: #0000ff">function</span> (addEditOrderScreen) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #008000">// Set the Order on the AddEditOrder screen</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #008000">// to the selected Order on the Main screen</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            addEditOrderScreen.Order = screen.Orders.selectedItem;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        },
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        afterClosed: <span style="color: #0000ff">function</span> (addEditScreen, navigationAction) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #008000">// If the user commits the change,</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #008000">// update the selected order on the Main screen</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #0000ff">if</span> (navigationAction === msls.NavigateBackAction.commit) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                <span style="color: #008000">// *****************************************</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                <span style="color: #008000">// Reload the Orders</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                screen.Orders.load();
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    });</pre></pre>
+
+<p>&nbsp;</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_88513499-2466-43ae-900f-27f77921e061.png" width="324" height="191"></p>
+
+<p>After editing a record, the totals are automatically updated.</p>
+
+<h1>Deleting Records</h1>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_aa711d2e-feed-4571-83dd-6651bc5c2533.png" width="614" height="407"></p>
+
+<p>Open the <strong>Add Edit Order Detail</strong> screen and add a button to the <strong>Command Bar</strong>.</p>
+
+<p>Make a <strong>Delete</strong> method for the button.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_57dfd9dc-e7ca-4c3f-bdd0-3abb77577426.png" width="312" height="346"></p>
+
+<p><em>Right-click</em> on the <strong>Delete</strong> method in the <strong>View Model</strong> and select <strong>Edit Execute Code.</strong></p>
+
+<p>use the following code for the method:</p>
+
+<p>&nbsp;</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">myapp.AddEditOrderDetail.Delete_execute = <span style="color: #0000ff">function</span> (screen) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    screen.OrderDetail.deleteEntity();
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    <span style="color: #0000ff">return</span> myapp.commitChanges().then(<span style="color: #0000ff">null</span>, <span style="color: #0000ff">function</span> fail(e) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        myapp.cancelChanges();
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        <span style="color: #0000ff">throw</span> e;
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    });
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">};</pre></pre>
+
+<p>&nbsp;</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_c0f47ada-4a19-4384-9cff-c2dfd4a9fe62.png" width="631" height="383"></p>
+
+<p>When editing an <strong>Order Detail</strong> the <strong>Delete</strong> button will now show.</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_6059e74f-6f97-4e54-9341-9ac261198f29.png" width="543" height="428"></p>
+
+<p>You will have to click the <strong>Save</strong> button on the <strong>Add Edit Order</strong> page to commit the change.</p>
+
+<p>We can also add a <strong>Delete</strong> button to the <strong>Add Edit Order</strong> screen using the following code:</p>
+
+<p>&nbsp;</p>
+
+<pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">myapp.AddEditOrder.Delete_execute = <span style="color: #0000ff">function</span> (screen) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    screen.Order.deleteEntity();
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    myapp.commitChanges().then(<span style="color: #0000ff">null</span>, <span style="color: #0000ff">function</span> fail(e) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        msls.showMessageBox(e.message, {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            title: "<span style="color: #8b0000">Error</span>",
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            buttons: msls.MessageBoxButtons.ok
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        }).then(<span style="color: #0000ff">function</span> (result) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            <span style="color: #0000ff">if</span> (result === msls.MessageBoxResult.ok) {
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                <span style="color: #008000">// Discard Changes</span>
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                screen.details.dataWorkspace.ApplicationData
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">                    .details.discardChanges();
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">            }
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">        });
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">    });
+</pre><pre style="font-size: 12px; font-family: consolas,&#39;Courier New&#39;,courier,monospace; width: 100%; margin: 0em; background-color: #ffffff">};</pre></pre>
+
+<p>&nbsp;</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_ad0037f6-5a85-418e-830b-5be045bc0658.png" width="525" height="407"></p>
+
+<p>You will notice that if we try to delete an <strong>Order</strong> that still has <strong>Order Detail</strong> records…</p>
+
+<p><img title="image" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" border="0" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_1118F-image_b7067970-555b-459c-85ff-592a0d07b217.png" width="531" height="405"></p>
+
+<p>…it will throw an error because the relationship that we created between the tables earlier was set to not allow an <strong>Order</strong> to be deleted if there were associated records.</p>
+
+<p>Delete all the <strong>Order Details</strong> first and then you can delete the <strong>Order</strong>.</p>
+
+<p>&nbsp;</p>
+<h2>Navigate To A Screen</h2>
+
+<p><img style="background-image: none; border-bottom: 0px solid; border-left: 0px solid; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px solid; border-right: 0px solid; padding-top: 0px" title="image" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_13130-image_1ca97507-809f-4399-8f93-3d9b2fccd302.png" width="560" height="398"></p>
+
+<p>Open the <strong>Main</strong> screen and create a button that will navigate to the <strong>Browse Products</strong> screen.</p>
+
+<p><img style="background-image: none; border-bottom: 0px solid; border-left: 0px solid; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px solid; border-right: 0px solid; padding-top: 0px" title="image" alt="image" src="Img/Windows-Live-Writer-An-End-To-End-Visual-Studio-LightSwitch-_13130-image_8a69c6fc-3922-40e6-a1ca-1e68164428b7.png" width="344" height="375"></p>
+
+<p>The <strong>Show Browse Products</strong> button will show.</p>
+
+<p>&nbsp;</p>
+
+</body></html>
