@@ -17,7 +17,7 @@
                 @Html.ActionLink(quiz.Name, "PastExam", new { id = quiz.Id })
             </dd>
         }
-
+        <hr />
         <dt>
             Active exams
         </dt>
@@ -27,8 +27,8 @@
                 @Html.ActionLink(quiz.Name, "ActiveExam", new { id = quiz.Id })
             </dd>
         }
-
-        <dt>
+        <hr />
+        @*<dt>
             Future exams
         </dt>
         @foreach (Quiz quiz in ViewBag.futureExams)
@@ -36,6 +36,20 @@
             <dd>
                 @Html.ActionLink(quiz.Name, "Index")
             </dd>
+        }
+        <hr />*@
+
+        @if (User.Identity.Name == "a.v.andreev@hotmail.com")
+        {
+            <dt>
+                Results view
+            </dt>
+            foreach (Quiz quiz in ViewBag.allExams)
+            {
+                <dd>
+                    @Html.ActionLink(quiz.Name, "ViewResults", new { quizId = quiz.Id })
+                </dd>
+            }
         }
     </dl>
 </div>

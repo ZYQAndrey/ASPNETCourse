@@ -1,0 +1,744 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0152)http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application -->
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="http://www.microsofttranslator.com/static/214860/css/WidgetV3.css?v=214860" rel="stylesheet">
+<!--<script type="text/javascript" async="" src="Lab13/ados"></script>
+<script type="text/javascript" async="" src="Lab13/ados.js"></script>
+<script id="twitter-wjs" src="Lab13/widgets.js"></script>
+\<script id="facebook-jssdk" src="Lab13/all.js"></script>
+<script async="" src="Lab13/analytics.js"></script>
+<script type="text/javascript" charset="UTF-8" src="Lab13/WidgetV3.ashx">
+</script>-->
+    <title>Getting Started with Entity Framework 6 Code First using MVC 5</title>
+
+    
+  <link href="Lab13/articles.min.css" rel="stylesheet" type="text/css" media="all">
+
+    <!--[if lte IE 7]>
+      <link href='//i1.asp.net/umbraco-beta-css/lteIE7.min.css?cdn_id=2015-04-01-001' rel="stylesheet" type="text/css" media="screen" />
+    <![endif]-->
+	<!--[if lte IE 9]>
+      <script src='//i1.asp.net/umbraco-beta-scripts/html5.js?cdn_id=2015-04-01-001' type="text/javascript"></script>
+    <![endif]-->
+    <link href="http://i2.asp.net/images/content/favicon.ico?cdn_id=2015-04-01-001" rel="shortcut icon">
+	<link rel="alternate" type="application/rss+xml" title="Latest ASP.NET Content" href="http://www.asp.net/rss/content">
+ 
+  <!--<script type="text/javascript" charset="utf-8" src="Lab13/metrics.js"></script><script type="text/javascript" charset="utf-8" src="Lab13/community.aspx"></script><link href="http://www.microsofttranslator.com/static/214860/css/WidgetLauncher.css?v=214860" rel="stylesheet"><style type="text/css"></style>--></head>
+  <body class="" data-twttr-rendered="true"><div id="MicrosoftTranslatorCommunity" class="MSTCltr" style="display: none;"><div id="MSTCContent" translate="no"><a id="MSTCExpandLink" href="javascript:void(0)"><span id="MSTCImprove">Improve translation</span></a><div id="MSTCRootPanel"><span id="MSTCLoading">Loading...</span><div id="MSTCTransPanelError" style="display: none;"><div class="MSTCTableRow"><div class="MSTCTransPanelExc MSTCTableCell"><img id="ExclamationImage" src="Lab13/error_exclamation.gif" style="border-width:0px;"></div><div class="MSTCTableCell"><span id="MSTCTransPanelErrorMsg"></span></div></div><div class="MSTCTableRow"><div class="MSTCTableCell"></div><div class="MSTCTableCell MSTCFlipHoriz"><a href="http://go.microsoft.com/?linkid=9713560" target="_blank"><img id="MSTCHelpImgBtn" class="MSTCErrorButtons" src="Lab13/error_help.gif" style="border-width:0px;"></a><input type="image" name="MSTCOKImgBtn" id="MSTCOKImgBtn" class="MSTCErrorButtons" src="Lab13/error_OK.gif" style="border-width:0px;"></div></div></div><div id="MSTCTransPanel"></div><div id="MSTCPrevNextPanel" style="display: none;"><a id="MSTCPrevLink" href="javascript:void(0)"><span>Previous</span><span id="MSTCPrevCount">(0)</span></a><a id="MSTCNextLink" href="javascript:void(0)"><span>Next</span><span id="MSTCNextCount">(0)</span></a></div><div id="MSTCFooterPanel"><span id="MSTCLegalHelpBox"><a id="MSTCLegalLink" href="http://aka.ms/translatortou" target="_blank">Legal</a><span class="MSTCSpacer"></span><a id="MSTCHelpLink" href="http://go.microsoft.com/?linkid=9722454" target="_blank">Help</a></span></div></div><div id="MSTCHidden" style="display: none;"><span id="MSTCAppIdToken">XHp3aeSeAhc1mn88qeqa_VT55MJRBCBmbZtnyiqWm7vcwFZKjgk9ujTPuUCNAxQ8BmcF55kzjxYME_IsaM9NkqWbH82fKI2nFrTqQQCzPw-gJ37FJ5ru8Fm-Qn8AMEEieIAVcF0XTfkCOOQAV4Xybqg**</span><span id="MSTCMaxRating">1</span><span id="MSTCImagePath">http://www.microsofttranslator.com/static/214860/img/</span><span id="MSTCAuthLang"></span><a id="MSTCDashboardUrl"></a><span id="MSTCSubmitting">Submitting...</span><span id="MSTCApprove">Approve</span><span id="MSTCApproveTooltip">Approve this as the default translation</span><span id="MSTCReject">Reject</span><span id="MSTCRejectTooltip">Hide this translation from other users</span><span id="MSTCRestore">Restore</span><span id="MSTCRestoreTooltip">Show this translation to other users</span><span id="MSTCUserID"></span><div id="MSTCButtonPanel"><a title="Edit this translation" class="MSTCBlueButton MSTCEditButton"><span class="MSTCButtonIcon"><img class="MSTCButtonImg" src="Lab13/ctfedit.gif" style="border-width:0px;"></span><span class="MSTCButtonLabel">Edit</span></a><a title="Suggest this as a better translation" class="MSTCBlueButton MSTCSelectButton"><span class="MSTCButtonIcon"><span class="MSTCVoteCountSelect"></span><img class="MSTCButtonImg" src="Lab13/ctfselect.gif" style="border-width:0px;margin: 0;"></span><span class="MSTCButtonLabel">Select</span></a><a title="Report this translation as offensive" class="MSTCRedButton MSTCReportButton"><span class="MSTCButtonIcon"><img class="MSTCButtonImg" src="Lab13/ctfreport.gif" style="border-width:0px;margin-top: 5px;"></span><span class="MSTCButtonLabel">Report</span></a><a title="Suggest this as a better translation" class="MSTCBlueButton MSTCSubmitButton" style="display: none;"><span class="MSTCButtonIcon"><img class="MSTCButtonImg" src="Lab13/ctfselect.gif" style="border-width:0px;margin: 0"></span><span class="MSTCButtonLabel">Submit</span></a><a title="Cancel" class="MSTCRedButton MSTCCancelButton" style="display: none;"><span class="MSTCButtonIcon"><img class="MSTCButtonImg" src="Lab13/ctfreport.gif" style="border-width:0px;margin-top: 7px;"></span><span class="MSTCButtonLabel">Cancel</span></a></div></div></div></div>
+    
+    <div class="allcontent ">
+    <header>
+    </header>
+      
+  <div class="col-right-learn">
+        <span><div class="article-title keyline"><h1><div itemprop="name">Getting Started with Entity Framework 6 Code First using MVC 5</div></h1><div class="details"><div class="author-header">
+		 </div>
+		 </div></div><div class="download-box-article"><p><a href="http://download.microsoft.com/download/0/F/B/0FBFAA46-2BFD-478F-8E56-7BF3C672DF9D/Getting%20Started%20with%20Entity%20Framework%206%20Code%20First%20using%20MVC%205.pdf">Download PDF</a></p></div><div class="important important-box-article"><p>The Contoso University sample web application demonstrates how to create ASP.NET MVC 
+5 applications using the Entity Framework 6 and Visual Studio 2013. This tutorial uses the Code First workflow. For information about how to choose between Code First, Database First, and Model First,  see <a href="http://msdn.microsoft.com/en-us/library/ms178359.aspx#dbfmfcf">
+Entity Framework Development Workflows</a>.</p>
+
+<p>The sample application is a web site for a fictional Contoso University. It includes functionality such as student admission, course creation, and instructor assignments. This tutorial series explains 
+how to build the Contoso University sample application. 
+You can <a href="http://code.msdn.microsoft.com/ASPNET-MVC-Application-b01a9fe8">
+download the completed application</a>.</p>
+
+<p>A Visual Basic version translated by Mike Brind is available: <a href="http://www.mikesdotnetting.com/Article/241/MVC-5-with-EF-6-in-Visual-Basic-Creating-an-Entity-Framework-Data-Model">MVC 5 with EF 6 in Visual Basic</a> on the Mikesdotnetting site.</p>
+
+<h2 class="accordion"><span></span>Software versions used in the tutorial</h2>
+<span style="display: none;">
+<ul>
+	<li><a href="http://www.microsoft.com/visualstudio/eng/2013-downloads">Visual Studio 2013</a>	</li>
+	<li>.NET 4.5</li>
+	<li>Entity Framework 6 (EntityFramework 6.1.0 NuGet package)</li>
+	<li><a href="http://go.microsoft.com/fwlink/p/?linkid=323510">Windows Azure SDK 2.2</a> 
+	(optional)</li>
+</ul>
+<br>
+<p>The tutorial should also work with
+		<a href="http://www.microsoft.com/visualstudio/eng/2013-downloads#d-2013-express">Visual Studio 2013 Express for Web</a> 
+or Visual Studio 2012. The <a href="http://go.microsoft.com/fwlink/p/?linkid=323511">VS 2012 version of the Windows Azure 
+		SDK</a> is required for Windows Azure deployment with Visual Studio 2012.</p></span>
+
+<h2 class="accordion"><span></span>Tutorial versions</h2>
+<p style="display: none;">For previous versions of this tutorial, see <a href="http://social.technet.microsoft.com/wiki/contents/articles/11608.e-book-gallery-for-microsoft-technologies.aspx#GettingStartedwiththeEntityFramework4.1usingASP.NETMVC">the EF 4.1 / MVC 3 e-book</a> 
+and 
+<a href="http://www.asp.net/mvc/tutorials/getting-started-with-ef-5-using-mvc-4">Getting Started with EF 5 using MVC 4</a>.</p>
+<h2 class="accordion"><span></span>Questions and comments</h2>
+<p style="display: none;">Please leave feedback on how you liked this 
+tutorial and what we could improve in the comments at the bottom of the page. If you have questions that are not directly related to the tutorial, you can post them to the <a href="http://forums.asp.net/1227.aspx">ASP.NET Entity Framework forum</a>, the <a href="http://social.msdn.microsoft.com/forums/en-US/adodotnetentityframework/threads/">Entity Framework and LINQ to Entities forum</a>, 
+or <a href="http://stackoverflow.com/">StackOverflow.com</a>.</p>
+<div class="note"><span class="dogear"></span><p>If you run into a problem you can’t resolve, 
+you can generally find the solution to the problem 
+by comparing your code to the completed project that you can download. For some common 
+errors and how to solve them, see <a href="http://www.asp.net/mvc/tutorials/getting-started-with-ef-using-mvc/advanced-entity-framework-scenarios-for-an-mvc-web-application#errors">Common errors, and solutions or workarounds for them.</a></p></div>
+
+</div><h2>The Contoso University Web Application</h2>
+<p>The application you'll be building in these tutorials is a simple university web site.</p>
+<p>Users can view and update student, course, and instructor information. Here 
+are a few of the screens you'll create.</p>
+<p>
+<img src="Lab13/StudentIndex.png" data-original="//i1.asp.net/media/48046/StudentIndex.png?cdn_id=2015-04-01-001" alt="Students_Index_page" style="display: inline;">&nbsp;
+</p>
+<p>
+<img alt="Edit Student" src="Lab13/StudentEdit.png" data-original="//i3.asp.net/media/48043/StudentEdit.png?cdn_id=2015-04-01-001" style="display: inline;"></p>
+<p>
+The UI style of this site has been kept close to what's generated by the built-in templates, so that the tutorial can focus mainly on how to use the Entity Framework.</p>
+<h2>Prerequisites</h2>
+<p>See <strong>Software Versions</strong> at the top of the page. Entity 
+Framework 6 is not a prerequisite because you install the EF NuGet package as part 
+of the tutorial.</p>
+
+<h2>Create an MVC Web Application</h2>
+<p>Open Visual Studio and create a new C# Web project named "ContosoUniversity".</p>
+<p>
+    <img src="Lab13/NP.png" alt="New_project_dialog_box" border="0"></p>
+<p>In the <strong>New ASP.NET Project</strong> dialog box select the <strong>MVC</strong> template. </p>
+<p>If the <strong>Host in the cloud</strong> check box in the <strong>Microsoft 
+Azure</strong> section is selected, clear it.</p>
+<p>Click <strong>Change Authentication</strong>.</p>
+<p>
+    <img src="Lab13/NAP.png" alt="New_project_dialog_box" border="0"></p>
+<p>In the <strong>Change Authentication</strong> dialog box, select <strong>No Authentication</strong>, and then click <strong>OK</strong>. For this tutorial you won't be requiring users to log on or restricting access based on who's logged on.</p>
+<p>
+    <img src="Lab13/CA.png" alt="New_project_dialog_box" border="0"></p>
+<p>Back in the New ASP.NET Project dialog box, click <strong>OK</strong> to 
+create the project.&nbsp;</p>
+<h2>Set Up the Site Style</h2>
+<p>A few simple changes will set up the site menu, layout, and home page.</p>
+<p>Open <em>Views\Shared\_Layout.cshtml</em>, and make the following changes:</p>
+<ul>
+	<li>Change each occurrence of "My ASP.NET Application" and "Application 
+	name" to "Contoso University".</li>
+	<li>Add menu entries for Students, Courses, Instructors, and Departments, 
+	and delete the Contact entry.</li>
+</ul>
+<p>The changes are highlighted.</p>
+<pre class="prettyprint prettyprinted"><span class="dec">&lt;!DOCTYPE html&gt;</span><span class="pln">
+</span><span class="tag">&lt;html&gt;</span><span class="pln">
+</span><span class="tag">&lt;head&gt;</span><span class="pln">
+    </span><span class="tag">&lt;meta</span><span class="pln"> </span><span class="atn">charset</span><span class="pun">=</span><span class="atv">"utf-8"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+    </span><span class="tag">&lt;meta</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"viewport"</span><span class="pln"> </span><span class="atn">content</span><span class="pun">=</span><span class="atv">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span><span class="pln">
+    </span><span class="tag">&lt;title&gt;</span><span class="pln">@ViewBag.Title - </span><mark><span class="pln">Contoso University</span></mark><span class="tag">&lt;/title&gt;</span><span class="pln">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</span><span class="tag">&lt;/head&gt;</span><span class="pln">
+</span><span class="tag">&lt;body&gt;</span><span class="pln">
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"navbar navbar-inverse navbar-fixed-top"</span><span class="tag">&gt;</span><span class="pln">
+        </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"navbar-inner"</span><span class="tag">&gt;</span><span class="pln">
+            </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"container"</span><span class="tag">&gt;</span><span class="pln">
+                </span><span class="tag">&lt;button</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"button"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"btn btn-navbar"</span><span class="pln"> </span><span class="atn">data-toggle</span><span class="pun">=</span><span class="atv">"collapse"</span><span class="pln"> </span><span class="atn">data-target</span><span class="pun">=</span><span class="atv">".nav-collapse"</span><span class="tag">&gt;</span><span class="pln">
+                    </span><span class="tag">&lt;span</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"icon-bar"</span><span class="tag">&gt;&lt;/span&gt;</span><span class="pln">
+                    </span><span class="tag">&lt;span</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"icon-bar"</span><span class="tag">&gt;&lt;/span&gt;</span><span class="pln">
+                    </span><span class="tag">&lt;span</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"icon-bar"</span><span class="tag">&gt;&lt;/span&gt;</span><span class="pln">
+                </span><span class="tag">&lt;/button&gt;</span><span class="pln">
+                @Html.ActionLink("</span><mark><span class="pln">Contoso University</span></mark><span class="pln">", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"nav-collapse collapse"</span><span class="tag">&gt;</span><span class="pln">
+                    </span><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"nav"</span><span class="tag">&gt;</span><span class="pln">
+                        </span><span class="tag">&lt;li&gt;</span><span class="pln">@Html.ActionLink("Home", "Index", "Home")</span><span class="tag">&lt;/li&gt;</span><span class="pln">
+                        </span><span class="tag">&lt;li&gt;</span><span class="pln">@Html.ActionLink("About", "About", "Home")</span><span class="tag">&lt;/li&gt;</span><span class="pln">
+                        </span><mark><span class="tag">&lt;li&gt;</span><span class="pln">@Html.ActionLink("Students", "Index", "Student")</span><span class="tag">&lt;/li&gt;</span><span class="pln">
+                        </span><span class="tag">&lt;li&gt;</span><span class="pln">@Html.ActionLink("Courses", "Index", "Course")</span><span class="tag">&lt;/li&gt;</span><span class="pln">
+                        </span><span class="tag">&lt;li&gt;</span><span class="pln">@Html.ActionLink("Instructors", "Index", "Instructor")</span><span class="tag">&lt;/li&gt;</span><span class="pln">
+                        </span><span class="tag">&lt;li&gt;</span><span class="pln">@Html.ActionLink("Departments", "Index", "Department")</span><span class="tag">&lt;/li&gt;</span></mark><span class="pln">
+                    </span><span class="tag">&lt;/ul&gt;</span><span class="pln">
+                </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"container"</span><span class="tag">&gt;</span><span class="pln">
+        @RenderBody()
+        </span><span class="tag">&lt;hr</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+        </span><span class="tag">&lt;footer&gt;</span><span class="pln">
+            </span><span class="tag">&lt;p&gt;</span><span class="pln">&amp;copy; @DateTime.Now.Year - </span><mark><span class="pln">Contoso University</span></mark><span class="tag">&lt;/p&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/footer&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</span><span class="tag">&lt;/body&gt;</span><span class="pln">
+</span><span class="tag">&lt;/html&gt;</span></pre>
+<p>In <em>Views\Home\Index.cshtml</em>, replace the contents of the file with the 
+following code to replace the text about ASP.NET and MVC with text about 
+this application:</p>
+<pre class="prettyprint prettyprinted"><span class="pln">@{
+    ViewBag.Title = "Home Page";
+}
+
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"jumbotron"</span><span class="tag">&gt;</span><span class="pln">
+    </span><span class="tag">&lt;h1&gt;</span><span class="pln">Contoso University</span><span class="tag">&lt;/h1&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"row"</span><span class="tag">&gt;</span><span class="pln">
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-4"</span><span class="tag">&gt;</span><span class="pln">
+        </span><span class="tag">&lt;h2&gt;</span><span class="pln">Welcome to Contoso University</span><span class="tag">&lt;/h2&gt;</span><span class="pln">
+        </span><span class="tag">&lt;p&gt;</span><span class="pln">Contoso University is a sample application that
+        demonstrates how to use Entity Framework 6 in an 
+        ASP.NET MVC 5 web application.</span><span class="tag">&lt;/p&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-4"</span><span class="tag">&gt;</span><span class="pln">
+        </span><span class="tag">&lt;h2&gt;</span><span class="pln">Build it from scratch</span><span class="tag">&lt;/h2&gt;</span><span class="pln">
+        </span><span class="tag">&lt;p&gt;</span><span class="pln">You can build the application by following the steps in the tutorial series on the ASP.NET site.</span><span class="tag">&lt;/p&gt;</span><span class="pln">
+        </span><span class="tag">&lt;p&gt;&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"btn btn-default"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"http://www.asp.net/mvc/tutorials/getting-started-with-ef-using-mvc/"</span><span class="tag">&gt;</span><span class="pln">See the tutorial &amp;raquo;</span><span class="tag">&lt;/a&gt;&lt;/p&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-4"</span><span class="tag">&gt;</span><span class="pln">
+        </span><span class="tag">&lt;h2&gt;</span><span class="pln">Download it</span><span class="tag">&lt;/h2&gt;</span><span class="pln">
+        </span><span class="tag">&lt;p&gt;</span><span class="pln">You can download the completed project from the Microsoft Code Gallery.</span><span class="tag">&lt;/p&gt;</span><span class="pln">
+        </span><span class="tag">&lt;p&gt;&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"btn btn-default"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"http://code.msdn.microsoft.com/ASPNET-MVC-Application-b01a9fe8"</span><span class="tag">&gt;</span><span class="pln">Download &amp;raquo;</span><span class="tag">&lt;/a&gt;&lt;/p&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
+<p>Press CTRL+F5 to run the site. You see the home page with the main menu.</p>
+<p>
+    <img src="Lab13/Home.png" alt="Contoso_University_home_page" border="0"></p>
+<h2>Install Entity Framework 6</h2>
+<p>From the <strong>Tools</strong> menu click <strong>NuGet Package Manager</strong> 
+and then click <strong>Package Manager Console</strong>.</p>
+<p>In the <strong>Package Manager Console</strong> window enter the following 
+command:</p>
+<p><code>Install-Package EntityFramework</code></p>
+<p><img alt="EF installed" src="Lab13/EFInstall.png"></p>
+<p>The image shows 6.0.0 being installed, but NuGet will install the latest version of Entity Framework (excluding pre-release versions), which as of the most recent update to 
+the tutorial is 6.1.1.</p>
+<p>This step is one of a few steps that this tutorial has you do manually, but 
+which could have been done automatically by the ASP.NET MVC scaffolding 
+feature. You're doing them manually so that you can see the steps required to 
+use the Entity Framework. You'll use scaffolding later to create the MVC 
+controller and views. An alternative is to let scaffolding automatically install 
+the EF NuGet package, create the database context class, and create the 
+connection string. When you're ready to do it that way, all you have to do is 
+skip those steps and scaffold your MVC controller after you create your entity 
+classes.&nbsp;</p>
+<h2>Create the Data Model</h2>
+<p>Next you'll create entity classes for the Contoso University application. 
+You'll start with the following three entities: </p>
+<p>
+    <img src="Lab13/CES.png" alt="Class_diagram" border="0"></p>
+<p>There's a one-to-many relationship between <code>Student</code> and <code>Enrollment</code> entities, and there's a one-to-many relationship between <code>Course</code> and <code>Enrollment</code> entities. In other words, a student can be enrolled in any number of courses, and a course can have any number of students enrolled in it.</p>
+<p>In the following sections you'll create a class for each one of these entities.</p>
+<div class="note"><span class="dogear"></span>
+<p><strong>Note</strong> If you try to compile the project before you finish creating all of these entity classes, you'll get compiler errors.</p>
+</div>
+<h3>The Student Entity</h3>
+<p>
+    <img src="Lab13/Student.png" alt="Student_entity"></p>
+<p>In the <em>Models</em> folder, create a class file named <em>Student.cs</em> and replace the 
+template code with the following code:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Collections</span><span class="pun">.</span><span class="typ">Generic</span><span class="pun">;</span><span class="pln">
+
+</span><span class="kwd">namespace</span><span class="pln"> </span><span class="typ">ContosoUniversity</span><span class="pun">.</span><span class="typ">Models</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Student</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> ID </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">string</span><span class="pln"> </span><span class="typ">LastName</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">string</span><span class="pln"> </span><span class="typ">FirstMidName</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">DateTime</span><span class="pln"> </span><span class="typ">EnrollmentDate</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">virtual</span><span class="pln"> </span><span class="typ">ICollection</span><span class="pun">&lt;</span><span class="typ">Enrollment</span><span class="pun">&gt;</span><span class="pln"> </span><span class="typ">Enrollments</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>The <code>ID</code> property will become the primary key column of the database table that corresponds to this class. By default, the Entity Framework interprets a property that's named <code>ID</code> or <em>classname</em><code>ID</code> as the primary key.</p>
+<p>The <code>Enrollments</code> property is a <em>navigation property</em>. Navigation properties hold other entities that are related to this entity. In this case, the <code>Enrollments</code> property of a <code>Student</code> entity will hold all of the <code>Enrollment</code> entities that are related to that <code>Student</code> entity. In other words, if a given <code>Student</code> row in the database has two related <code>Enrollment</code> rows (rows that contain that student's primary key value in their <code>StudentID</code> foreign key column), that <code>Student</code> entity's <code>Enrollments</code> navigation property will contain those two <code>Enrollment</code> entities.</p>
+<p>Navigation properties are typically defined as <code>virtual</code> so that they can take advantage of 
+certain Entity Framework functionality such as <em>lazy loading</em>. (Lazy loading will be explained later, in the <a href="http://www.asp.net/entity-framework/tutorials/reading-related-data-with-the-entity-framework-in-an-asp-net-mvc-application">Reading Related Data</a> tutorial later in this series.)</p>
+<p>If a navigation property can hold multiple entities (as in many-to-many or one-to-many relationships), 
+its type must be a list in which entries can be added, deleted, and 
+updated, such as <code>ICollection</code>.</p>
+<h3>The Enrollment Entity</h3>
+<p>
+    <img src="Lab13/E.PNG" alt="Enrollment_entity"></p>
+<p>In the <em>Models</em> folder, create <em>Enrollment.cs</em> and replace the existing code with the following code:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">namespace</span><span class="pln"> </span><span class="typ">ContosoUniversity</span><span class="pun">.</span><span class="typ">Models</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">enum</span><span class="pln"> </span><span class="typ">Grade</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        A</span><span class="pun">,</span><span class="pln"> B</span><span class="pun">,</span><span class="pln"> C</span><span class="pun">,</span><span class="pln"> D</span><span class="pun">,</span><span class="pln"> F
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> </span><span class="typ">EnrollmentID</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> </span><span class="typ">CourseID</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> </span><span class="typ">StudentID</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Grade</span><span class="pun">?</span><span class="pln"> </span><span class="typ">Grade</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">virtual</span><span class="pln"> </span><span class="typ">Course</span><span class="pln"> </span><span class="typ">Course</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">virtual</span><span class="pln"> </span><span class="typ">Student</span><span class="pln"> </span><span class="typ">Student</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>The <code>EnrollmentID</code> property will be the primary key; this entity 
+uses the <em>classname</em><code>ID</code> pattern instead of <code>ID</code> by 
+itself as you saw in the <code>Student</code> entity. Ordinarily you would 
+choose one pattern and use it throughout your data model. Here, the variation 
+illustrates that you can use either pattern. In a later tutorial, you'll you'll 
+see how using <code>ID</code> without <code>classname</code> makes it easier to 
+implement inheritance in the data model.</p>
+<p>The <code>Grade</code> property is an
+<a href="http://msdn.microsoft.com/en-us/data/hh859576.aspx">enum</a>. The question mark after the <code>Grade</code> type declaration indicates that the <code>Grade</code> property is 
+<a href="http://msdn.microsoft.com/en-us/library/2cf62fcy.aspx">nullable</a>. A grade that's null is different from a zero grade — null means a grade 
+isn't known or hasn't been assigned yet.</p>
+<p>The <code>StudentID</code> property is a foreign key, and the corresponding navigation property is <code>Student</code>. An <code>Enrollment</code> entity is associated with one <code>Student</code> entity, so the property can only hold a single <code>Student</code> entity (unlike the <code>Student.Enrollments</code> navigation property you saw earlier, which can hold multiple <code>Enrollment</code> entities).</p>
+<p>The <code>CourseID</code> property is a foreign key, and the corresponding navigation property is <code>Course</code>. An <code>Enrollment</code> entity is associated with one <code>Course</code> entity.</p>
+<p>Entity Framework interprets a property as a foreign key property if it's named <em>
+	&lt;navigation property name&gt;&lt;primary key property name&gt;</em> (for example,
+	<code>StudentID</code> for the <code>Student</code> navigation property 
+	since the <code>Student</code> entity's primary key is <code>ID</code>). 
+	Foreign key properties can also be named the same simply <em>&lt;primary key 
+	property name&gt;</em> (for example, <code>CourseID</code> since the <code>
+	Course</code> entity's primary key is <code>CourseID</code>).</p>
+<h3>The Course Entity</h3>
+<p>
+    <img src="Lab13/C.PNG" alt="Course_entity"></p>
+<p>In the <em>Models</em> folder, create<em> Course.cs</em>, replacing the 
+template code with the following code:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Collections</span><span class="pun">.</span><span class="typ">Generic</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">ComponentModel</span><span class="pun">.</span><span class="typ">DataAnnotations</span><span class="pun">.</span><span class="typ">Schema</span><span class="pun">;</span><span class="pln">
+
+</span><span class="kwd">namespace</span><span class="pln"> </span><span class="typ">ContosoUniversity</span><span class="pun">.</span><span class="typ">Models</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Course</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="pun">[</span><span class="typ">DatabaseGenerated</span><span class="pun">(</span><span class="typ">DatabaseGeneratedOption</span><span class="pun">.</span><span class="kwd">None</span><span class="pun">)]</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> </span><span class="typ">CourseID</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">string</span><span class="pln"> </span><span class="typ">Title</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> </span><span class="typ">Credits</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">virtual</span><span class="pln"> </span><span class="typ">ICollection</span><span class="pun">&lt;</span><span class="typ">Enrollment</span><span class="pun">&gt;</span><span class="pln"> </span><span class="typ">Enrollments</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>The <code>Enrollments</code> property is a navigation property. A <code>Course</code> entity can be related to any number of <code>Enrollment</code> entities. 
+</p>
+<p>We'll say more about the 
+<a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.schema.databasegeneratedattribute(v=vs.110).aspx">DatabaseGenerated</a> attribute in 
+a later tutorial in this series. Basically, this attribute lets you enter 
+the primary key for the course rather than having the database generate it.</p>
+<h2>Create the Database Context</h2>
+<p>The main class that coordinates Entity Framework functionality for a given data model is the <em>database context</em> class. You create this class by deriving from the 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbcontext(v=VS.103).aspx">System.Data.Entity.DbContext</a> class. In your code you specify which entities are included in the data model. You can also customize certain Entity Framework behavior. In this project, the class is named <code>SchoolContext</code>.</p>
+<p>To create a folder in the ContosoUniversity project, right-click the project 
+in <strong>Solution Explorer</strong> and click <strong>Add</strong>, and then 
+click <strong>New Folder</strong>. Name the new folder <em>DAL</em> (for Data Access Layer). In that folder create a new class file named <em>SchoolContext.cs</em>, and replace the 
+template code with the following code:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">using</span><span class="pln"> </span><span class="typ">ContosoUniversity</span><span class="pun">.</span><span class="typ">Models</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Data</span><span class="pun">.</span><span class="typ">Entity</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Data</span><span class="pun">.</span><span class="typ">Entity</span><span class="pun">.</span><span class="typ">ModelConfiguration</span><span class="pun">.</span><span class="typ">Conventions</span><span class="pun">;</span><span class="pln">
+
+</span><span class="kwd">namespace</span><span class="pln"> </span><span class="typ">ContosoUniversity</span><span class="pun">.</span><span class="pln">DAL
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">SchoolContext</span><span class="pln"> </span><span class="pun">:</span><span class="pln"> </span><span class="typ">DbContext</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+    
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">SchoolContext</span><span class="pun">()</span><span class="pln"> </span><span class="pun">:</span><span class="pln"> </span><span class="kwd">base</span><span class="pun">(</span><span class="str">"SchoolContext"</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">DbSet</span><span class="pun">&lt;</span><span class="typ">Student</span><span class="pun">&gt;</span><span class="pln"> </span><span class="typ">Students</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">DbSet</span><span class="pun">&lt;</span><span class="typ">Enrollment</span><span class="pun">&gt;</span><span class="pln"> </span><span class="typ">Enrollments</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">DbSet</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;</span><span class="pln"> </span><span class="typ">Courses</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+
+        </span><span class="kwd">protected</span><span class="pln"> </span><span class="kwd">override</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> </span><span class="typ">OnModelCreating</span><span class="pun">(</span><span class="typ">DbModelBuilder</span><span class="pln"> modelBuilder</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            modelBuilder</span><span class="pun">.</span><span class="typ">Conventions</span><span class="pun">.</span><span class="typ">Remove</span><span class="pun">&lt;</span><span class="typ">PluralizingTableNameConvention</span><span class="pun">&gt;();</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<h3>Specifying entity sets</h3>
+<p>This code creates a 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbset(v=VS.103).aspx">DbSet</a> property for each entity set. In Entity Framework terminology, an <em>entity set</em> typically corresponds to a database table, and an <em>entity</em> corresponds to a row in the table. </p>
+<div class="note"><span class="dogear"></span>
+	<p>You could have omitted the <code>DbSet&lt;Enrollment&gt;</code> and <code>
+DbSet&lt;Course&gt;</code> statements and it would work the same. The Entity Framework 
+would include them implicitly because the <code>Student</code> entity 
+references the <code>Enrollment</code> entity and the <code>Enrollment</code> 
+entity references the <code>Course</code> entity.</p></div>
+
+<h3>Specifying the connection string</h3>
+<p>The name of the connection string (which you'll add to the Web.config file 
+later) is passed in to the 
+constructor.</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">public</span><span class="pln"> </span><span class="typ">SchoolContext</span><span class="pun">()</span><span class="pln"> </span><span class="pun">:</span><span class="pln"> </span><span class="kwd">base</span><span class="pun">(</span><span class="str">"</span><mark><span class="str">SchoolContext</span></mark><span class="str">"</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>You could also pass in the connection string itself instead of the name of one 
+that is stored 
+in the Web.config file. For more information about options for specifying the 
+database to use, see <a href="http://msdn.microsoft.com/en-us/data/jj592674">
+Entity Framework - Connections and Models</a>.</p>
+<p>If you don't specify a connection string or the name of one explicitly, 
+Entity Framework assumes that the connection string name is the same as the 
+class name. The default connection string name in this example would then be
+<code>SchoolContext</code>, the same as what you're specifying explicitly.</p>
+<h3>Specifying singular table names</h3>
+<p>The <code>modelBuilder.Conventions.Remove</code> statement in the 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbcontext.onmodelcreating(v=vs.103).aspx">OnModelCreating</a> method prevents table names from being pluralized. If you didn't do this, the generated tables 
+in the database would be named <code>Students</code>, <code>Courses</code>, and <code>Enrollments</code>. Instead, the table names will be <code>Student</code>, <code>Course</code>, and <code>Enrollment</code>. Developers disagree about whether table names should be pluralized or not. This tutorial uses the singular form, but the important point is that you can select whichever form you prefer by including or omitting this line of code.</p>
+
+<h2>Set up EF to initialize the database with test data</h2>
+<p>The Entity Framework can automatically create (or drop and re-create) a database 
+for you when the application runs. You can specify that this should be done 
+every time your application runs or only when the model is out of sync with the 
+existing database. You can also write a <code>Seed</code> method that the 
+Entity Framework automatically calls after creating the database in order to 
+populate it with test data. </p>
+<p>The default behavior is to create a 
+database only if it doesn't exist (and throw an exception if the model has 
+changed and the database already exists). In this section you'll specify that the database 
+should be dropped and re-created whenever the model changes. Dropping the 
+database causes the loss of all your data. This is generally OK during 
+development, because the <code>Seed</code> method will run when the database is 
+re-created and will re-create your test data. But in production you generally 
+don't want to lose all your data every time you need to change the database 
+schema. Later you'll see 
+how to handle model changes by using Code First Migrations to change the 
+database schema instead of dropping and re-creating the database.</p>
+<p>In the DAL folder, create a new class file named <em>SchoolInitializer.cs</em> 
+and replace the template code with the<br>following code, which causes a 
+database to be created when needed and loads test data into the new database.</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Collections</span><span class="pun">.</span><span class="typ">Generic</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Linq</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Web</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Data</span><span class="pun">.</span><span class="typ">Entity</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="typ">ContosoUniversity</span><span class="pun">.</span><span class="typ">Models</span><span class="pun">;</span><span class="pln">
+
+</span><span class="kwd">namespace</span><span class="pln"> </span><span class="typ">ContosoUniversity</span><span class="pun">.</span><span class="pln">DAL
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">SchoolInitializer</span><span class="pln"> </span><span class="pun">:</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Data</span><span class="pun">.</span><span class="typ">Entity</span><span class="pun">.</span><span class="pln"> </span><span class="typ">DropCreateDatabaseIfModelChanges</span><span class="pun">&lt;</span><span class="typ">SchoolContext</span><span class="pun">&gt;</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">protected</span><span class="pln"> </span><span class="kwd">override</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> </span><span class="typ">Seed</span><span class="pun">(</span><span class="typ">SchoolContext</span><span class="pln"> context</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> students </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">Student</span><span class="pun">&gt;</span><span class="pln">
+            </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Student</span><span class="pun">{</span><span class="typ">FirstMidName</span><span class="pun">=</span><span class="str">"Carson"</span><span class="pun">,</span><span class="typ">LastName</span><span class="pun">=</span><span class="str">"Alexander"</span><span class="pun">,</span><span class="typ">EnrollmentDate</span><span class="pun">=</span><span class="typ">DateTime</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="str">"2005-09-01"</span><span class="pun">)},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Student</span><span class="pun">{</span><span class="typ">FirstMidName</span><span class="pun">=</span><span class="str">"Meredith"</span><span class="pun">,</span><span class="typ">LastName</span><span class="pun">=</span><span class="str">"Alonso"</span><span class="pun">,</span><span class="typ">EnrollmentDate</span><span class="pun">=</span><span class="typ">DateTime</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="str">"2002-09-01"</span><span class="pun">)},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Student</span><span class="pun">{</span><span class="typ">FirstMidName</span><span class="pun">=</span><span class="str">"Arturo"</span><span class="pun">,</span><span class="typ">LastName</span><span class="pun">=</span><span class="str">"Anand"</span><span class="pun">,</span><span class="typ">EnrollmentDate</span><span class="pun">=</span><span class="typ">DateTime</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="str">"2003-09-01"</span><span class="pun">)},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Student</span><span class="pun">{</span><span class="typ">FirstMidName</span><span class="pun">=</span><span class="str">"Gytis"</span><span class="pun">,</span><span class="typ">LastName</span><span class="pun">=</span><span class="str">"Barzdukas"</span><span class="pun">,</span><span class="typ">EnrollmentDate</span><span class="pun">=</span><span class="typ">DateTime</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="str">"2002-09-01"</span><span class="pun">)},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Student</span><span class="pun">{</span><span class="typ">FirstMidName</span><span class="pun">=</span><span class="str">"Yan"</span><span class="pun">,</span><span class="typ">LastName</span><span class="pun">=</span><span class="str">"Li"</span><span class="pun">,</span><span class="typ">EnrollmentDate</span><span class="pun">=</span><span class="typ">DateTime</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="str">"2002-09-01"</span><span class="pun">)},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Student</span><span class="pun">{</span><span class="typ">FirstMidName</span><span class="pun">=</span><span class="str">"Peggy"</span><span class="pun">,</span><span class="typ">LastName</span><span class="pun">=</span><span class="str">"Justice"</span><span class="pun">,</span><span class="typ">EnrollmentDate</span><span class="pun">=</span><span class="typ">DateTime</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="str">"2001-09-01"</span><span class="pun">)},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Student</span><span class="pun">{</span><span class="typ">FirstMidName</span><span class="pun">=</span><span class="str">"Laura"</span><span class="pun">,</span><span class="typ">LastName</span><span class="pun">=</span><span class="str">"Norman"</span><span class="pun">,</span><span class="typ">EnrollmentDate</span><span class="pun">=</span><span class="typ">DateTime</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="str">"2003-09-01"</span><span class="pun">)},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Student</span><span class="pun">{</span><span class="typ">FirstMidName</span><span class="pun">=</span><span class="str">"Nino"</span><span class="pun">,</span><span class="typ">LastName</span><span class="pun">=</span><span class="str">"Olivetto"</span><span class="pun">,</span><span class="typ">EnrollmentDate</span><span class="pun">=</span><span class="typ">DateTime</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="str">"2005-09-01"</span><span class="pun">)}</span><span class="pln">
+            </span><span class="pun">};</span><span class="pln">
+
+            students</span><span class="pun">.</span><span class="typ">ForEach</span><span class="pun">(</span><span class="pln">s </span><span class="pun">=&gt;</span><span class="pln"> context</span><span class="pun">.</span><span class="typ">Students</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="pln">s</span><span class="pun">));</span><span class="pln">
+            context</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> courses </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;</span><span class="pln">
+            </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Course</span><span class="pun">{</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">1050</span><span class="pun">,</span><span class="typ">Title</span><span class="pun">=</span><span class="str">"Chemistry"</span><span class="pun">,</span><span class="typ">Credits</span><span class="pun">=</span><span class="lit">3</span><span class="pun">,},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Course</span><span class="pun">{</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">4022</span><span class="pun">,</span><span class="typ">Title</span><span class="pun">=</span><span class="str">"Microeconomics"</span><span class="pun">,</span><span class="typ">Credits</span><span class="pun">=</span><span class="lit">3</span><span class="pun">,},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Course</span><span class="pun">{</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">4041</span><span class="pun">,</span><span class="typ">Title</span><span class="pun">=</span><span class="str">"Macroeconomics"</span><span class="pun">,</span><span class="typ">Credits</span><span class="pun">=</span><span class="lit">3</span><span class="pun">,},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Course</span><span class="pun">{</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">1045</span><span class="pun">,</span><span class="typ">Title</span><span class="pun">=</span><span class="str">"Calculus"</span><span class="pun">,</span><span class="typ">Credits</span><span class="pun">=</span><span class="lit">4</span><span class="pun">,},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Course</span><span class="pun">{</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">3141</span><span class="pun">,</span><span class="typ">Title</span><span class="pun">=</span><span class="str">"Trigonometry"</span><span class="pun">,</span><span class="typ">Credits</span><span class="pun">=</span><span class="lit">4</span><span class="pun">,},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Course</span><span class="pun">{</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">2021</span><span class="pun">,</span><span class="typ">Title</span><span class="pun">=</span><span class="str">"Composition"</span><span class="pun">,</span><span class="typ">Credits</span><span class="pun">=</span><span class="lit">3</span><span class="pun">,},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Course</span><span class="pun">{</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">2042</span><span class="pun">,</span><span class="typ">Title</span><span class="pun">=</span><span class="str">"Literature"</span><span class="pun">,</span><span class="typ">Credits</span><span class="pun">=</span><span class="lit">4</span><span class="pun">,}</span><span class="pln">
+            </span><span class="pun">};</span><span class="pln">
+            courses</span><span class="pun">.</span><span class="typ">ForEach</span><span class="pun">(</span><span class="pln">s </span><span class="pun">=&gt;</span><span class="pln"> context</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="pln">s</span><span class="pun">));</span><span class="pln">
+            context</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> enrollments </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">Enrollment</span><span class="pun">&gt;</span><span class="pln">
+            </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">1</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">1050</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">A</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">1</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">4022</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">C</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">1</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">4041</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">B</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">2</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">1045</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">B</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">2</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">3141</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">F</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">2</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">2021</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">F</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">3</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">1050</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">4</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">1050</span><span class="pun">,},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">4</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">4022</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">F</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">5</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">4041</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">C</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">6</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">1045</span><span class="pun">},</span><span class="pln">
+            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Enrollment</span><span class="pun">{</span><span class="typ">StudentID</span><span class="pun">=</span><span class="lit">7</span><span class="pun">,</span><span class="typ">CourseID</span><span class="pun">=</span><span class="lit">3141</span><span class="pun">,</span><span class="typ">Grade</span><span class="pun">=</span><span class="typ">Grade</span><span class="pun">.</span><span class="pln">A</span><span class="pun">},</span><span class="pln">
+            </span><span class="pun">};</span><span class="pln">
+            enrollments</span><span class="pun">.</span><span class="typ">ForEach</span><span class="pun">(</span><span class="pln">s </span><span class="pun">=&gt;</span><span class="pln"> context</span><span class="pun">.</span><span class="typ">Enrollments</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="pln">s</span><span class="pun">));</span><span class="pln">
+            context</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>The <code>Seed</code> method takes the database context object as an input 
+parameter, and the code in the method uses<br>that object to add new entities to 
+the database. For each entity type, the code creates a collection of new<br>
+entities, adds them to the appropriate <code>DbSet</code> property, and then 
+saves the changes to the database. It isn't<br>necessary to call the <code>
+SaveChanges</code> method after each group of entities, as is done here, but 
+doing that helps<br>you locate the source of a problem if an exception occurs 
+while the code is writing to the database.</p>
+
+<p>To tell Entity Framework to use your initializer class, add an element 
+to the <code>entityFramework</code> element in the application <em>Web.config</em> file 
+(the one in the root project folder), as shown in the following 
+example:</p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;entityFramework&gt;</span><span class="pln">
+</span><mark><span class="pln">  </span><span class="tag">&lt;contexts&gt;</span><span class="pln">
+    </span><span class="tag">&lt;context</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"ContosoUniversity.DAL.SchoolContext, ContosoUniversity"</span><span class="tag">&gt;</span><span class="pln">
+      </span><span class="tag">&lt;databaseInitializer</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"ContosoUniversity.DAL.SchoolInitializer, ContosoUniversity"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/context&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/contexts&gt;</span></mark><span class="pln">
+  </span><span class="tag">&lt;defaultConnectionFactory</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework"</span><span class="tag">&gt;</span><span class="pln">
+    </span><span class="tag">&lt;parameters&gt;</span><span class="pln">
+      </span><span class="tag">&lt;parameter</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"v11.0"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/parameters&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/defaultConnectionFactory&gt;</span><span class="pln">
+  </span><span class="tag">&lt;providers&gt;</span><span class="pln">
+    </span><span class="tag">&lt;provider</span><span class="pln"> </span><span class="atn">invariantName</span><span class="pun">=</span><span class="atv">"System.Data.SqlClient"</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/providers&gt;</span><span class="pln">
+</span><span class="tag">&lt;/entityFramework&gt;</span></pre>
+
+<p>The <code>context type</code> specifies the fully qualified context class 
+name and the assembly it's in, and the <code>databaseinitializer type</code> specifies 
+the fully qualified name of the initializer class and the assembly it's in. 
+(When you don't want EF to use the initializer, you can set an attribute on the
+<code>context</code> element: <code>disableDatabaseInitialization="true"</code>.) 
+For more information, see
+<a href="http://msdn.microsoft.com/en-us/data/jj556606">Entity Framework - 
+Config File Settings</a>.</p>
+<p>As an alternative to setting the initializer in the <em>Web.config</em> file 
+is to do it in code by adding a <code>Database.SetInitializer</code> statement 
+to the <code>Application_Start</code> method in in the <em>Global.asax.cs</em> file. 
+For more information, see
+<a href="http://www.codeguru.com/csharp/article.php/c19999/Understanding-Database-Initializers-in-Entity-Framework-Code-First.htm">
+Understanding Database Initializers in Entity Framework Code First</a>.</p>
+<p>The application is now set up so that when you access the database for the 
+first time in a given run of the<br>application, the Entity Framework compares 
+the database to the model (your <code>SchoolContext</code> and entity classes). If there's a 
+difference, the application drops and re-creates the database.</p>
+
+<div class="note"><span class="dogear"></span><p><strong>Note:</strong> When you 
+deploy an application to a production web server, you must remove or disable code that 
+	drops and re-creates the database. You'll do that in a later tutorial in 
+	this series.</p>
+</div>
+
+
+<h2>Set up EF to use a SQL Server Express LocalDB database</h2>
+<p>
+<a href="http://blogs.msdn.com/b/sqlexpress/archive/2011/07/12/introducing-localdb-a-better-sql-express.aspx">LocalDB</a> is a lightweight version of the SQL Server Express Database Engine. 
+It's easy to install and configure, starts on demand, and runs in user mode. LocalDB runs in a special execution mode of SQL Server Express that enables you to 
+work with databases as <em>.mdf</em> files. You can put LocalDB database files 
+in the <em>App_Data</em> folder of a web project if you want to be able 
+to copy the database with the project. The
+<span class="parameter">user instance</span> feature in SQL Server Express also 
+enables you to work with <em>.mdf</em> files, but the user instance feature is 
+deprecated; therefore, LocalDB is recommended for working with <em>.mdf</em> 
+files. In Visual Studio 2012 and later versions, LocalDB is installed by default 
+with Visual Studio. </p>
+<p>Typically SQL Server Express is not used for production web applications. 
+LocalDB in particular is not recommended for production use with a web 
+application because it is not designed to work with IIS. </p>
+<p>In this tutorial you'll work with LocalDB. Open the 
+application <em>Web.config</em> file and add a <code>connectionStrings</code> element 
+preceding the
+<code>appSettings</code> element, as shown in the following example. (Make sure you update the 
+<em>Web.config</em> file in the root project folder. There's also a<em class="auto-style3"> </em> 
+<em>Web.config</em> file is in the 
+<em>Views</em> subfolder that you don't need to update.)</p>
+<pre class="prettyprint prettyprinted"><mark><span class="tag">&lt;connectionStrings&gt;</span><span class="pln">
+    </span><span class="tag">&lt;add</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"SchoolContext"</span><span class="pln"> </span><span class="atn">connectionString</span><span class="pun">=</span><span class="atv">"Data Source=(LocalDb)\v11.0;Initial Catalog=ContosoUniversity1;Integrated Security=SSPI;"</span><span class="pln"> </span><span class="atn">providerName</span><span class="pun">=</span><span class="atv">"System.Data.SqlClient"</span><span class="tag">/&gt;</span><span class="pln">
+</span><span class="tag">&lt;/connectionStrings&gt;</span></mark><span class="pln">
+</span><span class="tag">&lt;appSettings&gt;</span><span class="pln">
+  </span><span class="tag">&lt;add</span><span class="pln"> </span><span class="atn">key</span><span class="pun">=</span><span class="atv">"webpages:Version"</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"3.0.0.0"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+  </span><span class="tag">&lt;add</span><span class="pln"> </span><span class="atn">key</span><span class="pun">=</span><span class="atv">"webpages:Enabled"</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"false"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+  </span><span class="tag">&lt;add</span><span class="pln"> </span><span class="atn">key</span><span class="pun">=</span><span class="atv">"ClientValidationEnabled"</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"true"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+  </span><span class="tag">&lt;add</span><span class="pln"> </span><span class="atn">key</span><span class="pun">=</span><span class="atv">"UnobtrusiveJavaScriptEnabled"</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"true"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+</span><span class="tag">&lt;/appSettings&gt;</span></pre>
+<p>The connection string you've added specifies 
+that Entity Framework will use a 
+LocalDB database named <em>ContosoUniversity1.mdf</em>. (The database doesn't exist yet; EF will create it.) 
+If you wanted the database to be created in your <em>App_Data</em> folder, you could add
+<code>AttachDBFilename=|DataDirectory|\ContosoUniversity1.mdf</code> to the connection string. For more 
+information about connection strings, see 
+<a href="http://msdn.microsoft.com/en-us/library/jj653752.aspx">SQL Server Connection Strings for ASP.NET Web Applications</a>. </p>
+<p>You don't actually have to have a connection string in the <em>Web.config</em> 
+file. If you don't supply 
+a connection string, Entity Framework will use a default one based on your 
+context class. For more information, see
+<a href="http://msdn.microsoft.com/en-us/data/jj193542">Code First to a New 
+Database</a>. &nbsp;</p>
+<h2>Creating a Student Controller and Views</h2>
+
+<p>Now you'll create a web page to display data, and the 
+process of requesting the data will automatically trigger<br>the creation of the 
+database. You'll begin by creating a new controller. But before you do that, 
+build the project to make the model and context classes available to MVC 
+controller scaffolding.</p>
+<ol>
+	<li><p>Right-click the <strong>Controllers</strong> folder in 
+	<strong>Solution Explorer</strong>, select <strong>Add</strong>, and then click 
+	<strong>New Scaffolded Item</strong>.</p>
+	</li><li><p>In the <strong>Add Scaffold</strong> dialog box, 
+	select <strong>MVC 5 Controller with views, using Entity Framework</strong>.</p></li>
+	<p><img alt="Add Scaffold" src="Lab13/AddScaffold.png"></p>
+	 <li><p>In the Add Controller dialog box, make the following selections and then click 
+	<strong>Add</strong>:</p>
+<ul>
+<li>Model class: <strong>Student (ContosoUniversity.Models)</strong>. (If you don't see this option in the drop-down list, build the project and try again.) </li>
+<li>Data context class: <strong>SchoolContext (ContosoUniversity.DAL)</strong>. </li>
+<li>Controller name: <strong>StudentController</strong> (not 
+StudentsController).</li>
+	<li>Leave the default values for the other fields.&nbsp;&nbsp;&nbsp; </li>
+</ul>
+<p>
+    <img src="Lab13/AddController2.png" alt="Add_Controller_dialog_box_for_Student_controller" border="0"></p>
+	 <p>
+	 When you click <strong>Add</strong>, the scaffolder creates a 
+	 StudentController.cs file and a set of views (.cshtml files) that work with 
+	 the controller. In the future when you create projects that use Entity 
+	 Framework you can also take advantage of some additional functionality of 
+	 the scaffolder:&nbsp; just create your first model class, don't create a 
+	 connection string, and then in the <strong>Add Controller</strong> box 
+	 specify new context class.&nbsp; The scaffolder will create your <code>
+	 DbContext</code> class and your connection string as well as the controller 
+	 and views.</p>
+</li><li>
+<p>Visual Studio opens the <em>Controllers\StudentController.cs</em> file. You see a class variable has been created that instantiates a database context object:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">private</span><span class="pln"> </span><span class="typ">SchoolContext</span><span class="pln"> db </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">SchoolContext</span><span class="pun">();</span></pre>
+<p>The <code>Index</code> action method gets a list of students from the <em>
+Students</em> entity set by reading the <code>Students</code> property of the database context instance:</p>
+<pre class="prettyprint prettyprinted"><span class="pln"> </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">ViewResult</span><span class="pln"> </span><span class="typ">Index</span><span class="pun">()</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">db</span><span class="pun">.</span><span class="typ">Students</span><span class="pun">.</span><span class="typ">ToList</span><span class="pun">());</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>The <em>Student\Index.cshtml</em> view displays this list in a table:</p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;table&gt;</span><span class="pln">
+    </span><span class="tag">&lt;tr&gt;</span><span class="pln">
+        </span><span class="tag">&lt;th&gt;</span><span class="pln">
+            @Html.DisplayNameFor(model =&gt; model.LastName)
+        </span><span class="tag">&lt;/th&gt;</span><span class="pln">
+        </span><span class="tag">&lt;th&gt;</span><span class="pln">
+            @Html.DisplayNameFor(model =&gt; model.FirstMidName)
+        </span><span class="tag">&lt;/th&gt;</span><span class="pln">
+        </span><span class="tag">&lt;th&gt;</span><span class="pln">
+            @Html.DisplayNameFor(model =&gt; model.EnrollmentDate)
+        </span><span class="tag">&lt;/th&gt;</span><span class="pln">
+        </span><span class="tag">&lt;th&gt;&lt;/th&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/tr&gt;</span><span class="pln">
+
+@foreach (var item in Model) {
+    </span><span class="tag">&lt;tr&gt;</span><span class="pln">
+        </span><span class="tag">&lt;td&gt;</span><span class="pln">
+            @Html.DisplayFor(modelItem =&gt; item.LastName)
+        </span><span class="tag">&lt;/td&gt;</span><span class="pln">
+        </span><span class="tag">&lt;td&gt;</span><span class="pln">
+            @Html.DisplayFor(modelItem =&gt; item.FirstMidName)
+        </span><span class="tag">&lt;/td&gt;</span><span class="pln">
+        </span><span class="tag">&lt;td&gt;</span><span class="pln">
+            @Html.DisplayFor(modelItem =&gt; item.EnrollmentDate)
+        </span><span class="tag">&lt;/td&gt;</span><span class="pln">
+        </span><span class="tag">&lt;td&gt;</span><span class="pln">
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </span><span class="tag">&lt;/td&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/tr&gt;</span><span class="pln">
+}</span></pre>
+</li><li>
+<p>Press CTRL+F5 to run the project. (If you get a "Cannot create Shadow Copy" 
+error, close the browser and try again.)</p>
+<p>Click the <strong>Students</strong> tab to see the test data that the <code>
+Seed</code> method inserted. Depending on how narrow your browser window is, 
+you'll see the Student tab link in the top address bar or you'll have to click 
+the upper right corner to see the link. </p>
+	<p>
+        <img alt="Menu button" src="Lab13/bootstrapmenu.png"></p>
+<p>
+    <img alt="Student Index page" src="Lab13/StudentIndex.png"></p>
+</li>
+</ol>
+<h2>View the Database</h2>
+<p>
+When you ran the Students page and the application tried to access the database, 
+EF saw that there was no database and so it created one, then it ran the seed 
+method to populate the database with data.</p>
+<p>
+You can use either <strong>Server Explorer</strong> or <strong>SQL Server Object 
+Explorer</strong> (SSOX) to view the database in Visual Studio. For this tutorial you'll use 
+<strong>Server Explorer</strong>. (In Visual Studio Express editions earlier 
+than 2013, <strong>Server Explorer</strong> is called <strong>Database 
+Explorer</strong>.)</p>
+<ol>
+	<li><p>Close the browser.</p>
+	</li>
+	<li>
+	<p>In <strong>Server Explorer</strong>, expand <strong>Data Connections</strong>, 
+	expand <strong>School Context (ContosoUniversity)</strong>, and then expand
+	<strong>Tables</strong> to see the tables in your new database.</p>
+	<p>
+        <img src="Lab13/TablesInSE.png"> </p>
+	</li>
+	<li>
+	<p>Right-click the <strong>Student</strong> table and click <strong>Show 
+	Table 
+	Data</strong> to see the columns that were created and the rows that were 
+	inserted into the table.</p>
+	<p>
+        <img alt="Student table" src="Lab13/1ShowStudData.png">&nbsp;</p>
+	</li>
+	<li><p>Close the <strong>Server Explorer</strong> connection.</p></li>
+</ol>
+<p>The <em>ContosoUniversity1.mdf </em>and <em>.ldf </em>database files are in 
+the <code>C:\Users\&lt;yourusername&gt;</code> folder.</p>
+<p>Because you're using the <code>DropCreateDatabaseIfModelChanges</code> 
+initializer, you could now make a change to the <code>Student</code> class, run 
+the application again, and the database would automatically be re-created to 
+match your change. For example, if you add an <code>EmailAddress</code> property 
+to the <code>Student</code> class, run the Students page again, and then look at 
+the table again, you will see a new <code>EmailAddress</code> column.</p>
+<h2>Conventions</h2>
+<p>The amount of code you had to write in order for the Entity Framework to be able to create a complete database for you is minimal because of the use of <em>conventions</em>, or assumptions that the Entity Framework makes. Some of them have already been noted 
+or were used without your being aware of them:</p>
+<ul>
+<li>The pluralized forms of entity class names are used as table names. </li>
+<li>Entity property names are used for column names. </li>
+<li>Entity properties that are named <code>ID</code> or <em>classname</em><code>ID</code> are recognized as primary key properties.&nbsp; </li>
+	<li>A property is interpreted as a foreign key property if it's named <em>
+	&lt;navigation property name&gt;&lt;primary key property name&gt;</em> (for example,
+	<code>StudentID</code> for the <code>Student</code> navigation property 
+	since the <code>Student</code> entity's primary key is <code>ID</code>). 
+	Foreign key properties can also be named the same simply &lt;primary key 
+	property name&gt; (for example, <code>EnrollmentID</code> since the <code>
+	Enrollment</code> entity's primary key is <code>EnrollmentID</code>).</li>
+</ul>
+<p>You've seen that conventions can be overridden. For example, you specified that table names shouldn't be pluralized, 
+and you'll see later how to explicitly mark a property as a foreign key 
+property. You'll learn more about conventions and how to override them in the <a href="http://www.asp.net/entity-framework/tutorials/creating-a-more-complex-data-model-for-an-asp-net-mvc-application">Creating a More Complex Data Model</a> tutorial later in this series.&nbsp; 
+For more information about conventions, see
+<a href="http://msdn.microsoft.com/en-us/data/jj679962">Code First Conventions</a>.</p>
+<h2>Summary</h2>
+<p>You've now created a simple application that uses the Entity Framework and SQL Server 
+Express LocalDB to store and display data. In the following tutorial you'll learn how to perform basic CRUD (create, read, update, delete) operations.&nbsp; 
+</p>
+<p>Please leave feedback on how you liked this 
+tutorial and what we could improve. You can also request new topics at
+<a href="http://aspnet.uservoice.com/forums/228522-show-me-how-with-code">Show 
+Me How With Code</a>.</p>
+<p>Links to other Entity Framework resources can be found in
+<a href="http://www.asp.net/whitepapers/aspnet-data-access-content-map">ASP.NET 
+Data Access - Recommended Resources</a>.</p>
+  
+  <!--<script type="text/javascript" src="Lab13/ms.js"></script><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="fb_xdm_frame_http" frameborder="0" allowtransparency="true" scrolling="no" id="fb_xdm_frame_http" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="Lab13/6Dg4oLkBbYq.html" style="border: none;"></iframe><iframe name="fb_xdm_frame_https" frameborder="0" allowtransparency="true" scrolling="no" id="fb_xdm_frame_https" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="Lab13/6Dg4oLkBbYq(1).html" style="border: none;"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div></div><title> </title><div id="WidgetFloaterPanels" translate="no" style="display: none;text-align: left;direction: ltr" class="LTRStyle"> <div id="WidgetFloater" style="display: none" onmouseover="Microsoft.Translator.OnMouseOverFloater()" onmouseout="Microsoft.Translator.OnMouseOutFloater()"> <div id="WidgetLogoPanel"> <span id="WidgetTranslateWithSpan" style="text-align:left;">Bing Translator</span> <span id="WidgetCloseButton" title="Exit Translation" onclick="Microsoft.Translator.FloaterOnClose()"><img src="Lab13/close_x.png" id="WidgetCloseImage" class="WidgetCloseImage"></span></div> <div id="LanguageMenuPanel"> <div class="DDStyle_outer"><input name="LanguageMenu_svid" type="text" id="LanguageMenu_svid" style="display:none;" autocomplete="on" value="en" onclick="this.select()"> <input name="LanguageMenu_textid" type="text" id="LanguageMenu_textid" style="display:none;" autocomplete="on" onclick="this.select()"> <span onselectstart="return false" tabindex="0" class="DDStyle" id="__LanguageMenu_header" onclick="return LanguageMenu &amp;&amp; !LanguageMenu.Show(&#39;__LanguageMenu_popup&#39;, event);" onkeydown="return LanguageMenu &amp;&amp; !LanguageMenu.Show(&#39;__LanguageMenu_popup&#39;, event);" title="English" style="overflow: visible;">English</span> <div style="position:relative;text-align:left;left:0;"><div style="position:absolute;width:;left:0px;"><div class="DDStyle" style="display:none;" id="__LanguageMenu_popup"> <table id="LanguageMenu" border="0"> <tbody><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;bs-Latn&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#bs-Latn">Bosnian (Latin)</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;it&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#it">Italian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ru&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#ru">Russian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;zh-CHS&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#zh-CHS">Chinese Simplified</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ja&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#ja">Japanese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;sr-Cyrl&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#sr-Cyrl">Serbian (Cyrillic)</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;zh-CHT&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#zh-CHT">Chinese Traditional</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ko&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#ko">Korean</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;sr-Latn&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#sr-Latn">Serbian (Latin)</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;hr&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#hr">Croatian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;mt&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#mt">Maltese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;es&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#es">Spanish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;cs&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#cs">Czech</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;pl&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#pl">Polish</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;tr&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#tr">Turkish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;en&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#en">English</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;pt&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#pt">Portuguese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;cy&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#cy">Welsh</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;fr&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#fr">French</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;otq&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#otq">Querétaro Otomi</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;yua&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#yua">Yucatec Maya</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;de&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application#de">German</a></td><td></td><td></td> </tr> </tbody></table> <img alt="" src="Lab13/niche.gif" style="height:7px;width:17px;border-width:0px;left:20px;"> <div id="OriginalLanguageDiv"><span id="OriginalTextSpan">ORIGINAL: </span><span id="OriginalLanguageSpan"></span></div></div></div></div></div> <script type="text/javascript"> var LanguageMenu; var LanguageMenu_keys=["bs-Latn","zh-CHS","zh-CHT","hr","cs","en","fr","de","it","ja","ko","mt","pl","pt","otq","ru","sr-Cyrl","sr-Latn","es","tr","cy","yua"]; var LanguageMenu_values=["Bosnian (Latin)","Chinese Simplified","Chinese Traditional","Croatian","Czech","English","French","German","Italian","Japanese","Korean","Maltese","Polish","Portuguese","Querétaro Otomi","Russian","Serbian (Cyrillic)","Serbian (Latin)","Spanish","Turkish","Welsh","Yucatec Maya"]; var LanguageMenu_callback=function(){ }; var LanguageMenu_popupid='__LanguageMenu_popup'; </script> </div> <div id="CTFLinksPanel"> <span id="ExternalLinksPanel"><a id="BingTranslatorLink" title="bing.com/translator" href="http://www.bing.com/translator" target="_blank"> <img id="BingTranslatorLinkImg" src="Lab13/bingmark.png"></a> <a id="FacebookLink" href="https://www.facebook.com/bingtranslator" title="Bing Translator on Facebook" target="_blank"> <img id="FacebookImg" src="Lab13/fbookmark.png"></a> <a id="ShareLink" title="Share" href="javascript:Microsoft.Translator.FloaterShowSharePanel()"> <img id="ShareImg" src="Lab13/sharemark.png"></a> </span><span id="CTFAuthPanel"><span id="SignInSpan" title="Sign in to Collaborative Translation" style="display: inline;"><a href="https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=12&ct=1428755693&rver=6.0.5276.0&wp=LBI&wreply=http:%2F%2Fwww.microsofttranslator.com%2Fajax%2Fv2%2Fauth.aspx%3Fpru%3Dhttp%253a%252f%252fwww.asp.net%252fmvc%252foverview%252fgetting-started%252fgetting-started-with-ef-using-mvc%252fcreating-an-entity-framework-data-model-for-an-asp-net-mvc-application&lc=1033&id=268160">Sign in</a></span><span id="SignOutSpan" style="display: none;">&nbsp;<a href="javascript:void(0)" id="UsernameLink"></a></span></span> </div> <div id="FloaterProgressBar"> <div id="ProgressFill"> Translating... </div> </div> </div> <div id="WidgetFloaterCollapsed" style="display: none" onmouseover="Microsoft.Translator.OnMouseOverFloater()"> <span id="WidgetFloaterCollapsedSpan">Bing Translator</span> <span id="WidgetCloseButtonCollapsed" title="Exit Translation" onclick="Microsoft.Translator.FloaterOnClose()"><img src="Lab13/close_x.png" id="WidgetCloseImageCollapsed" class="WidgetCloseImage"></span></div> <div id="FloaterSharePanel" style="display: none"> <div id="ShareTextDiv"> <span id="ShareTextSpan"> COPY THE URL BELOW </span> </div> <div id="ShareTextboxDiv"> <input name="ShareTextbox" type="text" id="ShareTextbox" readonly="readonly" onclick="this.select()"> <!--a id="TwitterLink" title="Share on Twitter"> <img id="TwitterImg" src="http://www.microsofttranslator.com/static/214860/img/twitter_icon.png" /></a> <a-- id="FacebookLink" title="Share on Facebook"> <img id="FacebookImg" src="http://www.microsofttranslator.com/static/214860/img/facebook_icon.png" /></a--> <a id="EmailLink" title="Email this translation"> <img id="EmailImg" src="Lab13/email_icon.png"></a> </div>
+  <div id="ShareFooter"> <span id="ShareHelpSpan"><a id="ShareHelpLink"> <img id="ShareHelpImg" src="Lab13/embed_question.png"></a></span> <span id="ShareBackSpan"><a id="ShareBack" href="javascript:Microsoft.Translator.FloaterOnShareBackClick()" title="Back To Translation"> Back</a></span> </div> <input name="EmailSubject" type="hidden" id="EmailSubject" value="Check out this page in {0} translated from {1}"> <input name="EmailBody" type="hidden" id="EmailBody" value="Translated: {0}%0d%0aOriginal: {1}%0d%0a%0d%0aAutomatic translation powered by Microsoft® Translator%0d%0ahttp://www.bing.com/translator?ref=MSTWidget"> <input type="hidden" id="ShareHelpText" value="This link allows visitors to launch this page and automatically translate it to {0}.">
+  </div>
+  <div id="FloaterEmbed" style="display: none">
+      <div id="EmbedTextDiv"> <span id="EmbedTextSpan">EMBED THE SNIPPET BELOW IN YOUR SITE</span> <a id="EmbedHelpLink" title="Copy this code and place it into your HTML."> <img id="EmbedHelpImg" src="Lab13/embed_question.png"></a>
+      </div>
+      <div id="EmbedTextboxDiv"> <input name="EmbedSnippetTextBox" type="text" id="EmbedSnippetTextBox" readonly="readonly" value="&lt;div id=&#39;MicrosoftTranslatorWidget&#39; class=&#39;Dark&#39; style=&#39;color:white;background-color:#555555&#39;&gt;&lt;/div&gt;&lt;script type=&#39;text/javascript&#39;&gt;setTimeout(function(){var s=document.createElement(&#39;script&#39;);s.type=&#39;text/javascript&#39;;s.charset=&#39;UTF-8&#39;;s.src=((location &amp;&amp; location.href &amp;&amp; location.href.indexOf(&#39;https&#39;) == 0)?&#39;https://ssl.microsofttranslator.com&#39;:&#39;http://www.microsofttranslator.com&#39;)+&#39;/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&amp;ctf=true&amp;ui=true&amp;settings=manual&amp;from=en&#39;;var p=document.getElementsByTagName(&#39;head&#39;)[0]||document.documentElement;p.insertBefore(s,p.firstChild); },0);&lt;/script&gt;" onclick=" this.select() ">
+      </div>
+      <div id="EmbedNoticeDiv"><span id="EmbedNoticeSpan">Enable collaborative features and customize widget: <a href="http://www.bing.com/widget/translator" target="_blank">Bing Webmaster Portal</a></span></div>
+      <div id="EmbedFooterDiv"><span id="EmbedBackSpan"><a href="javascript:Microsoft.Translator.FloaterOnEmbedBackClick()" title="Back To Translation">Back</a></span></div>
+  </div> <script type="text/javascript">
+             var intervalId = setInterval(function() {
+                 if (MtPopUpList) {
+                     LanguageMenu = new MtPopUpList();
+                     var langMenu = document.getElementById(LanguageMenu_popupid);
+                     var origLangDiv = document.createElement("div");
+                     origLangDiv.id = "OriginalLanguageDiv";
+                     origLangDiv.innerHTML = "<span id='OriginalTextSpan'>ORIGINAL: </span><span id='OriginalLanguageSpan'></span>";
+                     langMenu.appendChild(origLangDiv);
+                     LanguageMenu.Init('LanguageMenu', LanguageMenu_keys, LanguageMenu_values, LanguageMenu_callback, LanguageMenu_popupid);
+                     window["LanguageMenu"] = LanguageMenu;
+                     clearInterval(intervalId);
+                 }
+             }, 1);
+         </script>
+  </body>
+</html>

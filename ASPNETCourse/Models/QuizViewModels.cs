@@ -188,6 +188,15 @@ namespace ASPNETCourse.Models
         public int TimeLength { get; set; }
     }
 
+    public class RespondedAnswers
+    {
+        public int QuizId { get; set; }
+
+        public int QuestionId { get; set; }
+
+        public List<AnswerToAnswer> Answers { get; set; }
+    }
+
     public class AnswerToAnswer
     {
         public int AnswerId { get; set; }

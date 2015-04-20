@@ -81,7 +81,7 @@
             <h3>Lab 8. Bringing Together One ASP.NET</h3>
             <p>ASP.NET is a framework for building Web sites, apps and services using specialized technologies such as MVC, Web API and others. Visual Studio 2013 introduces a new unified project system which lets you build an application and use all the ASP.NET technologies in one project. This feature eliminates the need to pick one technology at the start of a project and stick with it, and instead encourages the use of multiple ASP.NET frameworks within one project. This Hands On Lab shows how to add ASP.NET MVC and Web API controllers to an ASP.NET Web Forms application and share common model objects between them.</p>
             <ul class="links">
-                <li>@Html.ActionLink("Lab Manual", "Lab9", "Labs")</li>
+                <li>@Html.ActionLink("Lab Manual", "Lab8", "Labs")</li>
                 <li><a href="\Labs\BringingTogetherOneAspNet\Source.zip">Lab Files</a></li>
             </ul>
         </li>        
@@ -90,7 +90,7 @@
             <h3>Lab 9/10. ASP.NET Web API and Single-Page Applications (SPAs)</h3>
             <p>In Single-Page Applications (SPAs) the entire page is loaded in the browser after the initial request, but subsequent interactions take place through Ajax requests. This means that the browser has to update only the portion of the page that has changed; there is no need to reload the entire page. The SPA approach reduces the time taken by the application to respond to user actions, resulting in a more fluid experience. The architecture of a SPA involves certain challenges that are not present in traditional web applications. However, emerging technologies like ASP.NET Web API, JavaScript frameworks like AngularJS and new styling features provided by CSS3 make it really easy to design and build SPAs. In this hand-on lab, you will take advantage of those technologies to implement Geek Quiz, a trivia website based on the SPA concept. You will first implement the service layer with ASP.NET Web API to expose the required endpoints to retrieve the quiz questions and store the answers. Then, you will a build rich and responsive UI using AngularJS and CSS3 transformation effects.</p>
             <ul class="links">
-                <li>@Html.ActionLink("Lab Manual", "Lab10_11", "Labs")</li>
+                <li>@Html.ActionLink("Lab Manual", "Lab9_10", "Labs")</li>
                 <li><a href="\Labs\AspNetWebApiSpa\Source.zip">Lab Files</a></li>
             </ul>
         </li>
@@ -99,7 +99,7 @@
             <h3>Lab 11. Real-Time Web Applications with ASP.NET SignalR</h3>
             <p>Real-time Web applications feature the ability to push server-side content to the connected clients as it happens, in real-time. For ASP.NET developers, ASP.NET SignalR is a library to add real-time web functionality to their applications. It takes advantage of several transports, automatically selecting the best available transport given the client and server's best available transport. It takes advantage of WebSocket, an HTML5 API that enables bi-directional communication between the browser and server. SignalR also provides a simple, high-level API for doing server to client RPC (call JavaScript functions in your clients' browsers from server-side .NET code) in your ASP.NET application, as well as adding useful hooks for connection management, such as connect/disconnect events, grouping connections, and authorization. In this hands-on lab, you will learn how to: send notifications from server to client using SignalR, then scale Out your SignalR application using SQL Server.</p>
             <ul class="links">
-                <li>@Html.ActionLink("Lab Manual", "Lab12", "Labs")</li>
+                <li>@Html.ActionLink("Lab Manual", "Lab11", "Labs")</li>
                 <li><a href="\Labs\RealTimeSignalR\Source.zip">Lab Files</a></li>
             </ul>
         </li>
@@ -108,99 +108,73 @@
             <h3>Lab 12. Visual Studio 2013 Web Tools</h3>
             <p>Visual Studio is an excellent development environment for .NET-based Windows and web projects. It includes powerful editors for HTML, CSS and JavaScript that can easily be used to edit standalone files without a project. All of this power is also available for extensions, making it simple to extend the editors with powerful new features to suit your needs. Web Essentials is a collection of web-related enhancements to Visual Studio. It includes lots of new IntelliSense completions, new Browser Link features, automatic JSHint for JavaScript files, new warnings for HTML and CSS, and many other features that are essential to modern web development. In this hands-on lab, you will learn how to use some of these advanced editor features to take advantage of HTML5 code snippets, Zen coding, the CSS color picker and Browser matrix tooltip, JavaScript features like Extract to File and IntelliSense for all HTML elements. You'll also learn how to exchange data between your browser and Visual Studio using Browser Link.</p>
             <ul class="links">
-                <li>@Html.ActionLink("Lab Manual", "Lab13", "Labs")</li>
+                <li>@Html.ActionLink("Lab Manual", "Lab12", "Labs")</li>
                 <li><a href="\Labs\VSWebTooling\Source.zip">Lab Files</a></li>
             </ul>
         </li>
         <li class="list-group-item">
+            <a name="Lab131"></a>
+            <h3>Lab 13.1. Introduction to Entity Farmework</h3>
+            <p>Getting Started with Entity Framework 6 Code First using MVC 5</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab131", "Labs")</li>
+                <li><a href="\Labs\HoLLab131\Lab13Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="Lab132"></a>
+            <h3>Lab 13.2. Introduction to Entity Farmework. Part 2</h3>
+            <p>Implementing Basic CRUD Functionality with the Entity Framework in ASP.NET MVC Application</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab132", "Labs")</li>
+                @*<li><a href="\Labs\VSWebTooling\Source.zip">Lab Files</a></li>*@
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="Lab141"></a>
+            <h3>Lab 14.1. Work with Related Data in Entity Farmework</h3>
+            <p>Reading Related Data with the Entity Framework in an ASP.NET MVC Application</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab141", "Labs")</li>
+                <li><a href="\Labs\HoLLab141\Lab14Source.zip">Lab Files</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <a name="Lab142"></a>
+            <h3>Lab 14.2. Work with Related Data in Entity Farmework. Part 2</h3>
+            <p>Updating Related Data with the Entity Framework in an ASP.NET MVC Application</p>
+            <ul class="links">
+                <li>@Html.ActionLink("Lab Manual", "Lab142", "Labs")</li>
+            </ul>
+        </li>
+        <li class="list-group-item">
             <a name="WebSitesInProduction"></a>
-            <h3>Lab 13/14. ASP.NET Web Sites in Production</h3>
+            <h3>Lab 15. ASP.NET Web Sites in Production</h3>
             <p>This hands-on-lab takes a look at some of the tough, real-world scenarios you'll face after your site is deployed to production. How do you handle challenges such as scaling (both up and down), managing changes to your database over time, and problems with code you've just deployed? This lab shows how to take advantages of some of the best hidden features of Windows Azure, ASP.NET and Visual Studio to keep rolling once your site is live.</p>
             <ul class="links">
-                <li>@Html.ActionLink("Lab Manual", "Lab14_15", "Labs")</li>
+                <li>@Html.ActionLink("Lab Manual", "Lab15", "Labs")</li>
                 <li><a href="\Labs\WebSitesInProduction\Source.zip">Lab Files</a></li>
             </ul>
         </li>
         <li class="list-group-item">
-            <a name="OfficeApps"></a>
-            <h3>Lab 15. Creating business web apps, using LightSwitch</h3>
-            <p>
-                In this Hand-on-Lab, we will be tasked with producing an application that meets the following requirements for a order tracking system:
-                <ul>
-                    <li>
-                        Products
-                        <ul>
-                            <li>
-                                Add Products
-                            </li>
-                            <li>
-                                Edit Products
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        Orders
-                        <ul>
-                            <li>
-                                Add Orders
-                            </li>
-                            <li>
-                                Edit Orders
-                                <ul>
-                                    <li>
-                                        Add Order Details
-                                    </li>
-                                    <li>
-                                        Edit Order Details
-                                    </li>
-                                    <li>
-                                        Delete Order Details
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                Delete Orders
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        Business Rules
-                        <ul>
-                            <li>
-                                Allow the current user to only see their orders
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        Features
-                        <ul>
-                            <li>
-                                Display the number of orders for a User
-                            </li>
-                            <li>
-                                Display the number of order details for an order
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </p>
+            <a name="WebSitesInProduction"></a>
+            <h3>Lab 16. An End-To-End Visual Studio LightSwitch 2013 HTML5 Application</h3>
+            <p>In this Hand-on-Lab, we will be tasked with producing an application using LightSwitch</p>
             <ul class="links">
-                <li>@Html.ActionLink("Lab Manual", "Lab8", "Labs")</li>
+                <li>@Html.ActionLink("Lab Manual", "Lab16", "Labs")</li>
+                @*<li><a href="\Labs\WebSitesInProduction\Source.zip">Lab Files</a></li>*@
             </ul>
         </li>
+        
         <li class="list-group-item">
             <a name="Optional HoLs"></a>
             <h3>Optional (but recommended) Hand-on-Labs</h3>
             <p>One of the very important parts of your project is data. In ASP.NET in general and in MVC 5 particularly, data managed by Entity Framework (EF). To better understand, how to work with EF, we recommend you to do a list of labs below </p>
             <ol class="links">
-                <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application" target="_blank">Getting Started with Entity Framework 6 Code First using MVC 5</a></li>
-                <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/implementing-basic-crud-functionality-with-the-entity-framework-in-asp-net-mvc-application" target="_blank">Implementing Basic CRUD Functionality</a> </li>
                 <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application">Sorting, Filtering, and Paging</a></li>
                 <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/connection-resiliency-and-command-interception-with-the-entity-framework-in-an-asp-net-mvc-application" target="_blank">Connection Resiliency and Command Interception</a></li>
                 <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/migrations-and-deployment-with-the-entity-framework-in-an-asp-net-mvc-application" target="_blank">Code First Migrations and Deployment</a></li>
                 <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-a-more-complex-data-model-for-an-asp-net-mvc-application" target="_blank">Creating a More Complex Data Model for an ASP.NET MVC Application</a></li>
-                <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/reading-related-data-with-the-entity-framework-in-an-asp-net-mvc-application" target="_blank">Reading Related Data</a></li>
-                <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/updating-related-data-with-the-entity-framework-in-an-asp-net-mvc-application" target="_blank">Updating Related Data</a></li>
                 <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/async-and-stored-procedures-with-the-entity-framework-in-an-asp-net-mvc-application" target="_blank">Async and Stored Procedures</a></li>
                 <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/handling-concurrency-with-the-entity-framework-in-an-asp-net-mvc-application" target="_blank">Handling Concurrency</a></li>
                 <li><a href="http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/implementing-inheritance-with-the-entity-framework-in-an-asp-net-mvc-application" target="_blank">Implementing Inheritance</a></li>

@@ -1,0 +1,919 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0159)http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/updating-related-data-with-the-entity-framework-in-an-asp-net-mvc-application -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link href="http://www.microsofttranslator.com/static/214860/css/WidgetV3.css?v=214860" rel="stylesheet"><script type="text/javascript" async="" src="./Images/ados"></script><script id="twitter-wjs" src="./Images/widgets.js"></script><script id="facebook-jssdk" src="./Images/all.js"></script><script type="text/javascript" async="" src="./Images/ados.js"></script><script async="" src="./Images/analytics.js"></script><script type="text/javascript" charset="UTF-8" src="./Images/WidgetV3.ashx"></script>
+    <title>Updating Related Data with the Entity Framework in an ASP.NET MVC Application | The ASP.NET Site</title>
+     
+  <link href="./Images/articles.min.css" rel="stylesheet" type="text/css" media="all">
+
+    <!--[if lte IE 7]>
+      <link href='//i1.asp.net/umbraco-beta-css/lteIE7.min.css?cdn_id=2015-04-01-001' rel="stylesheet" type="text/css" media="screen" />
+    <![endif]-->
+	<!--[if lte IE 9]>
+      <script src='//i1.asp.net/umbraco-beta-scripts/html5.js?cdn_id=2015-04-01-001' type="text/javascript"></script>
+    <![endif]-->
+    <link href="http://i2.asp.net/images/content/favicon.ico?cdn_id=2015-04-01-001" rel="shortcut icon">
+	<link rel="alternate" type="application/rss+xml" title="Latest ASP.NET Content" href="http://www.asp.net/rss/content">
+	  
+	<!-- Anti-Clickjacking script -->
+	
+	
+  <body class="" data-twttr-rendered="true"><div id="MicrosoftTranslatorCommunity" class="MSTCltr" style="display: none;"><div id="MSTCContent" translate="no"><a id="MSTCExpandLink" href="javascript:void(0)"><span id="MSTCImprove">Improve translation</span></a><div id="MSTCRootPanel"><span id="MSTCLoading">Loading...</span><div id="MSTCTransPanelError" style="display: none;"><div class="MSTCTableRow"><div class="MSTCTransPanelExc MSTCTableCell"><img id="ExclamationImage" src="Images/error_exclamation.gif" style="border-width:0px;"></div><div class="MSTCTableCell"><span id="MSTCTransPanelErrorMsg"></span></div></div><div class="MSTCTableRow"><div class="MSTCTableCell"></div><div class="MSTCTableCell MSTCFlipHoriz"><a href="http://go.microsoft.com/?linkid=9713560" target="_blank"><img id="MSTCHelpImgBtn" class="MSTCErrorButtons" src="Images/error_help.gif" style="border-width:0px;"></a><input type="image" name="MSTCOKImgBtn" id="MSTCOKImgBtn" class="MSTCErrorButtons" src="./Images/error_OK.gif" style="border-width:0px;"></div></div></div><div id="MSTCTransPanel"></div><div id="MSTCPrevNextPanel" style="display: none;"><a id="MSTCPrevLink" href="javascript:void(0)"><span>Previous</span><span id="MSTCPrevCount">(0)</span></a><a id="MSTCNextLink" href="javascript:void(0)"><span>Next</span><span id="MSTCNextCount">(0)</span></a></div><div id="MSTCFooterPanel"><span id="MSTCLegalHelpBox"><a id="MSTCLegalLink" href="http://aka.ms/translatortou" target="_blank">Legal</a><span class="MSTCSpacer"></span><a id="MSTCHelpLink" href="http://go.microsoft.com/?linkid=9722454" target="_blank">Help</a></span></div></div><div id="MSTCHidden" style="display: none;"><span id="MSTCAppIdToken">X-wCX2bT7C_jTKpjkVR2IzQ9GQO4BOatPPZPyrLvECN5Fmsg4hNBETJCgfOuBcyuAwuYCedq-cHnZy9KYSBr1sRzNv5zTq-nhUZc7hC3b8dCcN8Xy_8-mL3SFFVw28e3Cpl0aNr_FdH9dOVbG0ggitQ**</span><span id="MSTCMaxRating">1</span><span id="MSTCImagePath">http://www.microsofttranslator.com/static/214860/img/</span><span id="MSTCAuthLang"></span><a id="MSTCDashboardUrl"></a><span id="MSTCSubmitting">Submitting...</span><span id="MSTCApprove">Approve</span><span id="MSTCApproveTooltip">Approve this as the default translation</span><span id="MSTCReject">Reject</span><span id="MSTCRejectTooltip">Hide this translation from other users</span><span id="MSTCRestore">Restore</span><span id="MSTCRestoreTooltip">Show this translation to other users</span><span id="MSTCUserID"></span><div id="MSTCButtonPanel"><a title="Edit this translation" class="MSTCBlueButton MSTCEditButton"><span class="MSTCButtonIcon"><img class="MSTCButtonImg" src="Images/ctfedit.gif" style="border-width:0px;"></span><span class="MSTCButtonLabel">Edit</span></a><a title="Suggest this as a better translation" class="MSTCBlueButton MSTCSelectButton"><span class="MSTCButtonIcon"><span class="MSTCVoteCountSelect"></span><img class="MSTCButtonImg" src="Images/ctfselect.gif" style="border-width:0px;margin: 0;"></span><span class="MSTCButtonLabel">Select</span></a><a title="Report this translation as offensive" class="MSTCRedButton MSTCReportButton"><span class="MSTCButtonIcon"><img class="MSTCButtonImg" src="Images/ctfreport.gif" style="border-width:0px;margin-top: 5px;"></span><span class="MSTCButtonLabel">Report</span></a><a title="Suggest this as a better translation" class="MSTCBlueButton MSTCSubmitButton" style="display: none;"><span class="MSTCButtonIcon"><img class="MSTCButtonImg" src="Images/ctfselect.gif" style="border-width:0px;margin: 0"></span><span class="MSTCButtonLabel">Submit</span></a><a title="Cancel" class="MSTCRedButton MSTCCancelButton" style="display: none;"><span class="MSTCButtonIcon"><img class="MSTCButtonImg" src="Images/ctfreport.gif" style="border-width:0px;margin-top: 7px;"></span><span class="MSTCButtonLabel">Cancel</span></a></div></div></div></div>
+    
+      <div class="allcontent ">
+
+          <div class="content article-page article-content">
+              <div class="col-right-learn">
+                  <span>
+                      <div class="article-title keyline">
+                          <h1><div itemprop="name">Updating Related Data with the Entity Framework in an ASP.NET MVC Application</div></h1><div class="details">
+                              <div class="author-header">
+                                  <a href="http://download.microsoft.com/download/0/F/B/0FBFAA46-2BFD-478F-8E56-7BF3C672DF9D/Getting%20Started%20with%20Entity%20Framework%206%20Code%20First%20using%20MVC%205.pdf">Download PDF</a></p>
+                              </div><div class="important important-box-article">
+                                  <p>
+                                      The Contoso University sample web application demonstrates how to create
+                                      ASP.NET MVC 5 applications using the Entity Framework 6 Code First and Visual Studio
+                                      2013. For information about the tutorial series, see
+                                      <a href="http://www.asp.net/mvc/tutorials/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application">the first tutorial in the series</a>.
+                                  </p>
+                              </div><p>
+                                  In the previous tutorial you displayed related data; in this tutorial you'll update related data. For most relationships, this can be done by updating
+                                  either foreign key fields or navigation properties. For many-to-many relationships, the Entity Framework doesn't expose the join table directly, so you add and remove entities to and from the appropriate navigation properties.
+                              </p>
+                              <p>The following illustrations show some of the pages that you'll work with.</p>
+                              <p>
+                                  <img src="Images/CreateCourse.png" data-original="//i2.asp.net/media/4482080/CreateCourse.png?cdn_id=2015-04-01-001" alt="Course_create_page" border="0" style="display: inline;">
+                              </p>
+                              <p>
+                                  <img src="Images/CoursesEdit.png" data-original="//i1.asp.net/media/4482074/CoursesEdit.png?cdn_id=2015-04-01-001" alt="Instructor_edit_page_with_courses" border="0" style="display: inline;">
+                              </p>
+                              <p>
+                                  <img alt="Instructor edit with courses" src="Images/InstructorEditWithCourses.png" data-original="//i3.asp.net/media/4482062/InstructorEditWithCourses.png?cdn_id=2015-04-01-001" style="display: inline;">
+                              </p>
+                              <h2>Customize the Create and Edit Pages for Courses</h2>
+                              <p>When a new course entity is created, it must have a relationship to an existing department. To facilitate this, the scaffolded code includes controller methods and Create and Edit views that include a drop-down list for selecting the department. The drop-down list sets the <code>Course.DepartmentID</code> foreign key property, and that's all the Entity Framework needs in order to load the <code>Department</code> navigation property with the appropriate <code>Department</code> entity. You'll use the scaffolded code, but change it slightly to add error handling and sort the drop-down list.</p>
+                              <p>In <em>CourseController.cs</em>, delete the four <code>Create</code> and <code>Edit</code> methods and replace them with the following code:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Create</span><span class="pun">()</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><mark><span class="typ">PopulateDepartmentsDropDownList</span><span class="pun">();</span></mark><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">HttpPost</span><span class="pun">]</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">ValidateAntiForgeryToken</span><span class="pun">]</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Create</span><span class="pun">([</span><span class="typ">Bind</span><span class="pun">(</span><span class="typ">Include</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="str">"CourseID,Title,Credits,DepartmentID"</span><span class="pun">)]</span><span class="typ">Course</span><span class="pln"> course</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><mark><span class="kwd">try</span><span class="pln">
+    </span><span class="pun">{</span></mark><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">ModelState</span><span class="pun">.</span><span class="typ">IsValid</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            db</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span><span class="pln">
+            db</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">RedirectToAction</span><span class="pun">(</span><span class="str">"Index"</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><mark><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">RetryLimitExceededException</span><span class="pln"> </span><span class="com">/* dex */</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">//Log the error (uncomment dex variable name and add a line here to write a log.)</span><span class="pln">
+        </span><span class="typ">ModelState</span><span class="pun">.</span><span class="typ">AddModelError</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Unable to save changes. Try again, and if the problem persists, see your system administrator."</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">PopulateDepartmentsDropDownList</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">DepartmentID</span><span class="pun">);</span></mark><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Edit</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">?</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HttpStatusCodeResult</span><span class="pun">(</span><span class="typ">HttpStatusCode</span><span class="pun">.</span><span class="typ">BadRequest</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">Course</span><span class="pln"> course </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Find</span><span class="pun">(</span><span class="pln">id</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">course </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">HttpNotFound</span><span class="pun">();</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><mark><span class="typ">PopulateDepartmentsDropDownList</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">DepartmentID</span><span class="pun">);</span></mark><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">HttpPost</span><mark><span class="pun">,</span><span class="pln"> </span><span class="typ">ActionName</span><span class="pun">(</span><span class="str">"Edit"</span><span class="pun">)</span></mark><span class="pun">]</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">ValidateAntiForgeryToken</span><span class="pun">]</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Edit</span><mark><span class="typ">Post</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">?</span><span class="pln"> id</span><span class="pun">)</span></mark><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><mark><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HttpStatusCodeResult</span><span class="pun">(</span><span class="typ">HttpStatusCode</span><span class="pun">.</span><span class="typ">BadRequest</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> courseToUpdate </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Find</span><span class="pun">(</span><span class="pln">id</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">TryUpdateModel</span><span class="pun">(</span><span class="pln">courseToUpdate</span><span class="pun">,</span><span class="pln"> </span><span class="str">""</span><span class="pun">,</span><span class="pln">
+       </span><span class="kwd">new</span><span class="pln"> </span><span class="kwd">string</span><span class="pun">[]</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="str">"Title"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Credits"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"DepartmentID"</span><span class="pln"> </span><span class="pun">}))</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">try</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            db</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">RedirectToAction</span><span class="pun">(</span><span class="str">"Index"</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">RetryLimitExceededException</span><span class="pln"> </span><span class="com">/* dex */</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="com">//Log the error (uncomment dex variable name and add a line here to write a log.</span><span class="pln">
+            </span><span class="typ">ModelState</span><span class="pun">.</span><span class="typ">AddModelError</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Unable to save changes. Try again, and if the problem persists, see your system administrator."</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">PopulateDepartmentsDropDownList</span><span class="pun">(</span><span class="pln">courseToUpdate</span><span class="pun">.</span><span class="typ">DepartmentID</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">courseToUpdate</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><span class="kwd">private</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> </span><span class="typ">PopulateDepartmentsDropDownList</span><span class="pun">(</span><span class="kwd">object</span><span class="pln"> selectedDepartment </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> departmentsQuery </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">from</span><span class="pln"> d </span><span class="kwd">in</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Departments</span><span class="pln">
+                           </span><span class="kwd">orderby</span><span class="pln"> d</span><span class="pun">.</span><span class="typ">Name</span><span class="pln">
+                           </span><span class="kwd">select</span><span class="pln"> d</span><span class="pun">;</span><span class="pln">
+    </span><span class="typ">ViewBag</span><span class="pun">.</span><span class="typ">DepartmentID</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">SelectList</span><span class="pun">(</span><span class="pln">departmentsQuery</span><span class="pun">,</span><span class="pln"> </span><span class="str">"DepartmentID"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Name"</span><span class="pun">,</span><span class="pln"> selectedDepartment</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln"> </span></mark></pre>
+                              <p>Add the following <code>using</code> statement at the beginning of the file:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">using</span><span class="pln"> </span><span class="typ">System</span><span class="pun">.</span><span class="typ">Data</span><span class="pun">.</span><span class="typ">Entity</span><span class="pun">.</span><span class="typ">Infrastructure</span><span class="pun">;</span></pre>
+                              <p>
+                                  The <code>PopulateDepartmentsDropDownList</code> method gets a list of all departments sorted by name, creates a <code>SelectList</code> collection for a drop-down list, and passes the collection to the view in a <code>ViewBag</code> property. The method accepts
+                                  the optional <code>selectedDepartment</code> parameter that allows the calling
+                                  code to specify the item that will be selected when the drop-down list is rendered.
+                                  The view will pass the name <code>DepartmentID</code> to
+                                  the <a href="http://www.asp.net/mvc/tutorials/javascript/working-with-the-dropdownlist-box-and-jquery/using-the-dropdownlist-helper-with-aspnet-mvc">DropDownList</a> helper, and the helper then knows to look in
+                                  the <code>ViewBag</code> object for a
+                                  <code>SelectList</code> named <code>DepartmentID</code>.
+                              </p>
+                              <p>The <code>HttpGet</code> <code>Create</code> method calls the <code>PopulateDepartmentsDropDownList</code> method without setting the selected item, because for a new course the department is not established yet:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Create</span><span class="pun">()</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="typ">PopulateDepartmentsDropDownList</span><span class="pun">();</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>The <code>HttpGet</code> <code>Edit</code> method sets the selected item, based on the ID of the department that is already assigned to the course being edited:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Edit</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">?</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HttpStatusCodeResult</span><span class="pun">(</span><span class="typ">HttpStatusCode</span><span class="pun">.</span><span class="typ">BadRequest</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">Course</span><span class="pln"> course </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Find</span><span class="pun">(</span><span class="pln">id</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">course </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">HttpNotFound</span><span class="pun">();</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">PopulateDepartmentsDropDownList</span><span class="pun">(</span><mark><span class="pln">course</span><span class="pun">.</span><span class="typ">DepartmentID</span></mark><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>The <code>HttpPost</code> methods for both <code>Create</code> and <code>Edit</code> also include code that sets the selected item when they redisplay the page after an error:</p>
+<pre class="prettyprint prettyprinted"><span class="pln">   </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">RetryLimitExceededException</span><span class="pln"> </span><span class="com">/* dex */</span><span class="pun">)</span><span class="pln">
+   </span><span class="pun">{</span><span class="pln">
+      </span><span class="com">//Log the error (uncomment dex variable name and add a line here to write a log.)</span><span class="pln">
+      </span><span class="typ">ModelState</span><span class="pun">.</span><span class="typ">AddModelError</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Unable to save changes. Try again, and if the problem persists, see your system administrator."</span><span class="pun">);</span><span class="pln">
+   </span><span class="pun">}</span><span class="pln">
+   </span><mark><span class="typ">PopulateDepartmentsDropDownList</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">DepartmentID</span><span class="pun">);</span></mark><span class="pln">
+   </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span></pre>
+                              <p>This code ensures that when the page is redisplayed to show the error message, whatever department was selected stays selected.</p>
+                              <p>
+                                  The Course views are already scaffolded with drop-down lists for the department
+                                  field, but you don't want the DepartmentID caption for this field, so make the following highlighted change to the <em>Views\Course\Create.cshtml</em>
+                                  file to change the caption.
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="pln">@model ContosoUniversity.Models.Course
+@{
+    ViewBag.Title = "Create";
+}
+</span><span class="tag">&lt;h2&gt;</span><span class="pln">Create</span><span class="tag">&lt;/h2&gt;</span><span class="pln">
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-horizontal"</span><span class="tag">&gt;</span><span class="pln">
+        </span><span class="tag">&lt;h4&gt;</span><span class="pln">Course</span><span class="tag">&lt;/h4&gt;</span><span class="pln">
+        </span><span class="tag">&lt;hr</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+        @Html.ValidationSummary(true)
+        </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+            @Html.LabelFor(model =&gt; model.CourseID, new { @class = "control-label col-md-2" })
+            </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+                @Html.EditorFor(model =&gt; model.CourseID)
+                @Html.ValidationMessageFor(model =&gt; model.CourseID)
+            </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+            @Html.LabelFor(model =&gt; model.Title, new { @class = "control-label col-md-2" })
+            </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+                @Html.EditorFor(model =&gt; model.Title)
+                @Html.ValidationMessageFor(model =&gt; model.Title)
+            </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+            @Html.LabelFor(model =&gt; model.Credits, new { @class = "control-label col-md-2" })
+            </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+                @Html.EditorFor(model =&gt; model.Credits)
+                @Html.ValidationMessageFor(model =&gt; model.Credits)
+            </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+            </span><mark><span class="tag">&lt;label</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"control-label col-md-2"</span><span class="pln"> </span><span class="atn">for</span><span class="pun">=</span><span class="atv">"DepartmentID"</span><span class="tag">&gt;</span><span class="pln">Department</span><span class="tag">&lt;/label&gt;</span></mark><span class="pln">
+            </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+                @Html.DropDownList("DepartmentID", String.Empty)
+                @Html.ValidationMessageFor(model =&gt; model.DepartmentID)
+            </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+            </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-offset-2 col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+                </span><span class="tag">&lt;input</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"submit"</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"Create"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"btn btn-default"</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+}
+</span><span class="tag">&lt;div&gt;</span><span class="pln">
+    @Html.ActionLink("Back to List", "Index")
+</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}</span></pre>
+                              <p>Make the same change in <em>Views\Course\Edit.cshtml</em>.</p>
+                              <p>
+                                  Normally the scaffolder doesn't scaffold a primary key
+                                  because the key value is generated by the database and can't be changed and
+                                  isn't a meaningful value to be displayed to users. For Course entities the scaffolder
+                                  does include an text box for the <code>CourseID</code> field because
+                                  it understands that the <code>
+                                      DatabaseGeneratedOption.None
+                                  </code> attribute means the user should be able
+                                  enter the primary key value. But it doesn't understand that because the number
+                                  is meaningful you want to see it in the other views, so you need to add it
+                                  manually.
+                              </p>
+                              <p>
+                                  In <em>Views\Course\Edit.cshtml</em>, add a
+                                  course number field before the <strong>Title</strong> field. Because it's the primary key, it's displayed, but it can't be changed.
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+    @Html.LabelFor(model =&gt; model.CourseID, new { @class = "control-label col-md-2" })
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+        @Html.DisplayFor(model =&gt; model.CourseID)
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
+                              <p>
+                                  There's already a hidden field (<code>Html.HiddenFor</code> helper) for the
+                                  course number in the Edit view. Adding an <em>Html.LabelFor</em> helper doesn't
+                                  eliminate the need for the hidden field because it doesn't cause the course
+                                  number to be included in the posted data when the user clicks <strong>Save</strong>
+                                  on the Edit page.
+                              </p>
+                              <p>
+                                  In <em>Views\Course\Delete.cshtml</em> and <em>Views\Course\Details.cshtml</em>,
+                                  change the department name caption from "Name" to "Department" and add a
+                                  course number field before the <strong>Title</strong> field.
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;dt&gt;</span><span class="pln">
+    </span><mark><span class="pln">Department</span></mark><span class="pln">
+</span><span class="tag">&lt;/dt&gt;</span><span class="pln">
+</span><span class="tag">&lt;dd&gt;</span><span class="pln">
+    @Html.DisplayFor(model =&gt; model.Department.Name)
+</span><span class="tag">&lt;/dd&gt;</span><span class="pln">
+</span><mark><span class="tag">&lt;dt&gt;</span><span class="pln">
+    @Html.DisplayNameFor(model =&gt; model.CourseID)
+</span><span class="tag">&lt;/dt&gt;</span><span class="pln">
+</span><span class="tag">&lt;dd&gt;</span><span class="pln">
+    @Html.DisplayFor(model =&gt; model.CourseID)
+</span><span class="tag">&lt;/dd&gt;</span></mark></pre>
+                              <p>Run the <strong>Create</strong> page (display the Course Index page and click <strong>Create New</strong>) and enter data for a new course:</p>
+                              <p>
+                                  <img src="Images/CreateCourse.png"  alt="Course_create_page" border="0">
+                              </p>
+                              <p>Click <strong>Create</strong>. The Course Index page is displayed with the new course added to the list. The department name in the Index page list comes from the navigation property, showing that the relationship was established correctly.</p>
+                              <p>
+                                  <img src="Images/NewCourseInIndex.png" alt="Course_Index_page_showing_new_course" border="0">
+                              </p>
+                              <p>Run the <strong>Edit</strong> page (display the Course Index page and click <strong>Edit</strong> on a course).</p>
+                              <p>
+                                  <img src="Images/CoursesEdit.png" alt="Course_edit_page" border="0">
+                              </p>
+                              <p>Change data on the page and click <strong>Save</strong>. The Course Index page is displayed with the updated course data.</p>
+                              <h2>Adding an Edit Page for Instructors</h2>
+                              <p>When you edit an instructor record, you want to be able to update the instructor's office assignment. The <code>Instructor</code> entity has a one-to-zero-or-one relationship with the <code>OfficeAssignment</code> entity, which means you must handle the following situations:</p>
+                              <ul>
+                                  <li>If the user clears the office assignment and it originally had a value, you must remove and delete the <code>OfficeAssignment</code> entity. </li>
+                                  <li>If the user enters an office assignment value and it originally was empty, you must create a new <code>OfficeAssignment</code> entity. </li>
+                                  <li>If the user changes the value of an office assignment, you must change the value in an existing <code>OfficeAssignment</code> entity. </li>
+                              </ul>
+                              <p>Open <em>InstructorController.cs</em> and look at the <code>HttpGet</code> <code>Edit</code> method:</p>
+<pre class="prettyprint prettyprinted"><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HttpStatusCodeResult</span><span class="pun">(</span><span class="typ">HttpStatusCode</span><span class="pun">.</span><span class="typ">BadRequest</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">Instructor</span><span class="pln"> instructor </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Instructors</span><span class="pun">.</span><span class="typ">Find</span><span class="pun">(</span><span class="pln">id</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">instructor </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">HttpNotFound</span><span class="pun">();</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">ViewBag</span><span class="pun">.</span><span class="pln">ID </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">SelectList</span><span class="pun">(</span><span class="pln">db</span><span class="pun">.</span><span class="typ">OfficeAssignments</span><span class="pun">,</span><span class="pln"> </span><span class="str">"InstructorID"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Location"</span><span class="pun">,</span><span class="pln"> instructor</span><span class="pun">.</span><span class="pln">ID</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>The scaffolded code here isn't what you want. It's setting up data for a drop-down list, but you what you need is a text box. Replace this method with the following code:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Edit</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">?</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HttpStatusCodeResult</span><span class="pun">(</span><span class="typ">HttpStatusCode</span><span class="pun">.</span><span class="typ">BadRequest</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><mark><span class="typ">Instructor</span><span class="pln"> instructor </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Instructors</span><span class="pln">
+        </span><span class="pun">.</span><span class="typ">Include</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">.</span><span class="typ">Where</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="pln">ID </span><span class="pun">==</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">.</span><span class="typ">Single</span><span class="pun">();</span></mark><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">instructor </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">HttpNotFound</span><span class="pun">();</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>
+                                  This code drops the <code>ViewBag</code> statement and adds eager loading for
+                                  the associated <code>OfficeAssignment</code>
+                                  entity. You can't perform eager loading with the <code>Find</code> method, so the <code>Where</code> and <code>Single</code> methods are used instead to select the instructor.
+                              </p>
+                              <p>Replace the <code>HttpPost</code> <code>Edit</code> method with the following code. which handles office assignment updates:</p>
+<pre class="prettyprint prettyprinted"><span class="pun">[</span><span class="typ">HttpPost</span><span class="pun">,</span><span class="pln"> </span><span class="typ">ActionName</span><span class="pun">(</span><span class="str">"Edit"</span><span class="pun">)]</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">ValidateAntiForgeryToken</span><span class="pun">]</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">EditPost</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">?</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HttpStatusCodeResult</span><span class="pun">(</span><span class="typ">HttpStatusCode</span><span class="pun">.</span><span class="typ">BadRequest</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> instructorToUpdate </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Instructors</span><span class="pln">
+       </span><span class="pun">.</span><span class="typ">Include</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pun">)</span><span class="pln">
+       </span><span class="pun">.</span><span class="typ">Where</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="pln">ID </span><span class="pun">==</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+       </span><span class="pun">.</span><span class="typ">Single</span><span class="pun">();</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">TryUpdateModel</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">,</span><span class="pln"> </span><span class="str">""</span><span class="pun">,</span><span class="pln">
+       </span><span class="kwd">new</span><span class="pln"> </span><span class="kwd">string</span><span class="pun">[]</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="str">"LastName"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"FirstMidName"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"HireDate"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"OfficeAssignment"</span><span class="pln"> </span><span class="pun">}))</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+       </span><span class="kwd">try</span><span class="pln">
+       </span><span class="pun">{</span><span class="pln">
+          </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">String</span><span class="pun">.</span><span class="typ">IsNullOrWhiteSpace</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pun">.</span><span class="typ">Location</span><span class="pun">))</span><span class="pln">
+          </span><span class="pun">{</span><span class="pln">
+             instructorToUpdate</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln">
+          </span><span class="pun">}</span><span class="pln">
+          db</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+          </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">RedirectToAction</span><span class="pun">(</span><span class="str">"Index"</span><span class="pun">);</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">RetryLimitExceededException</span><span class="pln"> </span><span class="com">/* dex */</span><span class="pun">)</span><span class="pln">
+      </span><span class="pun">{</span><span class="pln">
+         </span><span class="com">//Log the error (uncomment dex variable name and add a line here to write a log.</span><span class="pln">
+         </span><span class="typ">ModelState</span><span class="pun">.</span><span class="typ">AddModelError</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Unable to save changes. Try again, and if the problem persists, see your system administrator."</span><span class="pun">);</span><span class="pln">
+      </span><span class="pun">}</span><span class="pln">
+   </span><span class="pun">}</span><span class="pln">
+   </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>
+                                  The reference to <code>RetryLimitExceededException</code> requires a <code>
+                                      using
+                                  </code> statement; to add it, right-click <code>RetryLimitExceededException</code>,
+                                  and then click <strong>Resolve</strong> - <strong>
+                                      using
+                                      System.Data.Entity.Infrastructure
+                                  </strong>.
+                              </p>
+                              <p>
+                                  <img alt="Resolve Retry exception" src="Images/Resolve.png">
+                              </p>
+                              <p>The code does the following:</p>
+                              <ul>
+                                  <li>
+                                      <p>
+                                          Changes the method name to <code>EditPost</code> because the signature is now
+                                          the same as the <code>HttpGet</code> method (the <code>ActionName</code>
+                                          attribute specifies that the /Edit/ URL is still used).
+                                      </p>
+                                  </li>
+                                  <li>
+                                      <p>
+                                          Gets the current <code>Instructor</code> entity from the database using eager loading for the <code>OfficeAssignment</code>
+                                          navigation property. This is the same as what you did in the <code>HttpGet</code> <code>Edit</code> method.
+                                      </p>
+                                  </li>
+                                  <li>
+                                      <p>
+                                          Updates the retrieved <code>Instructor</code> entity with values from the
+                                          model binder. The
+                                          <a href="http://msdn.microsoft.com/en-us/library/dd470908(v=vs.108).aspx">
+                                              TryUpdateModel
+                                          </a> overload used enables you to <em>whitelist </em>the properties
+                                          you
+                                          want to include. This prevents over-posting, as explained in
+                                          <a href="http://www.asp.net/mvc/tutorials/getting-started-with-ef-using-mvc/implementing-basic-crud-functionality-with-the-entity-framework-in-asp-net-mvc-application">
+                                              the second tutorial
+                                          </a>.
+                                      </p>
+<pre class="prettyprint prettyprinted"><span class="pln">   </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">TryUpdateModel</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">,</span><span class="pln"> </span><span class="str">""</span><span class="pun">,</span><span class="pln">
+      </span><span class="kwd">new</span><span class="pln"> </span><span class="kwd">string</span><span class="pun">[]</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="str">"LastName"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"FirstMidName"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"HireDate"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"OfficeAssignment"</span><span class="pln"> </span><span class="pun">}))</span></pre>
+                                  </li>
+                                  <li>
+                                      <p>If the office location is blank, sets the <code>Instructor.OfficeAssignment</code> property to null so that the related row in the <code>OfficeAssignment</code> table will be deleted.</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">String</span><span class="pun">.</span><span class="typ">IsNullOrWhiteSpace</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pun">.</span><span class="typ">Location</span><span class="pun">))</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    instructorToUpdate</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                                  </li>
+                                  <li>Saves the changes to the database. </li>
+                              </ul>
+                              <p>In <em>Views\Instructor\Edit.cshtml</em>, after the <code>div</code> elements for the <strong>Hire Date</strong> field, add a new field for editing the office location:</p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+    @Html.LabelFor(model =&gt; model.OfficeAssignment.Location, new { @class = "control-label col-md-2" })
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+        @Html.EditorFor(model =&gt; model.OfficeAssignment.Location)
+        @Html.ValidationMessageFor(model =&gt; model.OfficeAssignment.Location)
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
+                              <p>Run the page (select the <strong>Instructors</strong> tab and then click <strong>Edit</strong> on an instructor). Change the <strong>Office Location</strong> and click <strong>Save</strong>. </p>
+                              <p>
+                                  <img src="Images/instructoredit.png" alt="Changing_the_office_location" border="0">
+                              </p>
+                              <h2>Adding Course Assignments to the Instructor Edit Page</h2>
+                              <p>Instructors may teach any number of courses. Now you'll enhance the Instructor Edit page by adding the ability to change course assignments using a group of check boxes, as shown in the following screen shot:</p>
+                              <p>
+                                  <img src="Images/InstructorEditWithCourses.png" alt="Instructor_edit_page_with_courses" border="0">
+                              </p>
+                              <p>
+                                  The relationship between the <code>Course</code> and <code>Instructor</code> entities is many-to-many, which means you do not have direct access to
+                                  the foreign key properties which are in the join table. Instead, you add and remove entities to and from the <code>Instructor.Courses</code> navigation property.
+                              </p>
+                              <p>
+                                  The UI that enables you to change which courses an instructor is assigned to is a group of check boxes. A check box for every course in the database is displayed, and the ones that the instructor is currently assigned to are selected. The user can select or clear check boxes to change course assignments. If the number of courses were much greater, you would
+                                  probably want to use a different method of presenting the data in the view, but you'd use the same method of manipulating navigation properties in order to create or delete relationships.
+                              </p>
+                              <p>To provide data to the view for the list of check boxes, you'll use a view model class. Create <em>AssignedCourseData.cs</em> in the <em>ViewModels</em> folder and replace the existing code with the following code:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">namespace</span><span class="pln"> </span><span class="typ">ContosoUniversity</span><span class="pun">.</span><span class="typ">ViewModels</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">AssignedCourseData</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> </span><span class="typ">CourseID</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">string</span><span class="pln"> </span><span class="typ">Title</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">bool</span><span class="pln"> </span><span class="typ">Assigned</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">;</span><span class="pln"> </span><span class="kwd">set</span><span class="pun">;</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>
+                                  In <em>InstructorController.cs</em>, replace the <code>HttpGet</code> <code>Edit</code> method
+                                  with the following code. The changes are highlighted.
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Edit</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">?</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HttpStatusCodeResult</span><span class="pun">(</span><span class="typ">HttpStatusCode</span><span class="pun">.</span><span class="typ">BadRequest</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">Instructor</span><span class="pln"> instructor </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Instructors</span><span class="pln">
+        </span><span class="pun">.</span><span class="typ">Include</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pun">)</span><span class="pln">
+        </span><mark><span class="pun">.</span><span class="typ">Include</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">)</span></mark><span class="pln">
+        </span><span class="pun">.</span><span class="typ">Where</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="pln">ID </span><span class="pun">==</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">.</span><span class="typ">Single</span><span class="pun">();</span><span class="pln">
+    </span><mark><span class="typ">PopulateAssignedCourseData</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span></mark><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">instructor </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">HttpNotFound</span><span class="pun">();</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><mark><span class="kwd">private</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> </span><span class="typ">PopulateAssignedCourseData</span><span class="pun">(</span><span class="typ">Instructor</span><span class="pln"> instructor</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> allCourses </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">;</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> instructorCourses </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HashSet</span><span class="str">&lt;int&gt;</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Select</span><span class="pun">(</span><span class="pln">c </span><span class="pun">=&gt;</span><span class="pln"> c</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">));</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> viewModel </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">AssignedCourseData</span><span class="pun">&gt;();</span><span class="pln">
+    </span><span class="kwd">foreach</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> course </span><span class="kwd">in</span><span class="pln"> allCourses</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        viewModel</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">AssignedCourseData</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="typ">CourseID</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> course</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">,</span><span class="pln">
+            </span><span class="typ">Title</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> course</span><span class="pun">.</span><span class="typ">Title</span><span class="pun">,</span><span class="pln">
+            </span><span class="typ">Assigned</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> instructorCourses</span><span class="pun">.</span><span class="typ">Contains</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">});</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">ViewBag</span><span class="pun">.</span><span class="typ">Courses</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> viewModel</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span></mark></pre>
+                              <p>
+                                  The code adds eager loading for the <code>Courses</code> navigation property
+                                  and calls the new <code>
+                                      PopulateAssignedCourseData
+                                  </code>method to provide information for the check box array using the <code>
+                                      AssignedCourseData
+                                  </code>view model class.
+                              </p>
+                              <p>
+                                  The code in the <code>PopulateAssignedCourseData </code>method reads through all <code>Course</code> entities in order to load a list of courses using the view model class. For each course, the code checks whether the course exists in the instructor's <code>Courses</code> navigation property. To create efficient lookup when checking whether a course is assigned to the instructor, the courses assigned to the instructor are put into a <a href="http://msdn.microsoft.com/en-us/library/bb359438.aspx">HashSet</a> collection. The <code>Assigned</code> property&nbsp; is set to <code>true</code>&nbsp;
+                                  for courses the instructor is assigned. The view will use this property to determine which check boxes must be displayed as selected. Finally, the list is passed to the view in a <code>ViewBag</code> property.
+                              </p>
+                              <p>
+                                  Next, add the code that's executed when the user clicks <strong>Save</strong>. Replace the
+                                  <code>EditPost</code> method with the following code, which calls a new method that updates the <code>Courses</code> navigation property of the <code>Instructor</code> entity.
+                                  The changes are highlighted.
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="pun">[</span><span class="typ">HttpPost</span><span class="pun">]</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">ValidateAntiForgeryToken</span><span class="pun">]</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Edit</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">?</span><span class="pln"> id</span><span class="pun">,</span><span class="pln"> </span><mark><span class="kwd">string</span><span class="pun">[]</span><span class="pln"> selectedCourses</span></mark><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HttpStatusCodeResult</span><span class="pun">(</span><span class="typ">HttpStatusCode</span><span class="pun">.</span><span class="typ">BadRequest</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> instructorToUpdate </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Instructors</span><span class="pln">
+       </span><span class="pun">.</span><span class="typ">Include</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pun">)</span><span class="pln">
+       </span><mark><span class="pun">.</span><span class="typ">Include</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">)</span></mark><span class="pln">
+       </span><span class="pun">.</span><span class="typ">Where</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="pln">ID </span><span class="pun">==</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+       </span><span class="pun">.</span><span class="typ">Single</span><span class="pun">();</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">TryUpdateModel</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">,</span><span class="pln"> </span><span class="str">""</span><span class="pun">,</span><span class="pln">
+       </span><span class="kwd">new</span><span class="pln"> </span><span class="kwd">string</span><span class="pun">[]</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="str">"LastName"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"FirstMidName"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"HireDate"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"OfficeAssignment"</span><span class="pln"> </span><span class="pun">}))</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">try</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">String</span><span class="pun">.</span><span class="typ">IsNullOrWhiteSpace</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pun">.</span><span class="typ">Location</span><span class="pun">))</span><span class="pln">
+            </span><span class="pun">{</span><span class="pln">
+                instructorToUpdate</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+            </span><mark><span class="typ">UpdateInstructorCourses</span><span class="pun">(</span><span class="pln">selectedCourses</span><span class="pun">,</span><span class="pln"> instructorToUpdate</span><span class="pun">);</span></mark><span class="pln">
+            db</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">RedirectToAction</span><span class="pun">(</span><span class="str">"Index"</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">RetryLimitExceededException</span><span class="pln"> </span><span class="com">/* dex */</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="com">//Log the error (uncomment dex variable name and add a line here to write a log.</span><span class="pln">
+            </span><span class="typ">ModelState</span><span class="pun">.</span><span class="typ">AddModelError</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Unable to save changes. Try again, and if the problem persists, see your system administrator."</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><mark><span class="typ">PopulateAssignedCourseData</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">);</span></mark><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><mark><span class="kwd">private</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> </span><span class="typ">UpdateInstructorCourses</span><span class="pun">(</span><span class="kwd">string</span><span class="pun">[]</span><span class="pln"> selectedCourses</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Instructor</span><span class="pln"> instructorToUpdate</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+   </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">selectedCourses </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+   </span><span class="pun">{</span><span class="pln">
+      instructorToUpdate</span><span class="pun">.</span><span class="typ">Courses</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><course><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;();</span><span class="pln">
+      </span><span class="kwd">return</span><span class="pun">;</span><span class="pln">
+   </span><span class="pun">}</span><span class="pln">
+&nbsp;
+   </span><span class="kwd">var</span><span class="pln"> selectedCoursesHS </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HashSet</span><span class="str">&lt;string&gt;</span><string><span class="pun">(</span><span class="pln">selectedCourses</span><span class="pun">);</span><span class="pln">
+   </span><span class="kwd">var</span><span class="pln"> instructorCourses </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HashSet</span><span class="str">&lt;int&gt;</span><int><span class="pln">
+       </span><span class="pun">(</span><span class="pln">instructorToUpdate</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Select</span><span class="pun">(</span><span class="pln">c </span><span class="pun">=&gt;</span><span class="pln"> c</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">));</span><span class="pln">
+   </span><span class="kwd">foreach</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> course </span><span class="kwd">in</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">)</span><span class="pln">
+   </span><span class="pun">{</span><span class="pln">
+      </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">selectedCoursesHS</span><span class="pun">.</span><span class="typ">Contains</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">.</span><span class="typ">ToString</span><span class="pun">()))</span><span class="pln">
+      </span><span class="pun">{</span><span class="pln">
+         </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">instructorCourses</span><span class="pun">.</span><span class="typ">Contains</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">))</span><span class="pln">
+         </span><span class="pun">{</span><span class="pln">
+            instructorToUpdate</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span><span class="pln">
+         </span><span class="pun">}</span><span class="pln">
+      </span><span class="pun">}</span><span class="pln">
+      </span><span class="kwd">else</span><span class="pln">
+      </span><span class="pun">{</span><span class="pln">
+         </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">instructorCourses</span><span class="pun">.</span><span class="typ">Contains</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">))</span><span class="pln">
+         </span><span class="pun">{</span><span class="pln">
+            instructorToUpdate</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Remove</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span><span class="pln">
+         </span><span class="pun">}</span><span class="pln">
+      </span><span class="pun">}</span><span class="pln">
+   </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></int></string></course></mark></pre>
+                              <p>
+                                  The method signature is now different from the <code>HttpGet</code> <code>
+                                      Edit
+                                  </code> method, so the method name changes from <code>EditPost</code> back
+                                  to <code>Edit</code>.
+                              </p>
+                              <p>
+                                  Since the view doesn't have a collection of <code>Course</code> entities, the
+                                  model binder can't automatically update the <code>Courses </code>navigation property. Instead of using the model binder to update the
+                                  <code>Courses</code> navigation
+                                  property, you'll do that in the new <code>UpdateInstructorCourses</code> method.
+                                  Therefore you need to exclude the <code>Courses</code> property from model
+                                  binding. This doesn't require any change to the code that calls
+                                  <a href="http://msdn.microsoft.com/en-us/library/dd470908(v=vs.98).aspx">
+                                      TryUpdateModel
+                                  </a> because you're using the <em>whitelisting </em>overload and <code>Courses</code> isn't in the include list.
+                              </p>
+                              <p>If no check boxes were selected, the code in <code>UpdateInstructorCourses</code> initializes the <code>Courses</code> navigation property with an empty collection:</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">selectedCourses </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    instructorToUpdate</span><span class="pun">.</span><span class="typ">Courses</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;();</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>
+                                  The code then loops through all courses in the database and checks each
+                                  course against the ones currently assigned to the instructor versus the ones
+                                  that were selected in the view. To facilitate efficient lookups, the latter two
+                                  collections are stored in <code>HashSet</code> objects.
+                              </p>
+                              <p>If the check box for a course was selected but the course isn't in the <code>Instructor.Courses</code> navigation property, the course is added to the collection in the navigation property.</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">selectedCoursesHS</span><span class="pun">.</span><span class="typ">Contains</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">.</span><span class="typ">ToString</span><span class="pun">()))</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">instructorCourses</span><span class="pun">.</span><span class="typ">Contains</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">))</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        instructorToUpdate</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>If the check box for a course wasn't selected, but the course is in the <code>Instructor.Courses</code> navigation property, the course is removed from the navigation property.</p>
+<pre class="prettyprint prettyprinted"><span class="kwd">else</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">instructorCourses</span><span class="pun">.</span><span class="typ">Contains</span><span class="pun">(</span><span class="pln">course</span><span class="pun">.</span><span class="typ">CourseID</span><span class="pun">))</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        instructorToUpdate</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Remove</span><span class="pun">(</span><span class="pln">course</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>
+                                  In <em>Views\Instructor\Edit.cshtml</em>, add a <strong>Courses</strong> field with an array of check boxes by adding the following
+                                  code immediately after the <code>div</code> elements for the <code>OfficeAssignment</code> field
+                                  and before the <code>div</code> element for the <strong>Save</strong> button:
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-offset-2 col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+        </span><span class="tag">&lt;table&gt;</span><span class="pln">
+            </span><span class="tag">&lt;tr&gt;</span><span class="pln">
+                @{
+                    int cnt = 0;
+                    List</span><span class="tag">&lt;ContosoUniversity.ViewModels.AssignedCourseData&gt;</span><span class="pln"> courses = ViewBag.Courses;
+                    foreach (var course in courses)
+                    {
+                        if (cnt++ % 3 == 0)
+                        {
+                            @:</span><span class="tag">&lt;/tr&gt;&lt;tr&gt;</span><span class="pln">
+                        }
+                        @:</span><span class="tag">&lt;td&gt;</span><span class="pln">
+                            </span><span class="tag">&lt;input</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"checkbox"</span><span class="pln">
+                               </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"selectedCourses"</span><span class="pln">
+                               </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"@course.CourseID"</span><span class="pln">
+                               @(</span><span class="atn">Html</span><span class="pln">.</span><span class="atn">Raw</span><span class="pln">(</span><span class="atn">course</span><span class="pln">.</span><span class="atn">Assigned</span><span class="pln"> ? </span><span class="atv">"checked=\"</span><span class="atn">checked</span><span class="pln">\</span><span class="atv">""</span><span class="pln"> : </span><span class="atv">""</span><span class="pln">)) </span><span class="tag">/&gt;</span><span class="pln">
+                               @course.CourseID @:  @course.Title
+                        @:</span><span class="tag">&lt;/td&gt;</span><span class="pln">
+                    }
+                    @:</span><span class="tag">&lt;/tr&gt;</span><span class="pln">
+                }
+        </span><span class="tag">&lt;/table&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
+                              <p>
+                                  After you paste the code, if line breaks and indentation don't look like they
+                                  do here, manually fix everything so that it looks like what you see here. The
+                                  indentation doesn't have to be perfect, but the <code>@&lt;/tr&gt;&lt;tr&gt;</code>, <code>@:&lt;td&gt;</code>, <code>@:&lt;/td&gt;</code>,
+                                  and <code>@&lt;/tr&gt;</code> lines must each be on a single line as shown or you'll
+                                  get a runtime error.
+                              </p>
+                              <p>This code creates an HTML table that has three columns. In each column is a check box followed by a caption that consists of the course number and title. The check boxes all have the same name ("selectedCourses"), which informs the model binder that they are to be treated as a group. The <code>value</code> attribute of each check box is set to the value of <code>CourseID.</code> When the page is posted, the model binder passes an array to the controller that consists of the <code>CourseID</code> values for only the check boxes which are selected. </p>
+                              <p>
+                                  When the check boxes are initially rendered, those that are for courses assigned to the instructor have <code>checked</code> attributes, which selects them
+                                  (displays them checked).
+                              </p>
+                              <p>
+                                  After changing course assignments, you'll want to be able to verify the changes when the site returns to the
+                                  <code>Index </code>page. Therefore, you need to add a column to the table in that page. In this case you don't need to use the <code>ViewBag</code> object, because the information you want to display is already in the <code>Courses</code> navigation property of the <code>Instructor</code> entity that you're passing to the page as the model.
+                              </p>
+                              <p>
+                                  In <em>Views\Instructor\Index.cshtml</em>, add a <strong>Courses</strong> heading immediately following the
+                                  <strong>Office</strong> heading, as shown in the following example:
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;tr&gt;</span><span class="pln"> 
+    </span><span class="tag">&lt;th&gt;</span><span class="pln">Last Name</span><span class="tag">&lt;/th&gt;</span><span class="pln"> 
+    </span><span class="tag">&lt;th&gt;</span><span class="pln">First Name</span><span class="tag">&lt;/th&gt;</span><span class="pln"> 
+    </span><span class="tag">&lt;th&gt;</span><span class="pln">Hire Date</span><span class="tag">&lt;/th&gt;</span><span class="pln"> 
+    </span><span class="tag">&lt;th&gt;</span><span class="pln">Office</span><span class="tag">&lt;/th&gt;</span><span class="pln">
+    </span><mark><span class="tag">&lt;th&gt;</span><span class="pln">Courses</span><span class="tag">&lt;/th&gt;</span></mark><span class="pln">
+    </span><span class="tag">&lt;th&gt;&lt;/th&gt;</span><span class="pln"> 
+</span><span class="tag">&lt;/tr&gt;</span><span class="pln"> </span></pre>
+                              <p>Then add a new detail cell immediately following the office location detail cell:</p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;td&gt;</span><span class="pln">
+    @if (item.OfficeAssignment != null)
+    {
+        @item.OfficeAssignment.Location
+    }
+</span><span class="tag">&lt;/td&gt;</span><span class="pln">
+</span><mark><span class="tag">&lt;td&gt;</span><span class="pln">
+    @{
+        foreach (var course in item.Courses)
+        {
+            @course.CourseID @:  @course.Title </span><span class="tag">&lt;br</span><span class="pln"> </span><span class="tag">/&gt;</span><span class="pln">
+        }
+    }
+</span><span class="tag">&lt;/td&gt;</span></mark><span class="pln">
+</span><span class="tag">&lt;td&gt;</span><span class="pln">
+    @Html.ActionLink("Select", "Index", new { id = item.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+</span><span class="tag">&lt;/td&gt;</span></pre>
+                              <p>Run the <strong>Instructor Index</strong> page to see the courses assigned to each instructor:</p>
+                              <p>
+                                  <img src="Images/InstructorsWithCourses.png" alt="Instructor_index_page" border="0">
+                              </p>
+                              <p>Click <strong>Edit</strong> on an instructor to see the Edit page.</p>
+                              <p>
+                                  <img src="Images/InstructorEditWithCourses.png" alt="Instructor_edit_page_with_courses" border="0">
+                              </p>
+                              <p>Change some course assignments and click <strong>Save</strong>. The changes you make are reflected on the Index page.</p>
+                              <span class="Note">
+                                  Note: The approach taken
+                                  here to edit instructor course data works well when there is a limited
+                                  number of courses. For collections that are much larger, a different UI and a
+                                  different updating method would be required.<br>&nbsp;<h2>Update the DeleteConfirmed Method</h2>
+                                  <p>
+                                      In <em>InstructorController.cs</em>, delete the <code>
+                                          DeleteConfirmed
+                                      </code> method and insert the following code in its place.
+                                  </p>
+<pre class="prettyprint prettyprinted"><span class="pun">[</span><span class="typ">HttpPost</span><span class="pun">,</span><span class="pln"> </span><span class="typ">ActionName</span><span class="pun">(</span><span class="str">"Delete"</span><span class="pun">)]</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">ValidateAntiForgeryToken</span><span class="pun">]</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">DeleteConfirmed</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+   </span><mark><span class="typ">Instructor</span><span class="pln"> instructor </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Instructors</span><span class="pln">
+     </span><span class="pun">.</span><span class="typ">Include</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pun">)</span><span class="pln">
+     </span><span class="pun">.</span><span class="typ">Where</span><span class="pun">(</span><span class="pln">i </span><span class="pun">=&gt;</span><span class="pln"> i</span><span class="pun">.</span><span class="pln">ID </span><span class="pun">==</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+     </span><span class="pun">.</span><span class="typ">Single</span><span class="pun">();</span></mark><span class="pln">
+   </span><mark><span class="pln">instructor</span><span class="pun">.</span><span class="typ">OfficeAssignment</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span></mark><span class="pln">
+   db</span><span class="pun">.</span><span class="typ">Instructors</span><span class="pun">.</span><span class="typ">Remove</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span><span class="pln">
+    </span><mark><span class="kwd">var</span><span class="pln"> department </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Departments</span><span class="pln">
+        </span><span class="pun">.</span><span class="typ">Where</span><span class="pun">(</span><span class="pln">d </span><span class="pun">=&gt;</span><span class="pln"> d</span><span class="pun">.</span><span class="typ">InstructorID</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> id</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">.</span><span class="typ">SingleOrDefault</span><span class="pun">();</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">department </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        department</span><span class="pun">.</span><span class="typ">InstructorID</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span></mark><span class="pln">
+   db</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+   </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">RedirectToAction</span><span class="pun">(</span><span class="str">"Index"</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                                  <p>This code makes two changes:</p>
+                                  <ul>
+                                      <li>
+                                          Deletes the office assignment record (if any)
+                                          when the instructor is deleted.
+                                      </li>
+                                      <li>
+                                          If the instructor is assigned as administrator of any department,
+                                          removes the instructor assignment from that department. Without this code,
+                                          you would get a referential integrity error if you tried to delete an instructor
+                                          who was assigned as
+                                          administrator for a department.
+                                      </li>
+                                  </ul>
+                                  <p>
+                                      This code doesn't handle the scenario of one instructor assigned as
+                                      administrator for multiple departments. In the last tutorial you'll add code
+                                      that prevents that scenario from happening.
+                                  </p>
+                                  <h2>Add office location and courses to the Create page</h2>
+                                  <p>
+                                      In <em>InstructorController.cs</em>, delete the <code>HttpGet</code> and
+                                      <code>HttpPost</code> <code>Create</code> methods, and then add the following
+                                      code in their place:
+                                  </p>
+                              </span>
+<pre class="prettyprint prettyprinted"><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Create</span><span class="pun">()</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> instructor </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Instructor</span><span class="pun">();</span><span class="pln">
+    instructor</span><span class="pun">.</span><span class="typ">Courses</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;();</span><span class="pln">
+    </span><span class="typ">PopulateAssignedCourseData</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">HttpPost</span><span class="pun">]</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">ValidateAntiForgeryToken</span><span class="pun">]</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">ActionResult</span><span class="pln"> </span><span class="typ">Create</span><span class="pun">([</span><span class="typ">Bind</span><span class="pun">(</span><span class="typ">Include</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="str">"LastName,FirstMidName,HireDate,OfficeAssignment"</span><span class="pln"> </span><span class="pun">)]</span><span class="typ">Instructor</span><span class="pln"> instructor</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">string</span><span class="pun">[]</span><span class="pln"> selectedCourses</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">selectedCourses </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        instructor</span><span class="pun">.</span><span class="typ">Courses</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;();</span><span class="pln">
+        </span><span class="kwd">foreach</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> course </span><span class="kwd">in</span><span class="pln"> selectedCourses</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> courseToAdd </span><span class="pun">=</span><span class="pln"> db</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Find</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">.</span><span class="typ">Parse</span><span class="pun">(</span><span class="pln">course</span><span class="pun">));</span><span class="pln">
+            instructor</span><span class="pun">.</span><span class="typ">Courses</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="pln">courseToAdd</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="typ">ModelState</span><span class="pun">.</span><span class="typ">IsValid</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        db</span><span class="pun">.</span><span class="typ">Instructors</span><span class="pun">.</span><span class="typ">Add</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span><span class="pln">
+        db</span><span class="pun">.</span><span class="typ">SaveChanges</span><span class="pun">();</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">RedirectToAction</span><span class="pun">(</span><span class="str">"Index"</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="typ">PopulateAssignedCourseData</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">View</span><span class="pun">(</span><span class="pln">instructor</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre>
+                              <p>
+                                  This code is similar to what you saw for the Edit methods except that
+                                  initially no courses are selected. The <code>HttpGet</code> <code>Create</code>
+                                  method calls the <code>PopulateAssignedCourseData</code> method not because
+                                  there might be courses selected but in order to provide an empty collection for
+                                  the <code>foreach</code> loop in the view (otherwise the view code would throw a
+                                  null reference exception).
+                              </p>
+                              <p>
+                                  The HttpPost Create method adds each selected course to the Courses
+                                  navigation property before the template code that checks for validation errors
+                                  and adds the new instructor to the database. Courses are added even if there are
+                                  model errors so that when there are model errors (for an example, the user keyed
+                                  an invalid date) so that when the page is redisplayed with an error message, any
+                                  course selections that were made are automatically restored.
+                              </p>
+                              <p>
+                                  Notice that in order to be able to add courses to the <code>Courses</code>
+                                  navigation property you have to initialize the property as an empty collection:
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="pln">instructor</span><span class="pun">.</span><span class="typ">Courses</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;();</span></pre>
+                              <p>
+                                  As an alternative to doing this in controller code, you could do it in the
+                                  Instructor model by changing the property getter to automatically create the
+                                  collection if it doesn't exist, as shown in the following example:
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="kwd">private</span><span class="pln"> </span><span class="typ">ICollection</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;</span><span class="pln"> _courses</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">virtual</span><span class="pln"> </span><span class="typ">ICollection</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;</span><span class="pln"> </span><span class="typ">Courses</span><span class="pln"> 
+</span><span class="pun">{</span><span class="pln"> 
+    </span><span class="kwd">get</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> _courses </span><span class="pun">??</span><span class="pln"> </span><span class="pun">(</span><span class="pln">_courses </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">Course</span><span class="pun">&gt;());</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">set</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        _courses </span><span class="pun">=</span><span class="pln"> value</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln"> 
+</span><span class="pun">}</span></pre>
+                              <p>
+                                  If you modify the <code>Courses</code> property in this way, you can remove
+                                  the explicit property initialization code in the controller.
+                              </p>
+                              <p>
+                                  In <em>Views\Instructor\Create.cshtml</em>, add an office location text box and
+                                  course check boxes after the hire date field and before the <strong>Submit</strong>
+                                  button.
+                              </p>
+<pre class="prettyprint prettyprinted"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+    @Html.LabelFor(model =&gt; model.OfficeAssignment.Location, new { @class = "control-label col-md-2" })
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+        @Html.EditorFor(model =&gt; model.OfficeAssignment.Location)
+        @Html.ValidationMessageFor(model =&gt; model.OfficeAssignment.Location)
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"form-group"</span><span class="tag">&gt;</span><span class="pln">
+    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"col-md-offset-2 col-md-10"</span><span class="tag">&gt;</span><span class="pln">
+        </span><span class="tag">&lt;table&gt;</span><span class="pln">
+            </span><span class="tag">&lt;tr&gt;</span><span class="pln">
+                @{
+                    int cnt = 0;
+                    List</span><span class="tag">&lt;ContosoUniversity.ViewModels.AssignedCourseData&gt;</span><span class="pln"> courses = ViewBag.Courses;
+                    foreach (var course in courses)
+                    {
+                        if (cnt++ % 3 == 0)
+                        {
+                            @:</span><span class="tag">&lt;/tr&gt;&lt;tr&gt;</span><span class="pln">
+                        }
+                        @:</span><span class="tag">&lt;td&gt;</span><span class="pln">
+                            </span><span class="tag">&lt;input</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"checkbox"</span><span class="pln">
+                               </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"selectedCourses"</span><span class="pln">
+                               </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"@course.CourseID"</span><span class="pln">
+                               @(</span><span class="atn">Html</span><span class="pln">.</span><span class="atn">Raw</span><span class="pln">(</span><span class="atn">course</span><span class="pln">.</span><span class="atn">Assigned</span><span class="pln"> ? </span><span class="atv">"checked=\"</span><span class="atn">checked</span><span class="pln">\</span><span class="atv">""</span><span class="pln"> : </span><span class="atv">""</span><span class="pln">)) </span><span class="tag">/&gt;</span><span class="pln">
+                               @course.CourseID @:  @course.Title
+                        @:</span><span class="tag">&lt;/td&gt;</span><span class="pln">
+                    }
+                    @:</span><span class="tag">&lt;/tr&gt;</span><span class="pln">
+                }
+        </span><span class="tag">&lt;/table&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
+                              <p>
+                                  After you paste the code, fix line breaks and indentation as you did earlier
+                                  for the Edit page.
+                              </p>
+                              <p>Run the Create page and add an instructor.</p>
+                              <p>
+                                  <img alt="Instructor Create with Courses" src="Images/InstructorCreateWithCourses.png">
+                              </p>
+                              <h2 id="transactions">Handling Transactions</h2>
+                              <p>
+                                  As explained in the
+                                  <a href="http://www.asp.net/mvc/tutorials/getting-started-with-ef-using-mvc/implementing-basic-crud-functionality-with-the-entity-framework-in-asp-net-mvc-application">
+                                      Basic CRUD Functionality tutorial
+                                  </a>, by default the Entity Framework
+                                  implicitly implements transactions. For scenarios
+                                  where you need more control -- for example, if you want to include operations
+                                  done outside of Entity Framework in a transaction -- see
+                                  <a href="http://msdn.microsoft.com/en-US/data/dn456843">
+                                      Working with
+                                      Transactions
+                                  </a> on MSDN.
+                              </p>
+                              <h2>Summary</h2>
+                              <p>
+                                  You have now completed this introduction to working with related data. So far in these tutorials you've
+                                  worked with code that does synchronous I/O. You can make the application use web
+                                  server resources more efficiently by implementing asynchronous code, and that's
+                                  what you'll do in the next tutorial.
+                              </p>
+                              <p>
+                                  Please leave feedback on how you liked this
+                                  tutorial and what we could improve. You can also request new topics at
+                                  <a href="http://aspnet.uservoice.com/forums/228522-show-me-how-with-code">
+                                      Show
+                                      Me How With Code
+                                  </a>.
+                              </p>
+                              <p>
+                                  Links to other Entity Framework resources can be found in
+                                  <a href="http://www.asp.net/whitepapers/aspnet-data-access-content-map">
+                                      ASP.NET
+                                      Data Access - Recommended Resources
+                                  </a>.
+                              </p>
+                          </div>
+                      </div>
+                  </span>
+              </div>
+          </div>
+      </div>
+</body>

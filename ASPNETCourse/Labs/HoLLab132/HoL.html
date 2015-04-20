@@ -1,0 +1,549 @@
+
+
+ 
+<!DOCTYPE HTML>
+<!--[if IE]><![endif]-->
+<html>
+  <head>
+    <title>Implementing Basic CRUD Functionality with the Entity Framework in ASP.NET MVC Application | The ASP.NET Site</title>
+        
+  <link href='//i1.asp.net/umbraco-beta-css/articles.min.css?cdn_id=2015-04-01-001' rel="stylesheet" type="text/css" media="all" />
+
+    <!--[if lte IE 7]>
+      <link href='//i1.asp.net/umbraco-beta-css/lteIE7.min.css?cdn_id=2015-04-01-001' rel="stylesheet" type="text/css" media="screen" />
+    <![endif]-->
+	<!--[if lte IE 9]>
+      <script src='//i1.asp.net/umbraco-beta-scripts/html5.js?cdn_id=2015-04-01-001' type="text/javascript"></script>
+    <![endif]-->
+    <link href='//i2.asp.net/images/content/favicon.ico?cdn_id=2015-04-01-001' rel="shortcut icon" />
+	<link rel="alternate" type="application/rss+xml" title="Latest ASP.NET Content" href="//www.asp.net/rss/content" />
+	  
+	<!-- Anti-Clickjacking script -->
+	<style id="antiClickjack">body{display:none !important;}</style>
+	<script type="text/javascript">
+		if (self === top) {
+			var antiClickjack = document.getElementById("antiClickjack");
+			antiClickjack.parentNode.removeChild(antiClickjack);
+			} else {
+			top.location = self.location;
+		}
+	 </script>	  
+  </head>
+  <body class=''>
+    
+    <div class='allcontent '>
+    
+      
+  <div class="content article-page article-content">
+    <div class="col-right-learn">
+        <span><div class="article-title keyline"><h1><div itemprop="name">Implementing Basic CRUD Functionality with the Entity Framework in ASP.NET MVC Application</div></h1><div class="details"><div class="author-header">
+		 <div class="important important-box-article"><p>The Contoso University sample web application demonstrates how to create 
+ASP.NET MVC 5 applications using the Entity Framework 6 Code First and Visual Studio 
+2013. For information about the tutorial series, see
+<a href="/mvc/tutorials/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application">the first tutorial in the series</a>.</p>
+
+</div><p>In the previous tutorial you created an MVC application that stores and displays data using the Entity Framework and SQL Server 
+LocalDB. In this tutorial you'll review and customize the CRUD (create, read, update, delete) code that the MVC scaffolding automatically creates for you in controllers and views.</p>
+<div class="note">
+<p><strong>Note</strong>   It's a common practice to implement the repository pattern in order to create an abstraction layer between your controller and the data access layer. To keep these tutorials simple 
+and focused on teaching how to use the Entity Framework itself, they don't use 
+repositories. For information about how to implement repositories, see the
+<a href="/whitepapers/aspnet-data-access-content-map">ASP.NET 
+Data Access Content Map</a>.</p>
+</div>
+<p>In this tutorial, you'll create the following web pages:</p>
+<p>
+<img src="Lab131/StudentDetails.png" alt="Student_Details_page" border="0"/></p>
+<p>
+<img src="Lab131/StudentCreateError.png" alt="Student_Edit_page" border="0"/></p>
+<p>
+<img src="Lab131/StudentDelete.png" alt="Student_delete_page" border="0"/></p>
+<h2>Create a Details Page</h2>
+<p>The scaffolded code for the Students <code>Index </code>page left out the <code>Enrollments</code> property, because that property holds a collection. In the 
+<code>Details</code> page you'll display the contents of the collection in an HTML table.</p>
+	In <em>Controllers\StudentController.cs</em>, the action method for the 
+	<code>Details</code> view uses the 
+<a href="http://msdn.microsoft.com/en-us/library/gg696418(v=VS.103).aspx">Find</a> method to retrieve a single 
+	<code>Student</code> entity.
+
+<pre>public ActionResult Details(int? id)
+{
+    if (id == null)
+    {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+    }
+    Student student = db.Students.Find(id);
+    if (student == null)
+    {
+        return HttpNotFound();
+    }
+    return View(student);
+}</pre>
+	<p>The key value is passed to the method as the <code>id</code> parameter and comes from 
+	<em>route data</em> in the <strong>Details</strong> 
+	hyperlink on the Index page.</p>
+<div class="sidebar" 
+  style="border: 2px solid black; background-color: #E8E8E8; width: 90%; padding: 4px;">
+  <h3>Route data</h3>
+<p>Route data is data that the model binder found in a URL segment specified in 
+the routing table. For example, the default route specifies <code>controller</code>,
+<code>action</code>, and <code>id</code> segments:</p>
+	<p>&nbsp;routes.MapRoute(<br>&nbsp;&nbsp;&nbsp; name: "Default",<br>&nbsp;&nbsp;&nbsp; url: <mark>"{controller}/{action}/{id}"</mark>,<br>&nbsp;&nbsp;&nbsp; defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }<br>);</p>
+	<p>In the following URL, the default route maps <code>Instructor</code> as the 
+	<code>controller</code>, <code>Index</code> as the 
+<code>action</code> and 1 as the <code>id</code>; these are route data values.</p>
+<p><code>http://localhost:1230/Instructor/Index/1?courseID=2021</code></p>
+<p>"?courseID=2021" is a query 
+string value. The model binder will also work if you pass the <code>id</code> as 
+a query string value:</p>
+<p><code>http://localhost:1230/Instructor/Index?id=1&amp;CourseID=2021</code></p>
+<p>The URLs are created by <code>ActionLink</code> statements in the Razor view. In the following code, the
+<code>id</code> parameter matches the default route, so <code>id</code> is added 
+to the route data.</p>
+<pre class="prettyprint"> @Html.ActionLink("Select", "Index", new { id = item.PersonID  })</pre>
+<p>In the following code, <code>courseID</code> doesn't match a parameter in the 
+default route, so it's added as a query string.</p>
+<pre class="prettyprint">@Html.ActionLink("Select", "Index", new { courseID = item.CourseID }) </pre>
+</div>
+	
+<ol>
+<li><p>Open <em>Views\Student\Details.cshtml</em>. Each field is displayed using a 
+		<code>DisplayFor</code> helper, as shown in the following example:</p>
+		<pre>&lt;dt&gt;
+    @Html.DisplayNameFor(model =&gt; model.LastName)
+&lt;/dt&gt;
+&lt;dd&gt;
+    @Html.DisplayFor(model =&gt; model.LastName)
+&lt;/dd&gt;</pre>
+    </li><li>
+<p>After the <code>EnrollmentDate</code> field and immediately before the closing 
+<code>&lt;/dl&gt;</code> 
+tag, add the highlighted code to display a list of enrollments, as shown in the following 
+example:</p>
+	<pre>        &lt;dt&gt;
+            @Html.DisplayNameFor(model =&gt; model.EnrollmentDate)
+        &lt;/dt&gt;
+
+        &lt;dd&gt;
+            @Html.DisplayFor(model =&gt; model.EnrollmentDate)
+        &lt;/dd&gt;
+        <mark>&lt;dt&gt;
+            @Html.DisplayNameFor(model =&gt; model.Enrollments)
+        &lt;/dt&gt;
+        &lt;dd&gt;
+            &lt;table class="table"&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Course Title&lt;/th&gt;
+                    &lt;th&gt;Grade&lt;/th&gt;
+                &lt;/tr&gt;
+                @foreach (var item in Model.Enrollments)
+                {
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            @Html.DisplayFor(modelItem =&gt; item.Course.Title)
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            @Html.DisplayFor(modelItem =&gt; item.Grade)
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                }
+            &lt;/table&gt;
+        &lt;/dd&gt;</mark>
+    &lt;/dl&gt;
+&lt;/div&gt;
+&lt;p&gt;
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+&lt;/p&gt;</pre>
+<p>If code indentation is wrong after you paste the code, press CTRL-K-D to 
+correct it.</p>
+	<p>This code loops through the entities in the <code>Enrollments</code> navigation property. For each <code>Enrollment</code> entity in the property, it displays the course title and the grade. The course title is retrieved from the <code>Course</code> entity that's stored in the <code>Course</code> navigation property of the <code>Enrollments</code> entity. All of this data is retrieved from the database automatically when it's needed. (In other words, you are using lazy loading here. You did not specify <em>eager loading</em> for the <code>Courses</code> navigation property, so 
+the enrollments were not retrieved in the same query that got the students. 
+Instead, the first time you try to access the <code>Enrollments</code> 
+navigation property, a new query is sent to the database to retrieve the data. You can read more about lazy loading and eager loading in the 
+<a href="/entity-framework/tutorials/reading-related-data-with-the-entity-framework-in-an-asp-net-mvc-application">Reading Related Data</a> tutorial later in this series.) </p>
+</li><li>
+<p>Run the page by selecting the <strong>Students</strong> tab and clicking a <strong>Details</strong> 
+link for Alexander Carson. (If you press CTRL+F5 while the Details.cshtml file 
+is open, you'll get an HTTP 400 error because Visual Studio tries to run the 
+Details page but it wasn't reached from a link that specifies the student to 
+display. In that case, just remove "Student/Details" from the URL and try again, 
+or close the browser, right-click the project, and click <strong>View</strong>, 
+and then click <strong>View in Browser</strong>.)</p>
+	<p>You see the list of courses and grades for the 
+selected student:</p>
+<p>
+<img src="Lab131/StudentDetails.png" alt="Student_Details_page"></p>
+</li>
+</ol>
+<h2>Update the Create Page </h2>
+<ol>
+	<li><p>In <em>Controllers\StudentController.cs</em>, replace the <code>HttpPost</code>
+	<code>Create</code> action method with the following code to add a <code>try-catch</code> block 
+	and remove <code>ID</code> from the
+	<a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.bindattribute(v=vs.108).aspx">
+	Bind attribute</a> for the scaffolded method:</p>
+	<pre>[HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult Create(<mark>[Bind(Include = "LastName, FirstMidName, EnrollmentDate")]</mark>Student student)
+{
+    <mark>try
+    {</mark>
+        if (ModelState.IsValid)
+        {
+            db.Students.Add(student);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+    <mark>}
+    catch (DataException /* dex */)
+    {
+        //Log the error (uncomment dex variable name and add a line here to write a log.
+        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+    }</mark>
+    return View(student);
+}</pre>
+	<p>This code adds the <code>Student</code> entity created by the ASP.NET MVC 
+	model binder to the <code>Students</code> entity set and then saves the 
+	changes to the database. (<em>Model binder</em> refers to the ASP.NET MVC 
+	functionality that makes it easier for you to work with data submitted by a 
+	form; a model binder converts posted form values to CLR types and passes 
+	them to the action method in parameters. In this case, the model binder 
+	instantiates a <code>Student</code> entity for you using property values 
+	from the <code>Form</code> collection.)</p>
+	<p>You removed <code>ID</code> from the Bind attribute because <code>ID</code> 
+	is the primary key value which SQL Server will set automatically when the 
+	row is inserted. Input from the user does not set the <code>ID</code> value.</p>
+	
+	
+                  <a id="overpost"></a>
+	<div class="note">
+		<p><strong>Security Note:</strong> The <code>ValidateAntiForgeryToken</code> attribute helps prevent
+	<a href="/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages">
+	cross-site request forgery</a> attacks. It requires a corresponding <code>
+		Html.AntiForgeryToken()</code> statement in the view, which you'll see later.</p>
+		<p>The <code>Bind</code> attribute is one way to protect against <em>over-posting</em> 
+		in create scenarios. For example, suppose the
+		<code>Student</code> entity includes a <code>Secret</code> property that 
+		you don't want this web page to set.</p>
+		<pre>   public class Student
+   {
+      public int ID { get; set; }
+      public string LastName { get; set; }
+      public string FirstMidName { get; set; }
+      public DateTime EnrollmentDate { get; set; }
+      <mark>public string Secret { get; set; }</mark>
+
+      public virtual ICollection&lt;Enrollment&gt; Enrollments { get; set; }
+   }</pre>
+		<p>Even if you don't have a <code>Secret</code> field on the web page, a 
+		hacker could use a tool such as <a href="http://fiddler2.com/home">
+		fiddler</a>, or write some JavaScript, to post a <code>Secret</code> 
+		form value. Without the
+		<a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.bindattribute(v=vs.108).aspx">
+		Bind</a> attribute limiting the fields that the model binder uses when 
+		it creates a <code>Student</code> instance<em>,</em> the model binder 
+		would pick up that <code>Secret</code> form value and use it to create 
+		the <code>Student</code> entity instance. Then whatever value the hacker 
+		specified for the <code>Secret</code> form field would be updated in 
+		your database. The following image shows the fiddler tool adding the
+		<code>Secret </code>field (with the value "OverPost") to the posted form 
+		values.</p>
+		<img src="Lab131/OverP.PNG"><br>
+		<p>The value "OverPost" would then be successfully added to the <code>
+		Secret</code> property of the inserted row, although you never intended 
+		that the web page be able to set that property.</p>
+		<p>It's a security best practice to use the <code>Include</code> 
+		parameter with the <code>Bind</code> attribute to <em>whitelist</em> fields. 
+		It's also possible to use the <code>Exclude</code> parameter to <em>blacklist </em>fields you want to 
+		exclude. The reason <code>Include</code> is more secure is that when you 
+		add a new property to the entity, the new field is not automatically 
+		protected by an <code>Exclude</code> list.</p>
+		<p>You can prevent overposting in edit scenarios is by reading the 
+		entity from the database first and then calling <code>TryUpdateModel</code>, passing in 
+		an explicit allowed properties list. That is the method used in these 
+		tutorials.</p>
+		<p>An alternative way to prevent overposting that is preferrred by many 
+		developers is to use 
+		view models rather than entity classes with model binding. Include only the 
+		properties you want to update in the view model. Once the MVC model binder has finished, copy the view model properties to the entity instance, 
+		optionally using a tool such as <a href="http://automapper.org/">
+		AutoMapper</a>. 
+		Use db.Entry on the entity instance to set its state to Unchanged, 
+		and then set Property("PropertyName").IsModified to true on each entity property 
+		that is included in the view model. This method works in both edit and 
+		create scenarios.</p>
+	</div>
+	<p>Other than the <code>Bind</code> attribute, the <code>try-catch</code> 
+	block is the only change you've made to the scaffolded code. If an exception 
+	that derives from
+	<a href="http://msdn.microsoft.com/en-us/library/system.data.dataexception.aspx">
+	DataException</a> is caught while the changes are being saved, a generic 
+	error message is displayed.
+	<a href="http://msdn.microsoft.com/en-us/library/system.data.dataexception.aspx">
+	DataException</a> 
+	exceptions are sometimes caused by something external to the application 
+	rather than a programming error, so the user is advised to try again. 
+	Although not implemented in this sample, a production quality application 
+	would log the exception. For more information, see the <strong>Log for 
+	insight</strong> section in
+	<a href="/aspnet/overview/developing-apps-with-windows-azure/building-real-world-cloud-apps-with-windows-azure/monitoring-and-telemetry#log">
+	Monitoring and Telemetry (Building Real-World Cloud Apps with Azure)</a>.</p>
+	<p>The code in <em>Views\Student\Create.cshtml</em> is similar to what you 
+	saw in <em>Details.cshtml</em>, except that <code>EditorFor</code> and <code>
+	ValidationMessageFor</code> helpers are used for each field instead of <code>
+	DisplayFor</code>. Here is the relevant code:</p>
+	<pre>&lt;div class="form-group"&gt;
+    @Html.LabelFor(model =&gt; model.LastName, new { @class = "control-label col-md-2" })
+    &lt;div class="col-md-10"&gt;
+        @Html.EditorFor(model =&gt; model.LastName)
+        @Html.ValidationMessageFor(model =&gt; model.LastName)
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+	<p><em>Create.chstml</em> also includes <code>@Html.AntiForgeryToken()</code>, 
+	which works with the <code>ValidateAntiForgeryToken</code> attribute 
+	in the controller to help prevent
+	<a href="/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages">
+	cross-site request forgery</a> attacks.</p>
+	<p>No changes are required in <em>Create.cshtml</em>.&nbsp;</p>
+</li>
+	<li>
+<p>Run the page by selecting the <strong>Students</strong> tab and clicking <strong>Create New</strong>.</p>
+</li>
+<li>
+<p>Enter names and an invalid date and click <strong>Create</strong> to see the error message.</p>
+<p>
+<img src="Lab131/StudentCreateError.png" alt="Students_Create_page_error_message" border="0"/></p>
+<p>This is server-side validation that you get by default; in a later tutorial you'll see how to add 
+attributes that will generate code for client-side validation also. The following highlighted code shows 
+the model validation check in the <strong>Create</strong> method.</p>
+<pre><mark>if (ModelState.IsValid)</mark>
+{
+    db.Students.Add(student);
+    db.SaveChanges();
+    return RedirectToAction("Index");
+}</pre>
+</li>
+<li>
+<p>Change the date to a valid value and click <strong>Create</strong> to see the new student appear in the <strong>Index</strong> page.</p>
+<p>
+<img src="Lab131/StudentIndexWithGao.png" alt="Students_Index_page_with_new_student" border="0"/></p>
+</li>
+</ol>
+
+<h2>Update the Edit HttpPost Method </h2>
+<p>In <em>Controllers\StudentController.cs</em>, the <code>HttpGet</code> <code>Edit</code> method (the one without the <code>HttpPost</code> attribute) uses the <code>Find</code> method to retrieve the selected <code>Student</code> entity, as you saw in the <code>Details</code> method. You don't need to change this method. </p>
+<p>However, replace the <code>HttpPost</code> <code>Edit</code> action method with the following code:</p>
+<pre>[HttpPost, ActionName("Edit")]
+[ValidateAntiForgeryToken]
+public ActionResult EditPost(int? id)
+{
+    if (id == null)
+    {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+    }
+    var studentToUpdate = db.Students.Find(id);
+    if (TryUpdateModel(studentToUpdate, "",
+       new string[] { "LastName", "FirstMidName", "EnrollmentDate" }))
+    {
+        try
+        {
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+        catch (DataException /* dex */)
+        {
+            //Log the error (uncomment dex variable name and add a line here to write a log.
+            ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+        }
+    }
+    return View(studentToUpdate);
+}</pre>
+<p>These changes implement a security best practice to prevent
+<a href="#overpost">overposting</a>,&nbsp; The scaffolder generated a <code>Bind</code> 
+attribute and added the entity created by the model binder to the entity set 
+with a Modified flag. 
+That code is no longer recommended because the <code>Bind</code> attribute clears out 
+any pre-existing data in fields not listed in the <code>Include</code> parameter. In the future, the MVC controller 
+scaffolder will be updated so that it doesn't generate <code>Bind</code> 
+attributes for Edit methods. </p>
+<p>The new code reads the existing entity and calls
+<a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.controller.tryupdatemodel(v=vs.118).aspx">
+TryUpdateModel</a> to update fields from user input in the posted form data. The 
+Entity Framework's automatic change tracking sets the 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entitystate.aspx">Modified</a> 
+flag on the entity. When the
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbcontext.savechanges(v=VS.103).aspx">SaveChanges</a> method is called, the 
+<code>Modified</code> 
+flag causes the Entity Framework to create SQL statements to update the database 
+row.
+<a href="/mvc/tutorials/getting-started-with-ef-using-mvc/handling-concurrency-with-the-entity-framework-in-an-asp-net-mvc-application">
+Concurrency conflicts</a> are ignored, and all columns of the database row are 
+updated, including those that the user didn't change. (A later tutorial shows 
+how to handle concurrency conflicts, and if you only want individual fields to be 
+updated in the database, you can set the entity to Unchanged and set individual 
+fields to Modified.)</p>
+<p>As a best practice to prevent overposting, the fields that you want to be 
+updateable by the Edit page are whitelisted in the <code>TryUpdateModel</code> 
+parameters. Currently there are no extra fields that you're protecting, but 
+listing the fields that you want the model binder to bind ensures that if you 
+add fields to the data model in the future, they're automatically protected 
+until you explicitly add them here.</p>
+<p>As a result of these changes, the method signature of the HttpPost Edit 
+method is the same as the HttpGet edit method; therefore you've renamed the 
+method EditPost.&nbsp;</p>
+
+<div class="sidebar" style="border: 2px solid black; background-color: #E8E8E8; width: 90%; padding: 4px;">
+<h3>Entity States and the Attach and SaveChanges Methods</h3>
+<p>The database context keeps track of whether entities in memory are in sync with their corresponding rows in the database, and this information determines what happens when you call the <code>SaveChanges</code> method. For example, when you pass a new entity to the 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbset.add(v=vs.103).aspx">Add</a> method, that entity's state is set to <code>Added</code>. Then when you call the 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbcontext.savechanges(v=VS.103).aspx">SaveChanges</a> method, the database context issues a SQL <code>INSERT</code> command.</p>
+<p>An entity may be in one of the<a href="http://msdn.microsoft.com/en-us/library/system.data.entitystate.aspx"> following states</a>:</p>
+<ul>
+<li><code>Added</code>. The entity does not yet exist in the database. The <code>SaveChanges</code> method must issue an <code>INSERT</code> statement. </li>
+<li><code>Unchanged</code>. Nothing needs to be done with this entity by the <code>SaveChanges</code> method. When you read an entity from the database, the entity starts out with this status. </li>
+<li><code>Modified</code>. Some or all of the entity's property values have been modified. The <code>SaveChanges</code> method must issue an <code>UPDATE</code> statement. </li>
+<li><code>Deleted</code>. The entity has been marked for deletion. The <code>SaveChanges</code> method must issue a <code>DELETE</code> statement. </li>
+<li><code>Detached</code>. The entity isn't being tracked by the database context. </li>
+</ul>
+<p>In a desktop application, state changes are typically set automatically. In a 
+desktop type of application, you read an entity and make changes to some of its property values. This causes its entity state to automatically be changed to <code>Modified</code>. Then when you call <code>SaveChanges</code>, the Entity Framework generates a SQL <code>UPDATE</code> statement that updates only the actual properties that you changed. </p>
+<p>The disconnected nature of web apps doesn't allow for this continuous 
+sequence. The 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbcontext(v=VS.103).aspx">
+DbContext</a> that reads an entity is disposed after a page is rendered. When the <code>HttpPost</code> <code>Edit</code> action method is called,&nbsp; a new request 
+is made and you have a new instance of the 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbcontext(v=VS.103).aspx">
+DbContext</a>, so you have to manually set the entity state to <code>Modified.</code> Then when you call <code>SaveChanges</code>, the Entity Framework updates all columns of the database row, because the context has no way to know which properties you changed.</p>
+<p>If you want the SQL <code>Update</code> statement to update only the fields that the user actually changed, you can save the original values in some way (such as hidden fields) so that they are available when the <code>HttpPost</code> <code>Edit</code> method is called. Then you can create a <code>Student</code> entity using the original values, call the <code>Attach</code> method with that original version of the entity, update the entity's values to the new values, and then call <code>SaveChanges.</code> For more information, see 
+<a href="http://msdn.microsoft.com/en-us/data/jj592676">Entity states and 
+SaveChanges</a> and <a href="http://msdn.microsoft.com/en-us/data/jj592872">Local Data</a> 
+in the MSDN Data Developer Center.</p>
+</div>
+
+<p>The HTML and Razor code in <em>Views\Student\Edit.cshtml</em> is similar to what you saw in <em>Create.cshtml</em>, and no changes are required.</p>
+<p>Run the page by selecting the <strong>Students</strong> tab and then clicking an <strong>Edit</strong> hyperlink.</p>
+<p>
+<img src="Lab131/StudentEdit.png" alt="Student_Edit_page" border="0"/></p>
+<p>Change some of the data and click <strong>Save</strong>. You see the changed data in the Index page.</p>
+<p>
+<img src="Lab131/StudentEdited.png" alt="Students_Index_page_after_edit" border="0"/></p>
+<h2>Updating the Delete Page </h2>
+<p>In <em>Controllers\StudentController.cs</em>, the template code for the <code>HttpGet</code> <code>Delete</code> method uses the <code>Find</code> method to retrieve the selected <code>Student</code> entity, as you saw in the <code>Details</code> and <code>Edit</code> methods. However, to implement a custom error message when the call to <code>SaveChanges</code> fails, you'll add some functionality to this method and its corresponding view.</p>
+<p>As you saw for update and create operations, delete operations require two action methods. The method that is called in response to a GET request displays a view that gives the user a chance to approve or cancel the delete operation. If the user approves it, a POST request is created. When that happens, the <code>HttpPost</code> <code>Delete</code> method is called and then that method actually performs the delete operation. </p>
+<p>You'll add a <code>try-catch</code> block to the <code>HttpPost</code> <code>Delete</code> method to handle any errors that might occur when the database is updated. If an error occurs, the <code>HttpPost</code> <code>Delete</code> method calls the <code>HttpGet</code> <code>Delete</code> method, passing it a parameter that indicates that an error has occurred. The <code>HttpGet Delete</code> method then redisplays the confirmation page along with the error message, giving the user an opportunity to cancel or try again.</p>
+<ol>
+	<li>Replace the <code>HttpGet</code> <code>Delete</code> action method with the following code, which manages error reporting:
+	<pre>public ActionResult Delete(int? id, <mark>bool? saveChangesError=false</mark>)
+{
+    if (id == null)
+    {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+    }
+    <mark>if (saveChangesError.GetValueOrDefault())
+    {
+        ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
+    }</mark>
+    Student student = db.Students.Find(id);
+    if (student == null)
+    {
+        return HttpNotFound();
+    }
+    return View(student);
+}</pre>
+<p>This code accepts an 
+<a href="http://msdn.microsoft.com/en-us/library/dd264739.aspx">optional parameter</a> that indicates whether 
+the method was called after a failure to save 
+changes. This parameter is <code>false</code> when the <code>HttpGet</code> <code>Delete</code> method is called 
+without a previous failure. When it is called by the <code>HttpPost</code> <code>Delete</code> method in response to a database update error, the parameter is <code>true</code> and an error message is passed to the view.</p>
+<li>
+<p>Replace the <code>HttpPost</code> <code>Delete</code> action method (named <code>DeleteConfirmed</code>) with the following code, which performs the actual delete operation and catches any database update errors.</p>
+<pre class="prettyprint">[HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult Delete(int id)
+{
+    try
+    {
+        Student student = db.Students.Find(id);
+        db.Students.Remove(student);
+        db.SaveChanges();
+    }
+    catch (DataException/* dex */)
+    {
+        //Log the error (uncomment dex variable name and add a line here to write a log.
+        return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+    }
+    return RedirectToAction("Index");
+}</pre>
+<p>This code retrieves the selected entity, then calls the 
+<a href="http://msdn.microsoft.com/en-us/library/system.data.entity.dbset.remove(v=vs.103).aspx">Remove</a> method to set the entity's status to <code>Deleted</code>. When <code>SaveChanges</code> is called, a SQL <code>DELETE</code> command is generated.&nbsp;You have also changed the action method name from <code>DeleteConfirmed
+</code>to <code>Delete</code>. The scaffolded code named the <code>HttpPost</code> <code>Delete</code> 
+method <code>DeleteConfirmed</code> to give the <code>HttpPost</code>&nbsp; 
+method a unique signature. ( The CLR requires overloaded methods to have 
+different method parameters.) Now that the signatures are unique, you can stick with 
+the MVC convention and use the same name for the <code>HttpPost</code> and <code>HttpGet</code> 
+delete methods.</p>
+<p>If improving performance in a high-volume application is a priority, you could avoid an unnecessary SQL query to retrieve the row by replacing the lines of code that call the <code>Find</code> and <code>Remove</code> methods with the following code:</p>
+<pre>Student studentToDelete = new Student() { ID = id };
+db.Entry(studentToDelete).State = EntityState.Deleted;</pre>
+<p>This code instantiates a <code>Student</code> entity using only the primary key value and then sets the entity state to <code>Deleted</code>. That's all that the Entity Framework needs in order to delete the entity.</p>
+<p>As noted, the <code>HttpGet</code> <code>Delete</code> method doesn't delete the data. Performing a delete operation in response to a GET request (or for that matter, performing any edit operation, create operation, or any other operation that changes data) creates a security risk. For more information, see <a href="http://stephenwalther.com/blog/archive/2009/01/21/asp.net-mvc-tip-46-ndash-donrsquot-use-delete-links-because.aspx">ASP.NET MVC Tip #46 — Don't use Delete Links because they create Security Holes</a> on Stephen Walther's blog.</p>
+	</li>
+	<li>
+<p>In <em>Views\Student\Delete.cshtml</em>, add an error message between the <code>h2</code> heading and the <code>h3</code> 
+heading, as shown in the following example:</p>
+<pre class="prettyprint">&lt;h2&gt;Delete&lt;/h2&gt;
+<mark>&lt;p class="error"&gt;@ViewBag.ErrorMessage&lt;/p&gt;</mark>
+&lt;h3&gt;Are you sure you want to delete this?&lt;/h3&gt;</pre>
+<p>Run the page by selecting the <strong>Students</strong> tab and clicking a <strong>Delete</strong> hyperlink:</p>
+<p>
+<img src="Lab131/StudentDelete.png" alt="Student_Delete_page" border="0"/></p>
+<li>
+	<p>Click <strong>Delete</strong>. The Index page is displayed without the deleted student. (You'll see an example of the error handling code in action 
+	in the
+	<a href="/mvc/tutorials/getting-started-with-ef-using-mvc/handling-concurrency-with-the-entity-framework-in-an-asp-net-mvc-application">concurrency tutorial</a>.)</p>
+</li>
+</ol>
+
+<h2>Closing Database Connections </h2>
+<p>To close database connections and free up the resources they hold as soon as 
+possible, dispose the context instance when you are done 
+with it. That is why the scaffolded code provides a 
+<a href="http://msdn.microsoft.com/en-us/library/system.idisposable.dispose(v=vs.110).aspx">Dispose</a> method at the end of the <code>StudentController</code> class in <em>StudentController.cs</em>, as shown in the following example:</p>
+<pre class="prettyprint">protected override void Dispose(bool disposing)
+{
+    db.Dispose();
+    base.Dispose(disposing);
+}</pre>
+<p>The base <code>Controller</code> class already implements the <code>IDisposable</code> interface, so this code simply adds an override to the <code>Dispose(bool)</code> method to explicitly dispose the context instance.</p>
+<h2 id="transactions">Handling Transactions</h2>
+<p>By default the Entity Framework implicitly implements transactions. In 
+scenarios where you make changes to multiple rows or tables and then call <code>
+SaveChanges</code>, the Entity Framework automatically makes sure that either 
+all of your changes succeed or all fail. If some changes are done first and then 
+an error happens, those changes are automatically rolled back. For scenarios 
+where you need more control -- for example, if you want to include operations 
+done outside of Entity Framework in a transaction -- see
+<a href="http://msdn.microsoft.com/en-US/data/dn456843">Working with 
+Transactions</a> on MSDN.</p>
+<h2>Summary</h2>
+<p>You now have a complete set of pages that perform simple CRUD operations for <code>Student</code> entities. 
+You used MVC helpers to generate UI elements for data fields. For more 
+information about MVC helpers, see
+<a href="http://msdn.microsoft.com/en-us/library/dd410596(v=VS.98).aspx">
+Rendering a Form Using HTML Helpers</a> (the page is for MVC 3 but is still 
+relevant for MVC 5).</p>
+<p>In the next tutorial you'll expand the functionality of the Index page by adding sorting and paging.</p>
+
+<p>Please leave feedback on how you liked this 
+tutorial and what we could improve. You can also request new topics at
+<a href="http://aspnet.uservoice.com/forums/228522-show-me-how-with-code">Show 
+Me How With Code</a>.</p>
+
+<p>Links to other Entity Framework resources can be found in
+<a href="/whitepapers/aspnet-data-access-content-map">ASP.NET 
+Data Access - Recommended Resources</a>.</p>
+
+  </body>
+</html>  

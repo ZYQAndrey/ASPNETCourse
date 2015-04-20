@@ -35,98 +35,124 @@ namespace ASPNETCourse.Controllers
             ViewBag.actingExams = myActingQuizes;
             ViewBag.pastExams = myPastQuizes;
             ViewBag.futureExams = myFutureQuizes;
+            ViewBag.allExams = await _db.Quizs.OrderByDescending(d => d.FinishDateTime).ToListAsync();
             return View();
         }
 
         // GET: Answers
         public async Task<ActionResult> ActiveExam(int? id)
         {
+            #region self code
+            //var user = _db.Users.Find(User.Identity.GetUserId());
+            //var myQuiz = await _db.Quizs.Include("QuestionsList").FirstOrDefaultAsync(d => d.Id == id);
+            //var myAnswers = await _db.Answers.Where(d => d.Student.UserName == user.UserName && d.Quiz.Id == id).ToListAsync();
+            //var myQuestions = myAnswers.Select(answer => answer.Question).ToList();
+
+            //if (myQuiz.QuestionsList.Count > myAnswers.Count)
+            //{
+            //    var notFound = true;
+            //    var temp = 0;
+            //    while (notFound)
+            //    {
+            //        var random = new Random();
+            //        temp = random.Next(myQuiz.QuestionsList.Count);
+            //        if (myQuestions.All(d => d.Id != myQuiz.QuestionsList[temp].Id)) notFound = false;
+            //    }
+
+            //    var model = new AnsweredQuestion()
+            //    {
+            //        Description = myQuiz.QuestionsList[temp].Description,
+            //        QuestionId = myQuiz.QuestionsList[temp].Id,
+            //        QuizId = myQuiz.Id,
+            //        UserName = user.UserName,
+            //        TheType = myQuiz.QuestionsList[temp].Type,
+            //        QuizName = myQuiz.Name,
+            //        //StartTime = (myQuiz.Length * 1000000 * 60).ToString(),
+            //        StartTime = DateTime.Now.AddMinutes(myQuiz.Length).Year + "/" + DateTime.Now.AddMinutes(myQuiz.Length).Month + "/" + DateTime.Now.AddMinutes(myQuiz.Length).Day + " " + (DateTime.Now.AddMinutes(myQuiz.Length).Hour + ":" + DateTime.Now.AddMinutes(myQuiz.Length).Minute),
+            //        TimeLength = myQuiz.Length
+            //    };
+
+            //    if (model.TheType == QuestionType.Multy)
+            //    {
+            //        var answersList = new List<AnswerToAnswer>();
+            //        var answersString = myQuiz.QuestionsList[temp].Questions;
+            //        int counter = 0;
+            //        while (!String.IsNullOrEmpty(answersString))
+            //        {
+            //            answersString = answersString.Trim();
+            //            answersList.Add(new AnswerToAnswer()
+            //            {
+            //                AnswerId = counter,
+            //                Name = answersString.Substring(0, answersString.IndexOf(';')),
+            //                Selected = false
+            //            });
+            //            counter++;
+            //            answersString = answersString.IndexOf(';') < answersString.Length + 1
+            //                ? answersString.Substring(answersString.IndexOf(';') + 1,
+            //                    answersString.Length - answersString.IndexOf(';') - 1)
+            //                : "";
+            //        }
+
+            //        model.Answers = answersList;
+            //    }
+
+            //    if (model.TheType == QuestionType.Radio)
+            //    {
+            //        var answersList = new List<RadioAnswer>();
+            //        var answersString = myQuiz.QuestionsList[temp].Questions;
+            //        int counter = 0;
+            //        while (!String.IsNullOrEmpty(answersString))
+            //        {
+            //            answersString = answersString.Trim();
+            //            answersList.Add(new RadioAnswer()
+            //            {
+            //                Value = answersString.Substring(0, answersString.IndexOf(';')),
+            //                GroupName = "questionGroup",
+            //                Id = counter,
+            //                Selected = false
+            //            });
+            //            counter++;
+            //            answersString = answersString.IndexOf(';') < answersString.Length + 1
+            //                ? answersString.Substring(answersString.IndexOf(';') + 1,
+            //                    answersString.Length - answersString.IndexOf(';') - 1)
+            //                : "";
+            //        }
+
+            //        model.RadioAnswers = answersList;
+            //    }
+
+            //    if (model.TheType == QuestionType.Value) model.ValueAnswer = "";
+            
+            //    return View(model);
+            //}
+            //else
+            //{
+            //    return RedirectToAction("ActiveExamToCheck", new { id = id, startTime = DateTime.Now.AddMinutes(myQuiz.Length).Year + "/" + DateTime.Now.AddMinutes(myQuiz.Length).Month + "/" + DateTime.Now.AddMinutes(myQuiz.Length).Day + " " + (DateTime.Now.AddMinutes(myQuiz.Length).Hour + ":" + DateTime.Now.AddMinutes(myQuiz.Length).Minute) });
+            //}
+            #endregion
+
             var user = _db.Users.Find(User.Identity.GetUserId());
             var myQuiz = await _db.Quizs.Include("QuestionsList").FirstOrDefaultAsync(d => d.Id == id);
             var myAnswers = await _db.Answers.Where(d => d.Student.UserName == user.UserName && d.Quiz.Id == id).ToListAsync();
             var myQuestions = myAnswers.Select(answer => answer.Question).ToList();
-
+            
             if (myQuiz.QuestionsList.Count > myAnswers.Count)
             {
-                var notFound = true;
-                var temp = 0;
-                while (notFound)
-                {
-                    var random = new Random();
-                    temp = random.Next(myQuiz.QuestionsList.Count);
-                    if (myQuestions.All(d => d.Id != myQuiz.QuestionsList[temp].Id)) notFound = false;
-                }
 
-                var model = new AnsweredQuestion()
+                var model = new IdAndTime()
                 {
-                    Description = myQuiz.QuestionsList[temp].Description,
-                    QuestionId = myQuiz.QuestionsList[temp].Id,
-                    QuizId = myQuiz.Id,
-                    UserName = user.UserName,
-                    TheType = myQuiz.QuestionsList[temp].Type,
+                    Id = id,
+                    StartTime = DateTime.Now.AddMinutes(myQuiz.Length).Year + "/" +
+                                DateTime.Now.AddMinutes(myQuiz.Length).Month + "/" +
+                                DateTime.Now.AddMinutes(myQuiz.Length).Day + " " +
+                                (DateTime.Now.AddMinutes(myQuiz.Length).Hour + ":" +
+                                 DateTime.Now.AddMinutes(myQuiz.Length).Minute),
                     QuizName = myQuiz.Name,
-                    //StartTime = (myQuiz.Length * 1000000 * 60).ToString(),
-                    StartTime = DateTime.Now.AddMinutes(myQuiz.Length).Year + "/" + DateTime.Now.AddMinutes(myQuiz.Length).Month + "/" + DateTime.Now.AddMinutes(myQuiz.Length).Day + " " + (DateTime.Now.AddMinutes(myQuiz.Length).Hour + ":" + DateTime.Now.AddMinutes(myQuiz.Length).Minute),
-                    TimeLength = myQuiz.Length
+                    QuestionsNumber = myQuiz.QuestionsList.Count()
                 };
-
-                if (model.TheType == QuestionType.Multy)
-                {
-                    var answersList = new List<AnswerToAnswer>();
-                    var answersString = myQuiz.QuestionsList[temp].Questions;
-                    int counter = 0;
-                    while (!String.IsNullOrEmpty(answersString))
-                    {
-                        answersString = answersString.Trim();
-                        answersList.Add(new AnswerToAnswer()
-                        {
-                            AnswerId = counter,
-                            Name = answersString.Substring(0, answersString.IndexOf(';')),
-                            Selected = false
-                        });
-                        counter++;
-                        answersString = answersString.IndexOf(';') < answersString.Length + 1
-                            ? answersString.Substring(answersString.IndexOf(';') + 1,
-                                answersString.Length - answersString.IndexOf(';') - 1)
-                            : "";
-                    }
-
-                    model.Answers = answersList;
-                }
-
-                if (model.TheType == QuestionType.Radio)
-                {
-                    var answersList = new List<RadioAnswer>();
-                    var answersString = myQuiz.QuestionsList[temp].Questions;
-                    int counter = 0;
-                    while (!String.IsNullOrEmpty(answersString))
-                    {
-                        answersString = answersString.Trim();
-                        answersList.Add(new RadioAnswer()
-                        {
-                            Value = answersString.Substring(0, answersString.IndexOf(';')),
-                            GroupName = "questionGroup",
-                            Id = counter,
-                            Selected = false
-                        });
-                        counter++;
-                        answersString = answersString.IndexOf(';') < answersString.Length + 1
-                            ? answersString.Substring(answersString.IndexOf(';') + 1,
-                                answersString.Length - answersString.IndexOf(';') - 1)
-                            : "";
-                    }
-
-                    model.RadioAnswers = answersList;
-                }
-
-                if (model.TheType == QuestionType.Value) model.ValueAnswer = "";
-
                 return View(model);
             }
-            else
-            {
-                return RedirectToAction("ActiveExamToCheck", new { id = id, startTime = DateTime.Now.AddMinutes(myQuiz.Length).Year + "/" + DateTime.Now.AddMinutes(myQuiz.Length).Month + "/" + DateTime.Now.AddMinutes(myQuiz.Length).Day + " " + (DateTime.Now.AddMinutes(myQuiz.Length).Hour + ":" + DateTime.Now.AddMinutes(myQuiz.Length).Minute) });
-            }
+            else return RedirectToAction("ExamIndex");
         }
 
         // POST: Answers
@@ -301,38 +327,47 @@ namespace ASPNETCourse.Controllers
         // GET: Answers
         public async Task<ActionResult> PastExam(int? id)
         {
-            var answers = await _db.Answers.Where(d => d.Quiz.Id == id && d.Student.Email == User.Identity.Name).ToListAsync();
-            var answersToCheck = await _db.AnswersToCheck.Where(d => d.Quiz.Id == id && d.Student.Email == User.Identity.Name).ToListAsync();
+            var answers = await _db.Answers.Include("Question").Include("Student").Include("Quiz").Where(d => d.Quiz.Id == id && d.Student.Email == User.Identity.Name).ToListAsync();
+            if (answers.Count > 0)
+            {
+                //var answersToCheck = await _db.AnswersToCheck.Where(d => d.Quiz.Id == id && d.Student.Email == User.Identity.Name).ToListAsync();
 
-            ViewBag.Answers = answers;
-            ViewBag.AnswersToCheck = answersToCheck;
-            ViewBag.QuizName = _db.Quizs.Find(id).Name;
+                ViewBag.Answers = answers;
+                //ViewBag.AnswersToCheck = answersToCheck;
+                ViewBag.QuizName = _db.Quizs.Find(id).Name;
 
-            var resultToCheck = answersToCheck.Where(answer => answer.Correctness == true).Sum(answer => answer.Question.Weight);
-            ViewBag.Result = answers.Count(d => d.Correctness == true) + resultToCheck;
+                //var resultToCheck = answersToCheck.Where(answer => answer.Correctness == true).Sum(answer => answer.Question.Weight);
+                ViewBag.Result = answers.Count(d => d.Correctness == true);
 
-            var startTime = answers.OrderBy(d => d.AnswerTime).First().AnswerTime;
-            var finishTime1 = answers.OrderBy(d => d.AnswerTime).Last().AnswerTime;
-            var finishTime2 = answersToCheck.OrderBy(d => d.AnswerTime).Last().AnswerTime;
-            var finishTime = finishTime1 > finishTime2 ? finishTime1 : finishTime2;
+                var startTime = answers.OrderBy(d => d.AnswerTime).First().AnswerTime;
+                var finishTime1 = answers.OrderBy(d => d.AnswerTime).Last().AnswerTime;
+                //var finishTime2 = answersToCheck.OrderBy(d => d.AnswerTime).Last().AnswerTime;
+                var finishTime = finishTime1; // > finishTime2 ? finishTime1 : finishTime2;
 
-            var spent = finishTime - startTime;
-            ViewBag.StartTime = startTime;
-            ViewBag.FinishTime = finishTime;
-            ViewBag.TimeSpan = spent;
+                var spent = finishTime - startTime;
+                ViewBag.StartTime = startTime;
+                ViewBag.FinishTime = finishTime;
+                ViewBag.TimeSpan = spent;
 
-            return View();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ExamIndex");
+            }
         }
 
         // GET: Answers
         [Authorize(Users = "a.v.andreev@hotmail.com")]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> ViewResults(int quizId)
         {
-            if (User.Identity.IsAuthenticated)
+            var students = _db.Users.Include("Answers").ToList();
+            var answers =  _db.Answers.Where(d => d.Quiz.Id == quizId).ToList();
+            var results = students.Select(student => new StudentsResultsViewModel()
             {
-                //var quizes = db.Quizs.Where(d => d.)
-            }
-            return View(await _db.Answers.ToListAsync());
+                FullName = student.FirstName + " " + student.LastName, GroupName = _db.Groups.Find(student.GroupId).Name, Score = answers.Count(d => d.Student.Id == student.Id && d.Correctness == true), ExamDate = _db.Quizs.Find(quizId).BeginDateTime
+            }).OrderBy(d => d.GroupName).OrderBy(d => d.FullName).ToList();
+            return View(results);
         }
 
         // GET: Answers/Delete/5

@@ -1,7 +1,8 @@
 ﻿@using ASPNETCourse.Models
-@model ASPNETCourse.Models.AnsweredQuestion
+@model ASPNETCourse.Models.IdAndTime
 @{
     ViewBag.Title = Model.QuizName;
+    Layout = "~/Views/Shared/_LayoutNoFooter.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,7 +10,45 @@
     Time left:
     <div id="clock" style="margin-top: -1.5em;"></div>
 </div>
-    @using (Html.BeginForm())
+
+<div id="bodyContainer" ng-app="ExamApp">
+    <section id="content">
+        <div class="container">
+            <div class="row" ng-controller="ExamCtrl" ng-init="nextQuestion(@Model.Id)">
+                <div class="col-md-8" style="text-align: left">Question {{count}} of @Model.QuestionsNumber</div>
+                <div class="col-md-4" style="text-align: right">Your score is {{score}}</div>
+                <div class="flip-container text-left col-md-12">
+                    <hr />
+                    <div class="front" ng-class="{flip: answered}">
+                        <p class="lead">{{title}}</p>
+                        <blockquote>
+                            <div class="row text-left">
+                                <div ng-repeat="answer in answers" ng-disabled="working">
+                                    <input type="checkbox" value="{{answer.selected}}" ng-model="answer.selected" ng-click="answerClicked({{answer.answerId}})" />&nbsp;
+                                    {{answer.name}}
+                                    <br />
+                                </div>
+                            </div>
+                        </blockquote>
+                        <hr />
+                        <p>
+                            <button class="btn btn-info glyphicon glyphicon-circle-arrow-right" ng-click="sendAnswer(answers)" ng-disabled="working"> Continue</button>
+                        </p>
+                        <p>
+                            @Html.ActionLink("Back to index", "ExamIndex")
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/angular.js")
+    @Scripts.Render("~/Scripts/app/exam-controller.js")
+}
+    @*@using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
@@ -59,7 +98,7 @@
 
     <div>
         @Html.ActionLink("Back to List", "Index")
-    </div>
+    </div>*@
 
 <style>
     .bodyDiv {

@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ASP.NET Course in KBTU</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("ASP.NET for KBTU", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Lectures", "Lectures", "Home")</li>
+                    <li>@Html.ActionLink("Hand on Labs", "Labs", "Home")</li>
+                    <li><a href="http://1drv.ms/1wa86sZ" target="_blank">Syllabus</a></li>
+                    <li>@Html.ActionLink("Books", "Books", "Home")</li>
+                    @if (User.Identity.IsAuthenticated && User.Identity.Name == "a.v.andreev@hotmail.com")
+                    {
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">For teacher <b class="caret"></b></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li>@Html.ActionLink("Quizes", "Index", "Quizs")</li>
+                                <li>@Html.ActionLink("Questions", "Index", "Questions")</li>
+                                <li>@Html.ActionLink("Questions to check", "Index", "QuestionsToCheck")</li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Control <b class="caret"></b></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li>@Html.ActionLink("Exams", "ExamIndex", "Answers")</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

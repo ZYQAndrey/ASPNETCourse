@@ -47,12 +47,12 @@ namespace ASPNETCourse.Controllers
             return View();
         }
 
-        public ActionResult Lab9()
+        public ActionResult Lab9_10()
         {
             return View();
         }
 
-        public ActionResult Lab10_11()
+        public ActionResult Lab11()
         {
             return View();
         }
@@ -62,12 +62,32 @@ namespace ASPNETCourse.Controllers
             return View();
         }
 
-        public ActionResult Lab13()
+        public ActionResult Lab131()
         {
             return View();
         }
 
-        public ActionResult Lab14_15()
+        public ActionResult Lab132()
+        {
+            return View();
+        }
+
+        public ActionResult Lab141()
+        {
+            return View();
+        }
+
+        public ActionResult Lab142()
+        {
+            return View();
+        }
+
+        public ActionResult Lab15()
+        {
+            return View();
+        }
+
+        public ActionResult Lab16()
         {
             return View();
         }

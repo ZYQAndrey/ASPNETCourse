@@ -1,0 +1,515 @@
+
+ 
+<!DOCTYPE HTML>
+<!--[if IE]><![endif]-->
+<html>
+  <head>
+    <title>Reading Related Data with the Entity Framework in an ASP.NET MVC Application | The ASP.NET Site</title>
+    
+  <link href='//i1.asp.net/umbraco-beta-css/articles.min.css?cdn_id=2015-04-01-001' rel="stylesheet" type="text/css" media="all" />
+	<link rel="alternate" type="application/rss+xml" title="Latest ASP.NET Content" href="//www.asp.net/rss/content" />		  
+  </head>
+  <body class=''>
+    
+    <div class='allcontent '>
+      
+  <div class="content article-page article-content">
+      <div class="col-right-learn">
+        <span><div class="article-title keyline"><h1><div itemprop="name">Reading Related Data with the Entity Framework in an ASP.NET MVC Application</div></h1><div class="details"><div class="author-header">
+	<a href="http://download.microsoft.com/download/0/F/B/0FBFAA46-2BFD-478F-8E56-7BF3C672DF9D/Getting%20Started%20with%20Entity%20Framework%206%20Code%20First%20using%20MVC%205.pdf">Download PDF</a></p></div><div class="important important-box-article"><p>The Contoso University sample web application demonstrates how to create 
+ASP.NET MVC 5 applications using the Entity Framework 6 Code First and Visual Studio 
+2013. For information about the tutorial series, see
+<a href="/mvc/tutorials/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application">the first tutorial in the series</a>.</p>
+
+</div><p>In the previous tutorial you completed the School data model. In this tutorial you'll read and display related data — that is, data that the Entity Framework loads into navigation properties.</p>
+<p>The following illustrations show the pages that you'll work with.</p>
+<img src="Images/CoursesIndex.png" >
+<p>
+    <img src="Images/ics.png" alt="Instructors_index_page_with_instructor_and_course_selected" height="1207" width="635">
+</p>
+<h2>Lazy, Eager, and Explicit Loading of Related Data</h2>
+<p>There are several ways that the Entity Framework can load related data into the navigation properties of an entity:</p>
+<ul>
+<li><em>Lazy loading</em>. When the entity is first read, related data isn't retrieved. However, the first time you attempt to access a navigation property, the data required for that navigation property is automatically retrieved. This results in multiple queries sent to the database — one for the entity itself and one each time that related data for the entity must be retrieved.
+The <code>DbContext</code> class enables lazy loading by default.&nbsp;
+<p>
+    <img src="Images/Windows-Live-Writer_Reading-Re.NET-MVC-Application-5-of-10h1_ADC3_Lazy_loading_example_2c44eabb-5fd3-485a-837d-8e3d053f2c0c.png" alt="Lazy_loading_example" border="0" /></p>
+</li>
+<li>
+<p><em>Eager loading</em>. When the entity is read, related data is retrieved along with it. This typically results in a single join query that retrieves all of the data that's needed. You specify eager loading by using the <code>Include</code> method. </p>
+<p>
+    <img src="Images/Windows-Live-Writer_Reading-Re.NET-MVC-Application-5-of-10h1_ADC3_Eager_loading_example_33f907ff-f0b0-4057-8e75-05a8cacac807.png" alt="Eager_loading_example" border="0" /></p>
+</li>
+<li>
+<p><em>Explicit loading</em>. This is similar to lazy loading, except that you explicitly retrieve the related data in code; it doesn't happen automatically when you access a navigation property. You load related data manually by getting the object state manager entry for an entity and calling the 
+<a href="http://msdn.microsoft.com/en-us/library/gg696220(v=vs.103).aspx">Collection.Load</a> method for collections or the 
+<a href="http://msdn.microsoft.com/en-us/library/gg679166(v=vs.103).aspx">Reference.Load</a> method for properties that hold a single entity. (In the following example, if you wanted to load the Administrator navigation property, you'd replace <code>Collection(x =&gt; x.Courses)</code> with <code>Reference(x =&gt; x.Administrator)</code>.)&nbsp; Typically you'd use explicit loading only when you've turned 
+lazy loading off. </p>
+<p>
+    <img src="Images/Windows-Live-Writer_Reading-Re.NET-MVC-Application-5-of-10h1_ADC3_Explicit_loading_example_79d8c368-6d82-426f-be9a-2b443644ab15.png" alt="Explicit_loading_example" border="0" /></p>
+</li>
+</ul>
+<p>Because they don't immediately retrieve the property values, lazy loading and explicit loading are also both known as <em>deferred loading</em>.</p>
+<h3>Performance considerations</h3>
+<p>If you know you need related data for every entity retrieved, eager loading 
+often offers the best performance, because a single query sent to the database is typically more efficient than separate queries for each entity retrieved. For example, in the above examples, suppose that each department has ten related courses. The eager loading example would result in just a single (join) query 
+and a single round trip to the database. The lazy loading and explicit loading examples would both result in eleven queries 
+and eleven round trips to the database. The extra round trips to the database 
+are 
+especially detrimental to performance when latency is high. </p>
+<p>On the other hand, in some scenarios lazy loading is more efficient. Eager 
+loading might cause a very complex join to be generated, which SQL Server can't 
+process efficiently. Or if you need to access an entity's navigation properties 
+only for a subset of a set of the entities you're processing, 
+lazy loading might perform better because eager loading would retrieve more 
+data than you need. If performance is critical, it's best to test performance 
+both ways in order to make the best choice.</p>
+<p>Lazy loading can mask code that causes performance problems. For example, code that doesn't specify eager or explicit loading but processes a high volume of entities and uses several navigation properties in each iteration might be very inefficient (because of many round trips to the database). 
+An application that performs well in development using an on premise SQL server might 
+have performance problems when moved to Azure SQL Database due to the increased latency 
+and lazy loading. Profiling the database queries with a realistic test load will 
+help you determine if lazy loading is appropriate. For more information see
+<a href="http://msdn.microsoft.com/en-us/magazine/hh205756.aspx">Demystifying 
+Entity Framework Strategies: Loading Related Data</a> and
+<a href="http://msdn.microsoft.com/en-us/magazine/gg309181.aspx">Using the 
+Entity Framework to Reduce Network Latency to SQL Azure</a>.</p>
+<h3>Disable lazy loading before serialization</h3>
+<p>If you leave lazy loading enabled during serialization, you can end up querying significantly more data than you intended. Serialization generally works by accessing each property on an instance of a type. 
+Property access triggers lazy loading, and those lazy loaded entities are 
+serialized. The serialization process then accesses 
+each property of the lazy-loaded entities, potentially causing even more lazy loading and serialization. To prevent this run-away chain reaction, turn 
+lazy loading off before you serialize an entity.</p>
+<p>Serialization can also be complicated by the proxy classes that the Entity 
+Framework uses, as explained in the
+<a href="/mvc/tutorials/getting-started-with-ef-using-mvc/advanced-entity-framework-scenarios-for-an-mvc-web-application#proxies">
+Advanced Scenarios tutorial</a>. </p>
+<p>One way to avoid serialization problems is to serialize data transfer objects 
+(DTOs) instead of entity objects, as shown in the
+<a href="/web-api/overview/creating-web-apis/using-web-api-with-entity-framework/part-5">
+Using Web API with Entity Framework</a> tutorial.</p>
+<p>If you don't use DTOs, you can disable lazy loading and avoid proxy issues by
+<a href="http://msdn.microsoft.com/en-US/data/jj592886.aspx">disabling proxy 
+creation</a>. </p>
+<p>Here are 
+some other <a href="http://msdn.microsoft.com/en-US/data/jj574232">ways to 
+disable lazy loading</a>:</p>
+<ul>
+	<li>For specific navigation properties, omit the <code>virtual</code> keyword when you declare the property.</li>
+<li>For all navigation properties, set <code>LazyLoadingEnabled</code> to <code>false</code>, put the following code in the constructor of your context class:
+<pre class="prettyprint">this.Configuration.LazyLoadingEnabled = false;
+</pre></li>
+</ul>
+<h2>Create a Courses Page That Displays Department Name</h2>
+<p>The <code>Course</code> entity includes a navigation property that contains the <code>Department</code> entity of the department that the course is assigned to. To display the name of the assigned department in a list of courses, you need to get the <code>Name</code> property from the <code>Department</code> entity that is in the <code>Course.Department</code> navigation property.</p>
+<p>Create a controller named <code>CourseController</code> (not CoursesController) for the <code>Course</code> entity type, using the same options 
+for the <strong>MVC 5 Controller with views, using Entity Framework</strong> 
+scaffolder that you did earlier for the <code>Student</code> controller, as shown in the following illustration:</p>
+<p>
+<img src="Images/CourseController.png" alt="Add_Controller_dialog_box_for_Course_controller" border="0"/></p>
+<p>Open <em>Controllers\CourseController.cs</em> and look at the <code>Index</code> method:</p>
+<pre class="prettyprint">public ActionResult Index()
+{
+    var courses = db.Courses.Include(c =&gt; c.Department);
+    return View(courses.ToList());
+}</pre>
+<p>The automatic scaffolding has specified eager loading for the <code>Department</code> navigation property by using the <code>Include</code> method.</p>
+<p>Open <em>Views\Course\Index.cshtml</em> and replace the template code with the following code. 
+The changes are highlighted:</p>
+<pre>@model IEnumerable&lt;ContosoUniversity.Models.Course&gt;
+
+@{
+    ViewBag.Title = "<mark>Courses</mark>";
+}
+
+&lt;h2&gt;<mark>Courses</mark>&lt;/h2&gt;
+
+&lt;p&gt;
+    @Html.ActionLink("Create New", "Create")
+&lt;/p&gt;
+&lt;table class="table"&gt;
+    &lt;tr&gt;
+        <mark>&lt;th&gt;
+            @Html.DisplayNameFor(model =&gt; model.CourseID)
+        &lt;/th&gt;</mark>
+        &lt;th&gt;
+            @Html.DisplayNameFor(model =&gt; model.Title)
+        &lt;/th&gt;
+        &lt;th&gt;
+            @Html.DisplayNameFor(model =&gt; model.Credits)
+        &lt;/th&gt;
+        <mark>&lt;th&gt;
+            Department
+        &lt;/th&gt;</mark>
+        &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+
+@foreach (var item in Model) {
+    &lt;tr&gt;
+        <mark>&lt;td&gt;
+            @Html.DisplayFor(modelItem =&gt; item.CourseID)
+        &lt;/td&gt;</mark>
+        &lt;td&gt;
+            @Html.DisplayFor(modelItem =&gt; item.Title)
+        &lt;/td&gt;
+        &lt;td&gt;
+            @Html.DisplayFor(modelItem =&gt; item.Credits)
+        &lt;/td&gt;
+        <mark>&lt;td&gt;
+            @Html.DisplayFor(modelItem =&gt; item.Department.Name)
+        &lt;/td&gt;</mark>
+        &lt;td&gt;
+            @Html.ActionLink("Edit", "Edit", new { id=item.CourseID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CourseID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CourseID })
+        &lt;/td&gt;
+    &lt;/tr&gt;
+}
+
+&lt;/table&gt;</pre>
+<p>You've made the following changes to the scaffolded code:</p>
+<ul>
+<li>Changed the heading from <strong>Index</strong> to <strong>Courses</strong>. </li>
+<li>Added a <strong>Number</strong> column that shows the <code>CourseID</code> 
+property value. By default, primary keys aren't scaffolded because normally they 
+are meaningless to end users. However, in this case the primary key is 
+meaningful and you want to show it.</li>
+<li>Moved the <strong>Department</strong> column to the right side and changed 
+its heading. The scaffolder correctly chose to display the <code>Name</code> property from the <code>Department</code> 
+entity, but here in the Course page the column heading should be <strong>
+Department</strong> rather than <strong>Name</strong>.</li>
+</ul>
+<p>Notice that for the Department column, the scaffolded code displays the <code>Name</code> property of the <code>Department</code> entity that's loaded into the <code>Department</code> navigation property:</p>
+<pre class="prettyprint">&lt;td&gt;
+    @Html.DisplayFor(modelItem =&gt; item.Department<mark>.Name</mark>)
+&lt;/td&gt;</pre>
+<p>Run the page (select the <strong>Courses</strong> tab on the Contoso University home page) to see the list with department names.</p>
+<p>
+<img src="Images/CoursesIndex.png" alt="Courses_index_page_with_department_names" border="0"/></p>
+<h2>Create an Instructors Page That Shows Courses and Enrollments</h2>
+<p>In this section you'll create a controller and view for the <code>Instructor</code> entity in order to display the Instructors page:</p>
+
+<img src="Images/ics.png" alt="Instructors_index_page_with_instructor_and_course_selected" height="1207" width="635">
+<p>This page reads and displays related data in the following ways:</p>
+<ul>
+<li>The list of instructors displays related data from the <code>OfficeAssignment</code> entity. The <code>Instructor</code> and <code>OfficeAssignment</code> entities are in a one-to-zero-or-one relationship. You'll use eager loading for the <code>OfficeAssignment</code> entities. As explained earlier, eager loading is typically more efficient when you need the related data for all retrieved rows of the primary table. In this case, you want to display office assignments for all displayed instructors. </li>
+<li>When the user selects an instructor, related <code>Course</code> entities are displayed. The <code>Instructor</code> and <code>Course</code> entities are in a many-to-many relationship. You'll use eager loading for the <code>Course</code> entities and their related <code>Department</code> entities. In this case, lazy loading might be more efficient because you need courses only for the selected instructor. However, this example shows how to use eager loading for navigation properties within entities that are themselves in navigation properties. </li>
+<li>When the user selects a course, related data from the <code>Enrollments</code> entity set is displayed. The <code>Course</code> and <code>Enrollment</code> entities are in a one-to-many relationship. You'll add explicit loading for <code>Enrollment</code> entities and their related <code>Student</code> entities. (Explicit loading isn't necessary because lazy loading is enabled, but this shows how to do explicit loading.) </li>
+</ul>
+<h3>Create a View Model for the Instructor Index View</h3>
+<p>The Instructors page shows three different tables. Therefore, you'll create a view model that includes three properties, each holding the data for one of the tables.</p>
+<p>In the <em>ViewModels</em> folder, create <em>InstructorIndexData.cs</em> and replace the existing code with the following code:</p>
+<pre class="prettyprint">using System.Collections.Generic;
+using ContosoUniversity.Models;
+
+namespace ContosoUniversity.ViewModels
+{
+    public class InstructorIndexData
+    {
+        public IEnumerable&lt;Instructor&gt; Instructors { get; set; }
+        public IEnumerable&lt;Course&gt; Courses { get; set; }
+        public IEnumerable&lt;Enrollment&gt; Enrollments { get; set; }
+    }
+}</pre>
+<h3>Create the Instructor Controller and Views</h3>
+<p>Create an <code>InstructorController</code> (not InstructorsController) controller with EF read/write 
+actions as shown in the following illustration:</p>
+<p>
+    <img src="Images/InstructorController.png" alt="Add_Controller_dialog_box_for_Instructor_controller" border="0" /></p>
+<p>Open <em>Controllers\InstructorController.cs</em> and add a <code>using</code> statement for the <code>ViewModels</code> namespace:</p>
+<pre class="prettyprint">using ContosoUniversity.ViewModels;</pre>
+<p>The scaffolded code in the <code>Index</code> method specifies eager loading only for the <code>OfficeAssignment</code> navigation property:</p>
+<pre class="prettyprint">public ActionResult Index()
+{
+    var instructors = db.Instructors.Include(i =&gt; i.OfficeAssignment);
+    return View(instructors.ToList());
+}</pre>
+<p>Replace the <code>Index</code> method with the following code to load additional related data and put it in the view model:</p>
+<pre class="prettyprint">public ActionResult Index(int? id, int? courseID)
+{
+    var viewModel = new InstructorIndexData();
+    viewModel.Instructors = db.Instructors
+        .Include(i =&gt; i.OfficeAssignment)
+        .Include(i =&gt; i.Courses.Select(c =&gt; c.Department))
+        .OrderBy(i =&gt; i.LastName);
+
+    if (id != null)
+    {
+        ViewBag.InstructorID = id.Value;
+        viewModel.Courses = viewModel.Instructors.Where(
+            i =&gt; i.ID == id.Value).Single().Courses;
+    }
+
+    if (courseID != null)
+    {
+        ViewBag.CourseID = courseID.Value;
+        viewModel.Enrollments = viewModel.Courses.Where(
+            x =&gt; x.CourseID == courseID).Single().Enrollments;
+    }
+
+    return View(viewModel);
+}</pre>
+<p>The method accepts optional route data (<code>id</code>)&nbsp; and a query string parameter 
+(<code>courseID</code>) that provide the ID values of the selected instructor and selected course, and passes all of the required data to the view. The parameters are provided by the <strong>Select</strong> hyperlinks on the page.</p>
+<p>The code begins by creating an 
+instance of the view model and putting in it the list of instructors. The code 
+specifies eager loading for the <code>Instructor.OfficeAssignment</code> and the <code>Instructor.Courses</code> 
+navigation property.</p>
+<pre class="prettyprint">var viewModel = new InstructorIndexData();
+viewModel.Instructors = db.Instructors
+    <mark>.Include(i =&gt; i.OfficeAssignment)</mark>
+    <mark>.Include(i =&gt; i.Courses.Select(c =&gt; c.Department))</mark>
+     .OrderBy(i =&gt; i.LastName);</pre>
+<p>The second <code>Include</code> method loads Courses, and for 
+each Course that is loaded it does eager loading for the <code>Course.Department</code> 
+navigation property.</p>
+<pre class="prettyprint">.Include(i =&gt; i.Courses.Select(c =&gt; c.Department))</pre>
+<p>As mentioned previously, eager loading is not required but is done to 
+improve performance. Since the view 
+always requires the <code>OfficeAssignment</code> entity, it's 
+more efficient to fetch that in the same query. <code>Course</code> entities are 
+required when an instructor is selected in the web page, so eager loading is 
+better than lazy loading only if the page is displayed more often with a course 
+selected than without.</p>
+<p>If an instructor ID was selected, the selected instructor is retrieved from the list of instructors in the view model. The view model's <code>Courses</code> property is then loaded with the <code>Course</code> entities from that instructor's <code>Courses</code> navigation property. </p>
+<pre class="prettyprint">if (id != null)
+{
+    ViewBag.InstructorID = id.Value;
+    viewModel.Courses = viewModel.Instructors.Where(i =&gt; i.ID == id.Value).Single().Courses;
+}</pre>
+<p>The <code>Where</code> method returns a collection, but in this case the criteria passed to that method result in only a single <code>Instructor</code> entity being returned. The <code>Single</code> method converts the collection into a single <code>Instructor</code> entity, which gives you access to that entity's <code>Courses</code> property.  </p>
+<p>You use the 
+<a href="http://msdn.microsoft.com/en-us/library/system.linq.enumerable.single.aspx">Single</a> method on a collection when you know the collection will have only one item. The <code>Single</code> method throws an exception if the collection passed to it is empty or if there's more than one item. An alternative is 
+<a href="http://msdn.microsoft.com/en-us/library/bb342451.aspx">SingleOrDefault</a>, which returns 
+a default value (<code>null </code>in this case) if the collection is empty. However, in this case that would still result in an exception (from trying to find a <code>Courses</code> property on a 
+<code>null</code> reference), and the exception message would less clearly indicate the cause of the problem. When you call the <code>Single</code> method, you can also pass in the <code>Where</code> condition instead of calling the <code>Where</code> method separately:</p>
+<pre class="prettyprint">.Single(i =&gt; i.ID == id.Value)</pre>
+<p>Instead of:</p>
+<pre class="prettyprint">.Where(I =&gt; i.ID == id.Value).Single()</pre>
+<p>Next, if a course was selected, the selected course is retrieved from the list of courses in the view model. Then the view model's <code>Enrollments</code> property is loaded with the <code>Enrollment</code> entities from that course's <code>Enrollments</code> navigation property. </p>
+<pre class="prettyprint">    if (courseID != null)
+    {
+        ViewBag.CourseID = courseID.Value;
+        viewModel.Enrollments = viewModel.Courses.Where(
+            x =&gt; x.CourseID == courseID).Single().Enrollments;
+    }</pre>
+<h3>Modify the Instructor Index View</h3>
+<p>In <em>Views\Instructor\Index.cshtml</em>, replace the template code with the following code. 
+The changes are highlighted: </p>
+<pre><mark>@model ContosoUniversity.ViewModels.InstructorIndexData</mark>
+
+@{
+    ViewBag.Title = "<mark>Instructors</mark>";
+}
+
+&lt;h2&gt;Instructors&lt;/h2&gt;
+
+&lt;p&gt;
+    @Html.ActionLink("Create New", "Create")
+&lt;/p&gt;
+&lt;table class="table"&gt;
+    &lt;tr&gt;
+        <mark>&lt;th&gt;Last Name&lt;/th&gt;
+        &lt;th&gt;First Name&lt;/th&gt;
+        &lt;th&gt;Hire Date&lt;/th&gt;
+        &lt;th&gt;Office&lt;/th&gt;
+        &lt;th&gt;&lt;/th&gt;</mark>
+    &lt;/tr&gt;
+
+    <mark>@foreach (var item in Model.Instructors)</mark>
+    {
+        <mark>string selectedRow = "";
+        if (item.ID == ViewBag.InstructorID)
+        {
+            selectedRow = "success";
+        }
+        &lt;tr class="@selectedRow"&gt;</mark>
+            &lt;td&gt;
+                @Html.DisplayFor(modelItem =&gt; item.LastName)
+            &lt;/td&gt;
+            &lt;td&gt;
+                @Html.DisplayFor(modelItem =&gt; item.FirstMidName)
+            &lt;/td&gt;
+            &lt;td&gt;
+                @Html.DisplayFor(modelItem =&gt; item.HireDate)
+            &lt;/td&gt;
+            <mark>&lt;td&gt;
+                @if (item.OfficeAssignment != null)
+                {
+                    @item.OfficeAssignment.Location
+                }
+            &lt;/td&gt;</mark>
+            &lt;td&gt;
+                <mark>@Html.ActionLink("Select", "Index", new { id = item.ID }) |</mark>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    }
+
+    &lt;/table&gt;</pre>
+<p>You've made the following changes to the existing code:</p>
+<ul>
+<li>Changed the model class to <code>InstructorIndexData</code>.</li>
+	<li>Changed the page title from <strong>Index</strong> to <strong>Instructors</strong>. </li>
+<li>Added an <strong>Office</strong> column that displays <code>item.OfficeAssignment.Location</code> only if <code>item.OfficeAssignment</code> is not null. (Because this is a one-to-zero-or-one relationship, there might not be a related <code>OfficeAssignment</code> entity.)
+<pre class="prettyprint">&lt;td&gt; 
+    @if (item.OfficeAssignment != null) 
+    { 
+        @item.OfficeAssignment.Location  
+    } 
+&lt;/td&gt; </pre>
+</li>
+<li>Added code that will dynamically add <code>class="success"</code> to the <code>tr</code> 
+element of the selected instructor. This sets a background color for the 
+selected row using a 
+<a href="/visual-studio/overview/2013/creating-web-projects-in-visual-studio#bootstrap">Bootstrap</a> class.
+<pre class="prettyprint">string selectedRow = ""; 
+if (item.InstructorID == ViewBag.InstructorID) 
+{ 
+    selectedRow = "success"; 
+} 
+&lt;tr class="@selectedRow" valign="top"&gt; </pre>
+</li>
+<li>Added a new <code>ActionLink</code> labeled <strong>Select</strong> immediately before the other links in each row, which causes the selected instructor ID to be sent to the <code>Index</code> method. </li>
+</ul>
+<p>Run the application and select the <strong>Instructors</strong> tab. The page displays the <code>Location</code> property of related <code>OfficeAssignment</code> entities and an empty table cell when there's no related <code>OfficeAssignment</code> entity.</p>
+<p>
+    <img src="Images/InstructorsIndex.png" alt="Instructors_index_page_with_nothing_selected" border="0" /></p>
+<p>In the <em>Views\Instructor\Index.cshtml</em> file, after the closing <code>table</code> element 
+(at the end of the file), add the following code. This code displays a list of courses related to an instructor when an instructor is selected.</p>
+<pre>@if (Model.Courses != null)
+{
+    &lt;h3&gt;Courses Taught by Selected Instructor&lt;/h3&gt;
+    &lt;table class="table"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;&lt;/th&gt;
+            &lt;th&gt;Number&lt;/th&gt;
+            &lt;th&gt;Title&lt;/th&gt;
+            &lt;th&gt;Department&lt;/th&gt;
+        &lt;/tr&gt;
+
+        @foreach (var item in Model.Courses)
+        {
+            string selectedRow = "";
+            if (item.CourseID == ViewBag.CourseID)
+            {
+                selectedRow = "success";
+            }
+            &lt;tr class="@selectedRow"&gt;
+                &lt;td&gt;
+                    @Html.ActionLink("Select", "Index", new { courseID = item.CourseID })
+                &lt;/td&gt;
+                &lt;td&gt;
+                    @item.CourseID
+                &lt;/td&gt;
+                &lt;td&gt;
+                    @item.Title
+                &lt;/td&gt;
+                &lt;td&gt;
+                    @item.Department.Name
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        }
+
+    &lt;/table&gt;
+}</pre>
+<p>This code reads the <code>Courses</code> property of the view model to display a list of courses. It also provides a <code>Select</code> hyperlink that sends the ID of the selected course to the <code>Index</code> action method.</p>
+<p>Run the page and select an instructor. Now you see a grid that displays courses assigned to the selected instructor, and for each course you see the name of the assigned department.</p>
+<p>
+    <img src="Images/ic.png" alt="Instructors_index_page_with_instructor_selected" border="0" height="1003" width="635" /></p>
+<p>After the code block you just added, add the following code. This displays a list of the students who are enrolled in a course when that course is selected.</p>
+<pre>@if (Model.Enrollments != null)
+{
+    &lt;h3&gt;
+        Students Enrolled in Selected Course
+    &lt;/h3&gt;
+    &lt;table class="table"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Grade&lt;/th&gt;
+        &lt;/tr&gt;
+        @foreach (var item in Model.Enrollments)
+        {
+            &lt;tr&gt;
+                &lt;td&gt;
+                    @item.Student.FullName
+                &lt;/td&gt;
+                &lt;td&gt;
+                    @Html.DisplayFor(modelItem =&gt; item.Grade)
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        }
+    &lt;/table&gt;
+}</pre>
+<p>This code reads the <code>Enrollments</code> property of the view model in order to display a list of students enrolled in the course. 
+</p>
+<p>Run the page and select an instructor. Then select a course to see the list of enrolled students and their grades.</p>
+<p>
+    <img src="Images/ics.png" alt="Instructors_index_page_with_instructor_and_course_selected" height="1207" width="635"><h3>Adding Explicit Loading</h3>
+<p>Open <em>InstructorController.cs</em> and look at how the <code>Index</code> method gets the list of enrollments for a selected course:</p>
+<pre class="prettyprint">    if (courseID != null)
+    {
+        ViewBag.CourseID = courseID.Value;
+        viewModel.Enrollments = viewModel.Courses.Where(
+            x =&gt; x.CourseID == courseID).Single().Enrollments;
+    }</pre>
+<p>When you retrieved the list of instructors, you specified eager loading for the <code>Courses</code> navigation property and for the <code>Department</code> property of each course. Then you put the <code>Courses</code> collection in the view model, and now you're accessing the <code>Enrollments</code> navigation property from one entity in that collection. Because you didn't specify eager loading for the <code>Course.Enrollments</code> navigation property, the data from that property is appearing in the page as a result of lazy loading.</p>
+<p>If you disabled lazy loading without changing the code in any other way, the <code>Enrollments</code> property would be null regardless of how many enrollments the course actually had. 
+In that case, to load the <code>Enrollments</code> property, you'd have to specify either eager loading or explicit loading. You've already seen how to do eager loading. In order to see an example of explicit loading, replace the <code>Index</code> method with the following code, which explicitly loads the <code>Enrollments</code> 
+property. The code changed are highlighted.</p>
+<pre class="prettyprint">public ActionResult Index(int? id, int? courseID)
+{
+    var viewModel = new InstructorIndexData();
+
+    viewModel.Instructors = db.Instructors
+        .Include(i =&gt; i.OfficeAssignment)
+        .Include(i =&gt; i.Courses.Select(c =&gt; c.Department))
+        .OrderBy(i =&gt; i.LastName);
+
+    if (id != null)
+    {
+        ViewBag.InstructorID = id.Value;
+        viewModel.Courses = viewModel.Instructors.Where(
+            i =&gt; i.ID == id.Value).Single().Courses;
+    }
+    
+    if (courseID != null)
+    {
+        ViewBag.CourseID = courseID.Value;
+        <mark>// Lazy loading
+        //viewModel.Enrollments = viewModel.Courses.Where(
+        //    x =&gt; x.CourseID == courseID).Single().Enrollments;
+        // Explicit loading
+        var selectedCourse = viewModel.Courses.Where(x =&gt; x.CourseID == courseID).Single();
+        db.Entry(selectedCourse).Collection(x =&gt; x.Enrollments).Load();
+        foreach (Enrollment enrollment in selectedCourse.Enrollments)
+        {
+            db.Entry(enrollment).Reference(x =&gt; x.Student).Load();
+        }
+
+        viewModel.Enrollments = selectedCourse.Enrollments;</mark>
+    }
+
+    return View(viewModel);
+}</pre>
+<p>After getting the selected <code>Course</code> entity, the new code explicitly loads that course's <code>Enrollments</code> navigation property:</p>
+<pre class="prettyprint">db.Entry(selectedCourse).Collection(x =&gt; x.Enrollments).Load();</pre>
+<p>Then it explicitly loads each <code>Enrollment</code> entity's related <code>Student</code> entity:</p>
+<pre class="prettyprint">db.Entry(enrollment).Reference(x =&gt; x.Student).Load();</pre>
+<p>Notice that you use the <code>Collection</code> method to load a collection property, but for a property that holds just one entity, you use the <code>Reference</code> method. </p>
+<p>Run the Instructor Index page now and you'll see no difference in what's displayed on the page, although you've changed how the data is retrieved. </p>
+<h2>Summary</h2>
+<p>You've now used all three ways (lazy, eager, and explicit) to load related data into navigation properties. In the next tutorial you'll learn how to update related data.</p>
+
+<p>Please leave feedback on how you liked this 
+tutorial and what we could improve. You can also request new topics at
+<a href="http://aspnet.uservoice.com/forums/228522-show-me-how-with-code">Show 
+Me How With Code</a>.</p>
+
+<p>Links to other Entity Framework resources can be found in the
+<a href="/whitepapers/aspnet-data-access-content-map">ASP.NET 
+Data Access - Recommended Resources</a>.</p>
+	
+  </body>
+</html>  

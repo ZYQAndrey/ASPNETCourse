@@ -5,11 +5,11 @@
 
 <h2>Your results of '@ViewBag.QuizName'</h2>
 <hr />
-<h3>Your final score is @ViewBag.Result</h3>
-<h3>Started: @ViewBag.StartTime</h3>
-<h3>Finished: @ViewBag.FinishTime</h3>
-<h3>It took: @ViewBag.TimeSpan</h3>
-
+<h4>Your final score is @ViewBag.Result</h4>
+<h4>Started: @ViewBag.StartTime</h4>
+<h4>Finished: @ViewBag.FinishTime</h4>
+<h4>It took: @ViewBag.TimeSpan</h4>
+<br/>
 <div onmousedown=" return false; " onselectstart="return false;" onselect=" return false; " oncut="return false;" id="bodyDiv">
     <dl class="dl-horizontal">
 
@@ -26,35 +26,40 @@
                 Your answer(s):
             </dt>
             <dd>
-                @item.Question.Answers
+                <ul>
+                    @{
+                        var answersList = new List<string>();
+                        var answersString = item.Question.Answers;
+                        int counter = 0;
+                        while (!String.IsNullOrEmpty(answersString))
+                        {
+                            answersString = answersString.Trim();
+                            answersList.Add(answersString.Substring(0, answersString.IndexOf(';')));
+                            counter++;
+                            answersString = answersString.IndexOf(';') < answersString.Length + 1
+                                ? answersString.Substring(answersString.IndexOf(';') + 1,
+                                    answersString.Length - answersString.IndexOf(';') - 1)
+                                : "";
+                        }
+                        foreach (var answer in answersList)
+                        {
+                            <li>@answer</li>
+                        }
+
+                    }
+                </ul>
             </dd>
 
-            <dt>Correctness:</dt>
+            <dt>@*Correctness:*@</dt>
             <dd>
-                @Html.CheckBox("", item.Correctness)
-            </dd>
-            <hr/>
-        }
-
-        @foreach (AnswerToCheck item in ViewBag.AnswersToCheck)
-        {
-            <dt>
-                Question description:
-            </dt>
-            <dd>
-                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Question.Description))
-            </dd>
-
-            <dt>
-                Your answer:
-            </dt>
-            <dd>
-                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Answer))
-            </dd>
-
-            <dt>Correctness:</dt>
-            <dd>
-                @Html.CheckBox("", item.Correctness)
+                @if (item.Correctness)
+                {
+                    <div class="btn btn-info">Correct</div>
+                }
+                else
+                {
+                    <div class="btn btn-warning">Incorrect</div>
+                }
             </dd>
             <hr/>
         }
@@ -62,7 +67,7 @@
 </div>
 
 <p>
-    @Html.ActionLink("Back to List", "ExamIndex")
+    @Html.ActionLink("Back to index", "ExamIndex")
 </p>
 <style>
     .bodyDiv {

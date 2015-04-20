@@ -25,7 +25,8 @@ namespace ASPNETCourse
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/Flip.css"));
         }
     }
 }
